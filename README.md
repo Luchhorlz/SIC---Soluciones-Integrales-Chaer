@@ -30,7 +30,20 @@ La especificación fuente es `PLAN_MAESTRO_CODEX_SIC.md`. Las imágenes aprobada
 
 ## Desarrollo
 
-Los comandos se incorporarán en la Fase 1. El objetivo de arranque será `docker compose up --build`, acompañado por scripts PowerShell equivalentes para Windows.
+La previsualización local está disponible en `http://127.0.0.1:3000` después de ejecutar:
+
+```powershell
+.\infra\scripts\Start-SicLocal.ps1
+```
+
+Estado y parada:
+
+```powershell
+.\infra\scripts\Get-SicStatus.ps1
+.\infra\scripts\Stop-SicLocal.ps1
+```
+
+Cuando Docker Desktop esté instalado, la suite completa se iniciará con `docker compose up --build`.
 
 ## Reglas centrales
 
