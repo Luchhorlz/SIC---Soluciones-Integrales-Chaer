@@ -21,6 +21,7 @@ __pycache__/
 coverage/
 playwright-report/
 test-results/
+artifacts/
 
 # Runtime and local data
 runtime/

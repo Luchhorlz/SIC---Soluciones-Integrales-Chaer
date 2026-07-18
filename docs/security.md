@@ -25,6 +25,12 @@ La primera autenticación sincroniza el perfil mediante un JWT interno de 60 seg
 
 Cada sesión recibe además un identificador aleatorio propio, incluido en los tokens internos para correlación y auditoría sin registrar la cookie ni el token de sesión.
 
+## Direcciones privadas
+
+Las direcciones pertenecen siempre al UUID interno autenticado y los endpoints se publican únicamente bajo `/v1/me/addresses`; el cliente no puede consultar ni modificar recursos de otro usuario. El punto geográfico se almacena como `geography(POINT, 4326)` para futuras consultas de cobertura, pero el domicilio exacto no forma parte de perfiles públicos, resultados de búsqueda ni logs de aplicación.
+
+La interfaz no permite persistir coordenadas escritas o simuladas: exige una selección verificable de Google Places antes de enviar `place_id`, latitud y longitud. Hasta completar esa integración, el formulario permanece deshabilitado de forma explícita.
+
 ## Host Windows
 
 La API de control escucha únicamente en loopback, requiere un token local protegido y no expone secretos en la UI ni logs. Online/Offline controla procesos de forma explícita. Las credenciales del Named Tunnel quedan fuera del repositorio y con permisos restrictivos.

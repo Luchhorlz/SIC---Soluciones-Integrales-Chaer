@@ -50,6 +50,7 @@ Rutas visuales disponibles durante el desarrollo:
 - `/ingresar`: ingreso con Google y estado de configuración.
 - `/onboarding/rol`: selección interactiva de cliente/prestador.
 - `/cuenta`: panel inicial del cliente.
+- `/cuenta/direcciones`: gestión privada de direcciones y vista geográfica.
 
 ## Reglas centrales
 

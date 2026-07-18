@@ -8,6 +8,21 @@ type SyncedUser = {
   status: string;
 };
 
+export type UserAddress = {
+  id: string;
+  label: string;
+  formatted_address: string;
+  street: string;
+  street_number: string;
+  unit: string | null;
+  city: string;
+  province: string;
+  postal_code: string | null;
+  latitude: number;
+  longitude: number;
+  is_default: boolean;
+};
+
 const apiUrl = process.env.API_INTERNAL_URL ?? "http://127.0.0.1:8001";
 
 function signingKey() {
@@ -54,4 +69,18 @@ export async function replaceUserRoles(input: { userId: string; currentRoles: st
   });
   if (!response.ok) throw new Error(`Role update failed with status ${response.status}`);
   return response.json() as Promise<{ roles: string[] }>;
+}
+
+export async function getUserAddresses(input: { userId: string; roles: string[]; sessionId: string }): Promise<UserAddress[]> {
+  const token = await createUserToken(input.userId, input.roles, input.sessionId);
+  const response = await fetch(`${apiUrl}/v1/me/addresses`, { headers: { authorization: `Bearer ${token}` }, cache: "no-store", signal: AbortSignal.timeout(5000) });
+  if (!response.ok) throw new Error(`Address list failed with status ${response.status}`);
+  return response.json() as Promise<UserAddress[]>;
+}
+
+export async function createUserAddress(input: { userId: string; roles: string[]; sessionId: string; address: Record<string, unknown> }): Promise<UserAddress> {
+  const token = await createUserToken(input.userId, input.roles, input.sessionId);
+  const response = await fetch(`${apiUrl}/v1/me/addresses`, { method: "POST", headers: { authorization: `Bearer ${token}`, "content-type": "application/json" }, body: JSON.stringify(input.address), cache: "no-store", signal: AbortSignal.timeout(5000) });
+  if (!response.ok) throw new Error(`Address creation failed with status ${response.status}`);
+  return response.json() as Promise<UserAddress>;
 }

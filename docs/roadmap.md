@@ -14,6 +14,8 @@ Google/Auth.js y roles; direcciones/geocodificación; taxonomía y administraci�
 
 Estado de Fase 2: estructura Auth.js, Google Provider, pantalla de ingreso, sincronización BFF/API, sesión con UUID interno, selector persistible de roles y autorización del endpoint implementados. Pendiente: credenciales Google y ejecución real de las migraciones en PostgreSQL.
 
+Estado de Fase 3: modelo privado de direcciones con punto PostGIS, migración e índice geográfico, autorización por propietario, dirección predeterminada, CRUD de API y pantalla `/cuenta/direcciones` implementados. Pendiente: Autocomplete/Place Details con credencial Google real y ejecución de la migración contra PostgreSQL/PostGIS.
+
 ## Fases 5 a 7 — Oferta segura
 
 Perfil y servicios del prestador; documentos y revisión; suscripción mensual mediante Mercado Pago sandbox.

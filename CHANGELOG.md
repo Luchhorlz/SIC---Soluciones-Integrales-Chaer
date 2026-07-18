@@ -13,3 +13,5 @@
 - Agregado el modelo PostgreSQL de usuarios y roles, migración, validación de token interno y caso de uso de selección de roles.
 - Conectada la sincronización Google BFF/API con tokens de 60 segundos y ligado de identidad.
 - Convertido el selector de roles en un formulario interactivo con guardado protegido y agregado el panel inicial del cliente.
+- Agregado el dominio privado de direcciones, CRUD protegido, coordenadas PostGIS e índice GiST.
+- Incorporada la pantalla responsive de direcciones, formulario y estado privado sin geocodificación ficticia.

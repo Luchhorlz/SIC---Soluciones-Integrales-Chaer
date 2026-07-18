@@ -12,3 +12,12 @@ En la Fase 1 solo existirán `/health/live` y `/health/ready`. Los recursos de c
 - Los roles administrativos no pueden asignarse mediante onboarding.
 
 El navegador no llama a estos endpoints directamente. Auth.js y las Server Actions de Next.js actúan como BFF y generan los tokens internos exclusivamente del lado servidor.
+
+## Direcciones
+
+- `GET /v1/me/addresses`
+- `POST /v1/me/addresses`
+- `PATCH /v1/me/addresses/{id}`
+- `DELETE /v1/me/addresses/{id}`
+
+Todas requieren el UUID del usuario derivado del token interno. No existe un endpoint público de direcciones exactas. La primera dirección se convierte automáticamente en predeterminada y el punto se guarda como `geography(Point, 4326)` con índice GiST.
