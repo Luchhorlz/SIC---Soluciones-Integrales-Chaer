@@ -1,0 +1,39 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+
+# Dependencies and builds
+node_modules/
+.next/
+dist/
+build/
+out/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+coverage/
+playwright-report/
+test-results/
+
+# Runtime and local data
+runtime/
+data/
+logs/
+*.db
+*.sqlite*
+*.log
+*.pid
+*.exe
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
