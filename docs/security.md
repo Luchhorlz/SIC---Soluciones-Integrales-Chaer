@@ -23,6 +23,8 @@ Auth.js maneja el flujo OAuth del lado servidor con sesión JWT. Solo se acepta 
 
 La primera autenticación sincroniza el perfil mediante un JWT interno de 60 segundos con audiencia `sic-api`, propósito `identity-sync` y sujeto ligado al identificador inmutable de Google. FastAPI rechaza si el cuerpo no coincide con ese sujeto. Después de la sincronización, la sesión usa exclusivamente el UUID interno de SIC para operaciones del usuario. `INTERNAL_API_JWT_SECRET` debe ser distinto de `AUTH_SECRET` y tener al menos 32 caracteres.
 
+Cada sesión recibe además un identificador aleatorio propio, incluido en los tokens internos para correlación y auditoría sin registrar la cookie ni el token de sesión.
+
 ## Host Windows
 
 La API de control escucha únicamente en loopback, requiere un token local protegido y no expone secretos en la UI ni logs. Online/Offline controla procesos de forma explícita. Las credenciales del Named Tunnel quedan fuera del repositorio y con permisos restrictivos.

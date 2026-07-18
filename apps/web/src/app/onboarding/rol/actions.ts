@@ -18,7 +18,7 @@ export async function saveRoles(_state: RoleActionState, formData: FormData): Pr
   if (!selectedRoles.length || selectedRoles.some((role) => role !== "CLIENT" && role !== "PROVIDER")) return { error: "Elegí al menos una opción válida." };
 
   try {
-    await replaceUserRoles({ userId: session.user.id, currentRoles: session.user.roles, selectedRoles, sessionId: "authjs-session" });
+    await replaceUserRoles({ userId: session.user.id, currentRoles: session.user.roles, selectedRoles, sessionId: session.internalSessionId });
   } catch {
     return { error: "No pudimos guardar los roles. Revisá que la base de datos y la API estén disponibles." };
   }

@@ -17,6 +17,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return Boolean(profile?.email && profile.email_verified);
     },
     async jwt({ token, account, profile }) {
+      token.internalSessionId ??= crypto.randomUUID();
       if (account?.provider === "google" && profile?.sub && profile.email && profile.name) {
         const user = await syncGoogleIdentity({ googleSubject: profile.sub, email: profile.email, name: profile.name, avatarUrl: typeof profile.picture === "string" ? profile.picture : null });
         if (user.status !== "ACTIVE") throw new Error("SIC account is not active");
@@ -30,6 +31,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = String(token.userId ?? "");
         session.user.roles = Array.isArray(token.roles) ? token.roles.map(String) : [];
       }
+      session.internalSessionId = String(token.internalSessionId ?? "");
       return session;
     },
   },
