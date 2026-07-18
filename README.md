@@ -45,6 +45,12 @@ Estado y parada:
 
 Cuando Docker Desktop esté instalado, la suite completa se iniciará con `docker compose up --build`.
 
+Rutas visuales disponibles durante el desarrollo:
+
+- `/ingresar`: ingreso con Google y estado de configuración.
+- `/onboarding/rol`: selección interactiva de cliente/prestador.
+- `/cuenta`: panel inicial del cliente.
+
 ## Reglas centrales
 
 - El catálogo pertenece a SIC; el prestador habilita servicios del catálogo.

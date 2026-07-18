@@ -6,6 +6,9 @@ En la Fase 1 solo existirán `/health/live` y `/health/ready`. Los recursos de c
 
 ## Identidad en desarrollo
 
+- `POST /v1/identity/sync-google`: crea o actualiza la identidad verificada y devuelve el UUID interno y sus roles. El token queda ligado al `sub` de Google y al propósito `identity-sync`.
 - `PUT /v1/me/roles`: reemplaza los roles autogestionables `CLIENT`/`PROVIDER` del usuario autenticado.
 - Requiere un Bearer token interno HS256 de corta duración, audiencia `sic-api` y `sub` UUID.
 - Los roles administrativos no pueden asignarse mediante onboarding.
+
+El navegador no llama a estos endpoints directamente. Auth.js y las Server Actions de Next.js actúan como BFF y generan los tokens internos exclusivamente del lado servidor.

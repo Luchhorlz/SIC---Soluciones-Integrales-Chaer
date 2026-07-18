@@ -12,7 +12,7 @@ Base implementada y CI verde. La validación completa de Compose queda pendiente
 
 Google/Auth.js y roles; direcciones/geocodificación; taxonomía y administración del catálogo.
 
-Estado de Fase 2: estructura Auth.js, Google Provider, pantalla de ingreso y onboarding de roles implementados. Pendiente: credenciales Google, persistencia PostgreSQL, sincronización BFF/API y autorización por recurso.
+Estado de Fase 2: estructura Auth.js, Google Provider, pantalla de ingreso, sincronización BFF/API, sesión con UUID interno, selector persistible de roles y autorización del endpoint implementados. Pendiente: credenciales Google y ejecución real de las migraciones en PostgreSQL.
 
 ## Fases 5 a 7 — Oferta segura
 

@@ -3,10 +3,12 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 
+import { RoleSelector } from "./role-selector";
+
 export const metadata = { title: "Elegí cómo usar SIC" };
 
 export default async function RoleOnboardingPage() {
-  const googleReady = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET && process.env.AUTH_SECRET);
+  const googleReady = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET && process.env.AUTH_SECRET && process.env.INTERNAL_API_JWT_SECRET);
   const session = googleReady ? await auth() : null;
   if (googleReady && !session?.user) redirect("/ingresar");
 
@@ -22,19 +24,7 @@ export default async function RoleOnboardingPage() {
         <h1>¿Cómo querés usar SIC?</h1>
         <p className="lead">Podés elegir las dos opciones y cambiarlo más adelante.</p>
         {!googleReady && <div className="preview-notice">Vista previa del onboarding. El guardado se habilitará al conectar Google y PostgreSQL.</div>}
-        <div className="role-grid">
-          <article className="role-card selected">
-            <span className="role-check">✓</span><div className="role-icon">⌂</div>
-            <h2>Quiero contratar servicios</h2><p>Buscá profesionales, guardá favoritos y gestioná tus contrataciones.</p>
-            <ul><li>Encontrar servicios cerca tuyo</li><li>Solicitar presupuestos privados</li><li>Calificar trabajos completados</li></ul>
-          </article>
-          <article className="role-card">
-            <span className="role-check">○</span><div className="role-icon">⚒</div>
-            <h2>Quiero ofrecer mis servicios</h2><p>Creá tu perfil profesional, configurá tu cobertura y recibí clientes.</p>
-            <ul><li>Publicar varias aptitudes</li><li>Administrar disponibilidad</li><li>Construir reputación verificada</li></ul>
-          </article>
-        </div>
-        <div className="role-actions"><Link href="/" className="secondary">Volver</Link><button className="primary" disabled={!googleReady}>Guardar y continuar</button></div>
+        <RoleSelector enabled={googleReady} initialRoles={session?.user.roles ?? []} />
         <p className="role-help">¿Necesitás ayuda? <a href="mailto:soporte@sic.local">Contactanos</a></p>
       </section>
     </main>

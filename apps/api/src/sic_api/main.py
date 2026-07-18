@@ -5,9 +5,11 @@ from fastapi.responses import JSONResponse
 
 from .settings import get_settings
 from .modules.users.api import router as users_router
+from .modules.identity.api import router as identity_router
 
 settings = get_settings()
 app = FastAPI(title=settings.app_name, version=settings.api_version)
+app.include_router(identity_router)
 app.include_router(users_router)
 
 

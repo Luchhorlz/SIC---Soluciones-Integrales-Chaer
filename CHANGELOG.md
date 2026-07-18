@@ -11,3 +11,5 @@
 - Incorporada la estructura oficial Auth.js para Google, una pantalla de ingreso y el onboarding responsive de roles.
 - Agregadas páginas preliminares de términos y privacidad sin presentarlas como asesoramiento legal final.
 - Agregado el modelo PostgreSQL de usuarios y roles, migración, validación de token interno y caso de uso de selección de roles.
+- Conectada la sincronización Google BFF/API con tokens de 60 segundos y ligado de identidad.
+- Convertido el selector de roles en un formulario interactivo con guardado protegido y agregado el panel inicial del cliente.
