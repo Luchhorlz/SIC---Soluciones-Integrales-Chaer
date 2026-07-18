@@ -6,6 +6,7 @@ import jwt
 from fastapi import Depends, Header, HTTPException, status
 
 from sic_api.settings import get_settings
+from sic_api.modules.users.models import UserRoleName
 
 
 @dataclass(frozen=True)
@@ -51,6 +52,15 @@ async def get_principal(authorization: Annotated[str | None, Header()] = None) -
 
 
 CurrentPrincipal = Annotated[Principal, Depends(get_principal)]
+
+
+async def get_admin_principal(principal: CurrentPrincipal) -> Principal:
+    if UserRoleName.ADMIN.value not in principal.roles:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Administrator role required")
+    return principal
+
+
+AdminPrincipal = Annotated[Principal, Depends(get_admin_principal)]
 
 
 async def get_identity_sync_principal(authorization: Annotated[str | None, Header()] = None) -> IdentitySyncPrincipal:

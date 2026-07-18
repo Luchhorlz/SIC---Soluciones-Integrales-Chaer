@@ -44,6 +44,8 @@ services:
 
   api:
     build: ./apps/api
+    volumes:
+      - ./seeds:/app/seeds:ro
     environment:
       APP_ENV: development
       DATABASE_URL: postgresql+asyncpg://sic:${POSTGRES_PASSWORD:-sic-development-only}@postgres:5432/sic

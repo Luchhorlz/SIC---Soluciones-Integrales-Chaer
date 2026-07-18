@@ -1,26 +1,22 @@
 import { SignJWT } from "jose";
+import type { components } from "@/generated/api-schema";
 
-type SyncedUser = {
-  id: string;
-  email: string;
-  name: string;
-  roles: string[];
-  status: string;
+type SyncedUser = components["schemas"]["SyncedUser"];
+export type UserAddress = components["schemas"]["AddressView"];
+export type CatalogService = components["schemas"]["ServiceView"];
+export type CatalogSubcategory = components["schemas"]["SubcategoryView"];
+export type CatalogCategory = components["schemas"]["CategoryView"];
+
+type CatalogCreatePayloads = {
+  categories: components["schemas"]["CategoryCreate"];
+  subcategories: components["schemas"]["SubcategoryCreate"];
+  services: components["schemas"]["ServiceCreate"];
 };
 
-export type UserAddress = {
-  id: string;
-  label: string;
-  formatted_address: string;
-  street: string;
-  street_number: string;
-  unit: string | null;
-  city: string;
-  province: string;
-  postal_code: string | null;
-  latitude: number;
-  longitude: number;
-  is_default: boolean;
+type CatalogUpdatePayloads = {
+  categories: components["schemas"]["CategoryUpdate"];
+  subcategories: components["schemas"]["SubcategoryUpdate"];
+  services: components["schemas"]["ServiceUpdate"];
 };
 
 const apiUrl = process.env.API_INTERNAL_URL ?? "http://127.0.0.1:8001";
@@ -83,4 +79,29 @@ export async function createUserAddress(input: { userId: string; roles: string[]
   const response = await fetch(`${apiUrl}/v1/me/addresses`, { method: "POST", headers: { authorization: `Bearer ${token}`, "content-type": "application/json" }, body: JSON.stringify(input.address), cache: "no-store", signal: AbortSignal.timeout(5000) });
   if (!response.ok) throw new Error(`Address creation failed with status ${response.status}`);
   return response.json() as Promise<UserAddress>;
+}
+
+async function adminCatalogRequest(input: { userId: string; roles: string[]; sessionId: string; path?: string; method?: "GET" | "POST" | "PATCH"; body?: Record<string, unknown> }) {
+  const token = await createUserToken(input.userId, input.roles, input.sessionId);
+  const response = await fetch(`${apiUrl}/v1/admin/catalog${input.path ?? ""}`, {
+    method: input.method ?? "GET",
+    headers: { authorization: `Bearer ${token}`, ...(input.body ? { "content-type": "application/json" } : {}) },
+    body: input.body ? JSON.stringify(input.body) : undefined,
+    cache: "no-store",
+    signal: AbortSignal.timeout(5000),
+  });
+  if (!response.ok) throw new Error(`Admin catalog request failed with status ${response.status}`);
+  return response;
+}
+
+export async function getAdminCatalog(input: { userId: string; roles: string[]; sessionId: string }): Promise<CatalogCategory[]> {
+  return (await adminCatalogRequest(input)).json() as Promise<CatalogCategory[]>;
+}
+
+export async function createAdminCatalogItem<K extends keyof CatalogCreatePayloads>(input: { userId: string; roles: string[]; sessionId: string; kind: K; body: CatalogCreatePayloads[K] }) {
+  return (await adminCatalogRequest({ ...input, path: `/${input.kind}`, method: "POST" })).json();
+}
+
+export async function updateAdminCatalogItem<K extends keyof CatalogUpdatePayloads>(input: { userId: string; roles: string[]; sessionId: string; kind: K; id: string; body: CatalogUpdatePayloads[K] }) {
+  return (await adminCatalogRequest({ ...input, path: `/${input.kind}/${input.id}`, method: "PATCH" })).json();
 }

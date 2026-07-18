@@ -2,7 +2,7 @@
 
 La API se definirá desde FastAPI/OpenAPI bajo `/v1`. Usará UUID, JSON, fechas ISO 8601 UTC, errores estables, request ID e idempotency keys en operaciones sensibles. El cliente TypeScript será generado, no duplicado manualmente.
 
-En la Fase 1 solo existirán `/health/live` y `/health/ready`. Los recursos de catálogo, usuario, prestador, documentos, suscripciones, solicitudes, contrataciones, opiniones y administración se incorporarán en sus fases con permisos y pruebas.
+Los recursos se incorporan por fase. El contrato actual se exporta desde FastAPI a `apps/web/openapi.json` y genera `apps/web/src/generated/api-schema.d.ts`; el BFF consume esos tipos y evita duplicar DTOs manualmente.
 
 ## Identidad en desarrollo
 
@@ -25,3 +25,13 @@ Todas requieren el UUID del usuario derivado del token interno. No existe un end
 El BFF expone `POST /api/places/autocomplete` y `POST /api/places/details` únicamente a sesiones autenticadas. La clave de Google permanece del lado servidor. Place Details normaliza dirección y coordenadas y entrega un comprobante firmado, ligado al usuario y a su sesión, que la Server Action verifica antes de crear el recurso. El formulario no puede sustituir esos valores con datos enviados manualmente.
 
 `POST /api/places/map` entrega la imagen autenticada sin exponer la URL firmada de Google. `POST /api/places/pin` permite corregir las coordenadas y emite un comprobante nuevo solo si el punto permanece dentro de 500 metros de la ubicación original validada.
+
+## Catálogo
+
+- `GET /v1/catalog/categories`: jerarquía pública activa de categorías, subcategorías y servicios.
+- `GET /v1/catalog/services`: servicios públicos activos.
+- `GET /v1/admin/catalog`: jerarquía completa, incluidos elementos inactivos; requiere `ADMIN`.
+- `POST /v1/admin/catalog/categories|subcategories|services`: alta controlada; requiere `ADMIN`.
+- `PATCH /v1/admin/catalog/categories|subcategories|services/{id}`: edición o activación/desactivación; requiere `ADMIN`.
+
+No existen endpoints `DELETE` del catálogo. Los códigos son estables e independientes del nombre visible; los slugs son únicos por tipo de recurso. El seed aprobado reside en `seeds/taxonomy.json` y usa upsert por código.

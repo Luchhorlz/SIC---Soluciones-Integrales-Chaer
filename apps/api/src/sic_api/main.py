@@ -7,12 +7,16 @@ from .settings import get_settings
 from .modules.users.api import router as users_router
 from .modules.identity.api import router as identity_router
 from .modules.addresses.api import router as addresses_router
+from .modules.catalog.api import admin_router as admin_catalog_router
+from .modules.catalog.api import public_router as public_catalog_router
 
 settings = get_settings()
 app = FastAPI(title=settings.app_name, version=settings.api_version)
 app.include_router(identity_router)
 app.include_router(users_router)
 app.include_router(addresses_router)
+app.include_router(public_catalog_router)
+app.include_router(admin_catalog_router)
 
 
 @app.middleware("http")

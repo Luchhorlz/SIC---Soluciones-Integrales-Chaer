@@ -26,6 +26,8 @@ artifacts/
 # Runtime and local data
 runtime/
 data/
+!apps/web/src/data/
+!apps/web/src/data/taxonomy-manifest.json
 logs/
 *.db
 *.sqlite*

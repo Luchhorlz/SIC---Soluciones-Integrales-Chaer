@@ -17,3 +17,6 @@
 - Incorporada la pantalla responsive de direcciones, formulario y estado privado sin geocodificación ficticia.
 - Conectada la capa BFF de Google Places New con Autocomplete, Place Details, cuota local y comprobantes de selección firmados.
 - Agregado el corrector de pin con Maps Static firmado, proxy privado y límite de 500 metros respecto de la dirección validada.
+- Incorporada la taxonomía canónica aprobada con 29 categorías, 140 subcategorías y 1.392 servicios, documentación íntegra y generador reproducible.
+- Agregados modelos, migración, endpoints públicos, administración `ADMIN`, panel responsive y desactivación del catálogo sin borrado.
+- Automatizados la exportación OpenAPI, los tipos TypeScript, PostgreSQL/PostGIS en CI y la ejecución doble del seed idempotente.

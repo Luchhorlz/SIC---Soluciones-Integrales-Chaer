@@ -42,3 +42,5 @@ El pago del trabajo ocurre fuera de SIC en el MVP. Mercado Pago se usa únicamen
 - Los documentos profesionales no tienen URL pública permanente.
 - El historial documental, financiero y de auditoría no se sobrescribe.
 - Los elementos usados del catálogo se desactivan; no se borran.
+- La taxonomía canónica contiene 29 categorías, 140 subcategorías y 1.392 servicios. La sección 30 de la lista aprobada define filtros transversales y no se importa como oficio.
+- Hasta que una fase comercial apruebe modalidades específicas, el seed habilita `presupuesto` y deja desactivados `precio fijo` y `urgente`; el administrador puede ajustarlos explícitamente.

@@ -16,6 +16,8 @@ Estado de Fase 2: estructura Auth.js, Google Provider, pantalla de ingreso, sinc
 
 Estado de Fase 3: modelo privado de direcciones con punto PostGIS, migración e índice geográfico, autorización por propietario, dirección predeterminada, CRUD de API, pantalla `/cuenta/direcciones`, Autocomplete/Place Details y corrección firmada del pin implementados. Pendiente: credenciales Google reales, validación contra sus APIs y ejecución de la migración contra PostgreSQL/PostGIS.
 
+Estado de Fase 4: modelos y migración del catálogo, API pública, escritura protegida por `ADMIN`, panel `/admin/catalogo`, desactivación sin borrado, contrato TypeScript generado y seed canónico idempotente implementados. La lista aprobada se preserva completa en `docs/taxonomy.md`; se importan 29 categorías, 140 subcategorías y 1.392 servicios. CI ejecuta PostgreSQL/PostGIS, migraciones y el seed dos veces. Pendiente local: disponer de Docker Desktop o PostgreSQL/PostGIS para cargarlo fuera de CI.
+
 ## Fases 5 a 7 — Oferta segura
 
 Perfil y servicios del prestador; documentos y revisión; suscripción mensual mediante Mercado Pago sandbox.

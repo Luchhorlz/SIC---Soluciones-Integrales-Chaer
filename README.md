@@ -4,7 +4,7 @@ Marketplace web de servicios presenciales y remotos. Los clientes encuentran y c
 
 ## Estado
 
-El proyecto está en **Fase 0 — Descubrimiento y documentación**. Todavía no se instalaron dependencias ni se implementaron funcionalidades del marketplace.
+El proyecto alcanzó la **Fase 4 — Catálogo y administración**. La base del monorepo, identidad, direcciones privadas, integración BFF de Google y catálogo canónico están implementados; las credenciales externas y la ejecución completa con PostgreSQL/PostGIS local siguen siendo requisitos del entorno.
 
 ## Producto acordado
 
@@ -22,6 +22,7 @@ El proyecto está en **Fase 0 — Descubrimiento y documentación**. Todavía no
 - [Roadmap](docs/roadmap.md)
 - [Plan de Fase 1](docs/phase-1-plan.md)
 - [Diseño y assets](docs/design-reference.md)
+- [Taxonomía canónica](docs/taxonomy.md)
 - [Seguridad](docs/security.md)
 - [Despliegue](docs/deployment.md)
 - [Preguntas abiertas](docs/open-questions.md)
@@ -51,8 +52,19 @@ Rutas visuales disponibles durante el desarrollo:
 - `/onboarding/rol`: selección interactiva de cliente/prestador.
 - `/cuenta`: panel inicial del cliente.
 - `/cuenta/direcciones`: gestión privada de direcciones y vista geográfica.
+- `/admin/catalogo`: administración protegida de categorías, subcategorías y servicios.
 
 La geocodificación requiere Places API (New), Maps Static API, `GOOGLE_MAPS_API_KEY` y `GOOGLE_MAPS_URL_SIGNING_SECRET`. Ambos valores permanecen fuera de Git y del JavaScript enviado al navegador.
+
+El catálogo aprobado se genera desde la lista entregada por el propietario y se importa de forma repetible:
+
+```powershell
+cd apps\api
+$env:PYTHONPATH="src"
+.\.venv\Scripts\python.exe -m sic_api.modules.catalog.seed --file ..\..\seeds\taxonomy.json
+```
+
+El mismo comando puede ejecutarse nuevamente: actualiza por código estable y no duplica registros.
 
 ## Reglas centrales
 

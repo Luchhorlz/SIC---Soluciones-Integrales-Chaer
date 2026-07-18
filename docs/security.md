@@ -37,6 +37,10 @@ El mapa estático también se solicita y firma del lado servidor. El navegador r
 
 La clave debe restringirse por API a Places API (New) y Maps Static API y, al operar desde el servidor propio, también por IP de salida. El secreto de firma de URLs es independiente y nunca se expone al cliente.
 
+## Administración del catálogo
+
+Los endpoints de escritura y la pantalla `/admin/catalogo` aplican deny by default y exigen el rol persistido `ADMIN`; el onboarding no puede autoconcederlo. La desactivación reemplaza al borrado para conservar referencias históricas. La API valida códigos, slugs, relaciones y al menos una modalidad de precio (`precio fijo` o `presupuesto`) para cada servicio.
+
 ## Host Windows
 
 La API de control escucha únicamente en loopback, requiere un token local protegido y no expone secretos en la UI ni logs. Online/Offline controla procesos de forma explícita. Las credenciales del Named Tunnel quedan fuera del repositorio y con permisos restrictivos.

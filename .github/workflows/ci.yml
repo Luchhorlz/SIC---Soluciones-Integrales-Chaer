@@ -22,11 +22,32 @@ jobs:
           cache: pnpm
           cache-dependency-path: apps/web/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
+      - run: pnpm generate:api
+      - run: git diff --exit-code -- openapi.json src/generated/api-schema.d.ts
       - run: pnpm lint
       - run: pnpm build
 
   api:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:17-3.5
+        env:
+          POSTGRES_DB: sic
+          POSTGRES_USER: sic
+          POSTGRES_PASSWORD: sic-ci-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U sic -d sic"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      APP_ENV: test
+      DATABASE_URL: postgresql+asyncpg://sic:sic-ci-only@127.0.0.1:5432/sic
+      INTERNAL_API_JWT_SECRET: sic-ci-internal-secret-32-characters-minimum
+      PYTHONPATH: src
     defaults:
       run:
         working-directory: apps/api
@@ -38,4 +59,9 @@ jobs:
           cache: pip
           cache-dependency-path: apps/api/requirements.txt
       - run: pip install -r requirements.txt
+      - run: python scripts/export_openapi.py
+      - run: git diff --exit-code -- ../web/openapi.json
+      - run: alembic upgrade head
+      - run: python -m sic_api.modules.catalog.seed --file ../../seeds/taxonomy.json
+      - run: python -m sic_api.modules.catalog.seed --file ../../seeds/taxonomy.json
       - run: pytest
