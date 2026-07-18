@@ -1760,6 +1760,7 @@ AUTH_GOOGLE_SECRET=
 INTERNAL_API_JWT_SECRET=
 
 GOOGLE_MAPS_API_KEY=
+GOOGLE_MAPS_URL_SIGNING_SECRET=
 GOOGLE_MAPS_COUNTRY_RESTRICTION=AR
 
 MERCADOPAGO_ACCESS_TOKEN=
@@ -2279,4 +2280,3 @@ Construí SIC como una plataforma confiable, clara y operable:
 > La ubicación se usa solamente cuando la modalidad lo requiere.  
 > La documentación profesional debe estar aprobada.  
 > La suscripción habilita visibilidad, pero nunca reemplaza seguridad, reputación o cumplimiento.
-

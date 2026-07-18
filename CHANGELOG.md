@@ -15,3 +15,5 @@
 - Convertido el selector de roles en un formulario interactivo con guardado protegido y agregado el panel inicial del cliente.
 - Agregado el dominio privado de direcciones, CRUD protegido, coordenadas PostGIS e índice GiST.
 - Incorporada la pantalla responsive de direcciones, formulario y estado privado sin geocodificación ficticia.
+- Conectada la capa BFF de Google Places New con Autocomplete, Place Details, cuota local y comprobantes de selección firmados.
+- Agregado el corrector de pin con Maps Static firmado, proxy privado y límite de 500 metros respecto de la dirección validada.

@@ -14,7 +14,7 @@ class AddressCreate(BaseModel):
     province: str = Field(min_length=1, max_length=120)
     postal_code: str | None = Field(default=None, max_length=20)
     country_code: str = Field(default="AR", min_length=2, max_length=2)
-    google_place_id: str | None = Field(default=None, max_length=255)
+    google_place_id: str = Field(min_length=1, max_length=255)
     latitude: float = Field(ge=-90, le=90)
     longitude: float = Field(ge=-180, le=180)
     is_default: bool = False
@@ -39,6 +39,8 @@ class AddressUpdate(BaseModel):
     def coordinates_are_paired(self):
         if (self.latitude is None) != (self.longitude is None):
             raise ValueError("latitude and longitude must be provided together")
+        if "google_place_id" in self.model_fields_set and self.google_place_id is None:
+            raise ValueError("google_place_id cannot be cleared")
         return self
 
 
@@ -54,7 +56,7 @@ class AddressView(BaseModel):
     province: str
     postal_code: str | None
     country_code: str
-    google_place_id: str | None
+    google_place_id: str
     latitude: float
     longitude: float
     is_default: bool

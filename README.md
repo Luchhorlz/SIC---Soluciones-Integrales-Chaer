@@ -52,6 +52,8 @@ Rutas visuales disponibles durante el desarrollo:
 - `/cuenta`: panel inicial del cliente.
 - `/cuenta/direcciones`: gestión privada de direcciones y vista geográfica.
 
+La geocodificación requiere Places API (New), Maps Static API, `GOOGLE_MAPS_API_KEY` y `GOOGLE_MAPS_URL_SIGNING_SECRET`. Ambos valores permanecen fuera de Git y del JavaScript enviado al navegador.
+
 ## Reglas centrales
 
 - El catálogo pertenece a SIC; el prestador habilita servicios del catálogo.

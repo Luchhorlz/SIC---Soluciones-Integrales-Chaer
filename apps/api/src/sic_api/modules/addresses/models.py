@@ -27,7 +27,7 @@ class Address(Base):
     province: Mapped[str] = mapped_column(String(120))
     postal_code: Mapped[str | None] = mapped_column(String(20))
     country_code: Mapped[str] = mapped_column(String(2), default="AR")
-    google_place_id: Mapped[str | None] = mapped_column(String(255))
+    google_place_id: Mapped[str] = mapped_column(String(255))
     point: Mapped[WKBElement] = mapped_column(Geography(geometry_type="POINT", srid=4326, spatial_index=False))
     is_default: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

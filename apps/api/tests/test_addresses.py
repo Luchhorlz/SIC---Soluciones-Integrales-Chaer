@@ -10,7 +10,7 @@ from sic_api.modules.addresses.service import AddressService
 
 
 def address_payload(**overrides) -> AddressCreate:
-    values = {"label": "Casa", "formatted_address": "Calle Falsa 123, Moreno, Buenos Aires", "street": "Calle Falsa", "street_number": "123", "city": "Moreno", "province": "Buenos Aires", "latitude": -34.634, "longitude": -58.791}
+    values = {"label": "Casa", "formatted_address": "Calle Falsa 123, Moreno, Buenos Aires", "street": "Calle Falsa", "street_number": "123", "city": "Moreno", "province": "Buenos Aires", "google_place_id": "test-place-id", "latitude": -34.634, "longitude": -58.791}
     values.update(overrides)
     return AddressCreate(**values)
 
@@ -56,6 +56,16 @@ async def test_initial_release_rejects_non_argentina_address() -> None:
 def test_update_requires_both_coordinates() -> None:
     with pytest.raises(ValidationError):
         AddressUpdate(latitude=-34.6)
+
+
+def test_create_requires_google_place_id() -> None:
+    with pytest.raises(ValidationError):
+        address_payload(google_place_id=None)
+
+
+def test_update_cannot_clear_google_place_id() -> None:
+    with pytest.raises(ValidationError):
+        AddressUpdate(google_place_id=None)
 
 
 def test_address_routes_reject_missing_internal_token() -> None:

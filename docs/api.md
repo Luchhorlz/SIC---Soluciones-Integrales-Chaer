@@ -21,3 +21,7 @@ El navegador no llama a estos endpoints directamente. Auth.js y las Server Actio
 - `DELETE /v1/me/addresses/{id}`
 
 Todas requieren el UUID del usuario derivado del token interno. No existe un endpoint público de direcciones exactas. La primera dirección se convierte automáticamente en predeterminada y el punto se guarda como `geography(Point, 4326)` con índice GiST.
+
+El BFF expone `POST /api/places/autocomplete` y `POST /api/places/details` únicamente a sesiones autenticadas. La clave de Google permanece del lado servidor. Place Details normaliza dirección y coordenadas y entrega un comprobante firmado, ligado al usuario y a su sesión, que la Server Action verifica antes de crear el recurso. El formulario no puede sustituir esos valores con datos enviados manualmente.
+
+`POST /api/places/map` entrega la imagen autenticada sin exponer la URL firmada de Google. `POST /api/places/pin` permite corregir las coordenadas y emite un comprobante nuevo solo si el punto permanece dentro de 500 metros de la ubicación original validada.

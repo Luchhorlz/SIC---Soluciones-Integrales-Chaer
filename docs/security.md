@@ -29,7 +29,13 @@ Cada sesión recibe además un identificador aleatorio propio, incluido en los t
 
 Las direcciones pertenecen siempre al UUID interno autenticado y los endpoints se publican únicamente bajo `/v1/me/addresses`; el cliente no puede consultar ni modificar recursos de otro usuario. El punto geográfico se almacena como `geography(POINT, 4326)` para futuras consultas de cobertura, pero el domicilio exacto no forma parte de perfiles públicos, resultados de búsqueda ni logs de aplicación.
 
-La interfaz no permite persistir coordenadas escritas o simuladas: exige una selección verificable de Google Places antes de enviar `place_id`, latitud y longitud. Hasta completar esa integración, el formulario permanece deshabilitado de forma explícita.
+La interfaz no permite persistir coordenadas escritas o simuladas: exige una selección verificable de Google Places antes de enviar `place_id`, latitud y longitud. Sin credencial y sesión reales, el formulario permanece deshabilitado de forma explícita.
+
+Autocomplete y Place Details se ejecutan en el BFF, requieren sesión y tienen una cuota local defensiva. La respuesta normalizada se firma por diez minutos con audiencia propia y queda ligada al UUID y al identificador de sesión; la acción de guardado usa exclusivamente esos datos firmados. La clave web-service no llega al JavaScript ni se registra junto con las consultas.
+
+El mapa estático también se solicita y firma del lado servidor. El navegador recibe únicamente una imagen privada sin caché y puede corregir el pin hasta 500 metros del punto original; el ancla inmutable viaja dentro del comprobante firmado para impedir desplazamientos acumulativos.
+
+La clave debe restringirse por API a Places API (New) y Maps Static API y, al operar desde el servidor propio, también por IP de salida. El secreto de firma de URLs es independiente y nunca se expone al cliente.
 
 ## Host Windows
 
