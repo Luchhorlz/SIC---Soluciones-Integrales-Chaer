@@ -4,9 +4,11 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from .settings import get_settings
+from .modules.users.api import router as users_router
 
 settings = get_settings()
 app = FastAPI(title=settings.app_name, version=settings.api_version)
+app.include_router(users_router)
 
 
 @app.middleware("http")

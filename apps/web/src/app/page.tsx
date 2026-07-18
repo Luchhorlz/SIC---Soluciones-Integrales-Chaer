@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const categories = [
   ["⌂", "Hogar y mantenimiento"],
   ["✦", "Limpieza"],
@@ -31,7 +33,7 @@ export default function Home() {
         </nav>
         <div className="header-actions">
           <button className="icon-button" aria-label="Notificaciones">♢</button>
-          <button className="primary small">Ingresar</button>
+          <Link className="primary small" href="/ingresar">Ingresar</Link>
         </div>
       </header>
 
@@ -88,7 +90,7 @@ export default function Home() {
 
       <section className="coming" id="como-funciona">
         <div><p className="eyebrow">PRIMERA VERSIÓN NAVEGABLE</p><h2>La base de SIC ya está en marcha.</h2><p>Esta portada permite validar el lenguaje visual mientras construimos búsqueda, perfiles y contratación por fases.</p></div>
-        <a className="secondary" href="mailto:">Quiero ofrecer servicios</a>
+        <Link className="secondary" href="/ingresar">Quiero ofrecer servicios</Link>
       </section>
 
       <footer><div className="brand footer-brand"><span className="brand-mark">S<span>Í</span>C</span><span>Soluciones Integrales Chaer</span></div><p>Marketplace de servicios presenciales y remotos.</p><small>© 2026 SIC</small></footer>

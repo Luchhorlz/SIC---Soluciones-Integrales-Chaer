@@ -2,15 +2,17 @@
 
 ## Fase 0 — Descubrimiento y documentación
 
-En curso. Auditoría, arquitectura, dominio, seguridad inicial, referencias visuales, decisiones abiertas y plan de Fase 1. Sin funcionalidades complejas ni dependencias instaladas.
+Completada. Auditoría, arquitectura, dominio, seguridad inicial, referencias visuales, decisiones abiertas y plan de Fase 1.
 
 ## Fase 1 — Base del monorepo
 
-Next.js, FastAPI, PostgreSQL/PostGIS, Redis, Compose, healthchecks, CI, migración inicial y cliente OpenAPI generado. Criterio: arranque reproducible, migraciones limpias y CI verde.
+Base implementada y CI verde. La validación completa de Compose queda pendiente de Docker Desktop; el cliente OpenAPI se generará cuando exista el primer recurso de dominio estable.
 
 ## Fases 2 a 4 — Identidad y catálogo
 
 Google/Auth.js y roles; direcciones/geocodificación; taxonomía y administración del catálogo.
+
+Estado de Fase 2: estructura Auth.js, Google Provider, pantalla de ingreso y onboarding de roles implementados. Pendiente: credenciales Google, persistencia PostgreSQL, sincronización BFF/API y autorización por recurso.
 
 ## Fases 5 a 7 — Oferta segura
 

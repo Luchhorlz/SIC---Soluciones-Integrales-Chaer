@@ -17,6 +17,10 @@
 
 Validación server-side, SQL parametrizado, CORS restrictivo, CSRF donde aplique, CSP, TLS, URLs firmadas, buckets privados, secretos fuera de Git, logs sin PII innecesaria, webhooks idempotentes, backups cifrados y restauraciones probadas.
 
+## Identidad Google
+
+Auth.js maneja el flujo OAuth del lado servidor con sesión JWT. Solo se acepta el proveedor Google y un perfil con correo verificado. Las credenciales y `AUTH_SECRET` permanecen fuera de Git. Los redirect URI autorizados previstos son `http://localhost:3000/api/auth/callback/google` para desarrollo y `https://sic.thecottonclub.com.ar/api/auth/callback/google` para producción.
+
 ## Host Windows
 
 La API de control escucha únicamente en loopback, requiere un token local protegido y no expone secretos en la UI ni logs. Online/Offline controla procesos de forma explícita. Las credenciales del Named Tunnel quedan fuera del repositorio y con permisos restrictivos.
