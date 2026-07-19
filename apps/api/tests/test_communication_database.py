@@ -68,8 +68,9 @@ async def test_contextual_messages_favorites_and_verified_review_lifecycle() -> 
             session.add_all([
                 ServiceRequest(id=request_id, client_id=client_id, provider_id=provider_id, provider_service_id=offer.id, selected_modality=ProviderModality.REMOTE, title="Valid contextual request", description="A private request that authorizes a conversation.", status=ServiceRequestStatus.CONVERTED_TO_BOOKING),
                 ServiceRequest(id=closed_request_id, client_id=client_id, provider_id=provider_id, provider_service_id=offer.id, selected_modality=ProviderModality.REMOTE, title="Closed contextual request", description="A cancelled request cannot receive new messages.", status=ServiceRequestStatus.CANCELLED),
-                Booking(id=booking_id, request_id=request_id, client_id=client_id, provider_id=provider_id, provider_service_id=offer.id, modality=ProviderModality.REMOTE, starts_at=now - timedelta(hours=2), ends_at=now - timedelta(hours=1), agreed_price=None, currency="ARS", status=BookingStatus.COMPLETED, completed_at=now - timedelta(hours=1), client_confirmed_at=now),
             ])
+            await session.flush()
+            session.add(Booking(id=booking_id, request_id=request_id, client_id=client_id, provider_id=provider_id, provider_service_id=offer.id, modality=ProviderModality.REMOTE, starts_at=now - timedelta(hours=2), ends_at=now - timedelta(hours=1), agreed_price=None, currency="ARS", status=BookingStatus.COMPLETED, completed_at=now - timedelta(hours=1), client_confirmed_at=now))
             await session.commit()
 
             messaging = MessagingService(SqlAlchemyMessagingRepository(session))
