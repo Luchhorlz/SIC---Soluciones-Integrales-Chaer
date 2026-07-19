@@ -334,3 +334,10 @@ class SqlAlchemyEngagementRepository:
         except IntegrityError as error:
             await self.session.rollback()
             raise EngagementConflictError("The booking state conflicts with another schedule") from error
+
+    async def recompute_completed_services(self, provider_id: UUID) -> None:
+        completed = int(await self.session.scalar(select(func.count(Booking.id)).where(Booking.provider_id == provider_id, Booking.completed_at.is_not(None))) or 0)
+        profile = await self.session.get(ProviderProfile, provider_id)
+        if profile:
+            profile.completed_services_count = completed
+            await self.session.commit()

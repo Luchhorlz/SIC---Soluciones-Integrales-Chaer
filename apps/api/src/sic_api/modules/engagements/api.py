@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import Annotated
 from uuid import UUID
 
@@ -14,6 +15,10 @@ from sic_api.modules.documents.service import DocumentReadinessService
 from sic_api.modules.identity.permissions import ClientPrincipal, ProviderPrincipal
 from sic_api.modules.media.repository import DuplicateMediaError, SqlAlchemyMediaRepository
 from sic_api.modules.media.storage import ClamAVScanner, FileValidationError, MalwareDetectedError, S3PrivateStorage, StorageUnavailableError
+from sic_api.modules.messaging.repository import SqlAlchemyMessagingRepository
+from sic_api.modules.notifications.models import NotificationType
+from sic_api.modules.notifications.repository import SqlAlchemyNotificationRepository
+from sic_api.modules.notifications.service import NotificationService
 from sic_api.modules.subscriptions.repository import SqlAlchemySubscriptionRepository
 from sic_api.modules.subscriptions.service import SubscriptionVisibilityService
 from sic_api.settings import get_settings
@@ -26,6 +31,7 @@ from .state import InvalidTransitionError
 
 client_router = APIRouter(prefix="/v1/client", tags=["client-engagements"])
 provider_router = APIRouter(prefix="/v1/provider", tags=["provider-engagements"])
+logger = logging.getLogger(__name__)
 
 
 def workflow(session: AsyncSession) -> EngagementService:
@@ -71,6 +77,22 @@ ENGAGEMENT_ERRORS = (
 )
 
 
+async def notify_provider(session: AsyncSession, view: ServiceRequestView | BookingView, *, notification_type: NotificationType, title: str, body: str, link_path: str, resource_type: str) -> None:
+    try:
+        await NotificationService(SqlAlchemyNotificationRepository(session)).notify_provider(view.provider_id, type=notification_type, title=title, body=body, link_path=link_path, resource_type=resource_type, resource_id=view.id, email_requested=True)
+    except Exception as error:
+        await session.rollback()
+        logger.warning("provider notification failed", extra={"resource_type": resource_type, "resource_id": str(view.id), "error_type": type(error).__name__})
+
+
+async def notify_client(session: AsyncSession, view: ServiceRequestView | BookingView, *, notification_type: NotificationType, title: str, body: str, resource_type: str) -> None:
+    try:
+        await NotificationService(SqlAlchemyNotificationRepository(session)).notify_user(view.client_id, type=notification_type, title=title, body=body, link_path="/cuenta/contrataciones", resource_type=resource_type, resource_id=view.id, email_requested=True)
+    except Exception as error:
+        await session.rollback()
+        logger.warning("client notification failed", extra={"resource_type": resource_type, "resource_id": str(view.id), "error_type": type(error).__name__})
+
+
 @client_router.get("/service-requests", response_model=list[ServiceRequestView])
 async def client_requests(principal: ClientPrincipal, session: AsyncSession = Depends(get_session)) -> list[ServiceRequestView]:
     try:
@@ -82,7 +104,14 @@ async def client_requests(principal: ClientPrincipal, session: AsyncSession = De
 @client_router.post("/service-requests", response_model=ServiceRequestView, status_code=status.HTTP_201_CREATED)
 async def create_request(payload: ServiceRequestCreate, principal: ClientPrincipal, session: AsyncSession = Depends(get_session)) -> ServiceRequestView:
     try:
-        return await workflow(session).create_request(principal.user_id, payload)
+        view = await workflow(session).create_request(principal.user_id, payload)
+        try:
+            await SqlAlchemyMessagingRepository(session).ensure(view.id, principal.user_id)
+        except Exception as error:
+            await session.rollback()
+            logger.warning("conversation creation failed", extra={"request_id": str(view.id), "error_type": type(error).__name__})
+        await notify_provider(session, view, notification_type=NotificationType.REQUEST_RECEIVED, title="Nueva solicitud privada", body="Un cliente solicitó uno de tus servicios visibles.", link_path="/prestador/solicitudes", resource_type="service_request")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 
@@ -98,7 +127,9 @@ async def client_request(request_id: UUID, principal: ClientPrincipal, session: 
 @client_router.post("/service-requests/{request_id}/cancel", response_model=ServiceRequestView)
 async def cancel_request(request_id: UUID, principal: ClientPrincipal, session: AsyncSession = Depends(get_session)) -> ServiceRequestView:
     try:
-        return await workflow(session).cancel_request(principal.user_id, request_id)
+        view = await workflow(session).cancel_request(principal.user_id, request_id)
+        await notify_provider(session, view, notification_type=NotificationType.REQUEST_UPDATED, title="Solicitud cancelada", body="El cliente canceló una solicitud privada.", link_path="/prestador/solicitudes", resource_type="service_request")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 
@@ -106,7 +137,9 @@ async def cancel_request(request_id: UUID, principal: ClientPrincipal, session: 
 @client_router.post("/service-requests/{request_id}/quotes/accept", response_model=BookingView)
 async def accept_quote(request_id: UUID, payload: QuoteDecision, principal: ClientPrincipal, session: AsyncSession = Depends(get_session)) -> BookingView:
     try:
-        return await workflow(session).accept_quote(principal.user_id, request_id, payload)
+        view = await workflow(session).accept_quote(principal.user_id, request_id, payload)
+        await notify_provider(session, view, notification_type=NotificationType.BOOKING_UPDATED, title="Presupuesto aceptado", body="El cliente aceptó tu presupuesto. Confirmá el horario propuesto.", link_path="/prestador/contrataciones", resource_type="booking")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 
@@ -114,7 +147,9 @@ async def accept_quote(request_id: UUID, payload: QuoteDecision, principal: Clie
 @client_router.post("/service-requests/{request_id}/quotes/{quote_id}/reject", response_model=ServiceRequestView)
 async def reject_quote(request_id: UUID, quote_id: UUID, principal: ClientPrincipal, session: AsyncSession = Depends(get_session)) -> ServiceRequestView:
     try:
-        return await workflow(session).reject_quote(principal.user_id, request_id, quote_id)
+        view = await workflow(session).reject_quote(principal.user_id, request_id, quote_id)
+        await notify_provider(session, view, notification_type=NotificationType.REQUEST_UPDATED, title="Presupuesto rechazado", body="El cliente rechazó el presupuesto enviado.", link_path="/prestador/solicitudes", resource_type="service_request")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 
@@ -155,7 +190,9 @@ async def client_bookings(principal: ClientPrincipal, session: AsyncSession = De
 @client_router.post("/bookings/{booking_id}/confirm", response_model=BookingView)
 async def confirm_booking(booking_id: UUID, principal: ClientPrincipal, session: AsyncSession = Depends(get_session)) -> BookingView:
     try:
-        return await workflow(session).booking_action(principal.user_id, booking_id, "confirm")
+        view = await workflow(session).booking_action(principal.user_id, booking_id, "confirm")
+        await notify_provider(session, view, notification_type=NotificationType.BOOKING_UPDATED, title="Trabajo confirmado", body="El cliente confirmó la finalización del servicio.", link_path="/prestador/contrataciones", resource_type="booking")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 
@@ -163,7 +200,9 @@ async def confirm_booking(booking_id: UUID, principal: ClientPrincipal, session:
 @client_router.post("/bookings/{booking_id}/dispute", response_model=BookingView)
 async def dispute_booking(booking_id: UUID, payload: BookingDispute, principal: ClientPrincipal, session: AsyncSession = Depends(get_session)) -> BookingView:
     try:
-        return await workflow(session).booking_action(principal.user_id, booking_id, "dispute", payload)
+        view = await workflow(session).booking_action(principal.user_id, booking_id, "dispute", payload)
+        await notify_provider(session, view, notification_type=NotificationType.BOOKING_UPDATED, title="Problema reportado", body="El cliente reportó un problema en una contratación.", link_path="/prestador/contrataciones", resource_type="booking")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 
@@ -171,7 +210,9 @@ async def dispute_booking(booking_id: UUID, payload: BookingDispute, principal: 
 @client_router.post("/bookings/{booking_id}/cancel", response_model=BookingView)
 async def cancel_booking(booking_id: UUID, principal: ClientPrincipal, session: AsyncSession = Depends(get_session)) -> BookingView:
     try:
-        return await workflow(session).booking_action(principal.user_id, booking_id, "cancel")
+        view = await workflow(session).booking_action(principal.user_id, booking_id, "cancel")
+        await notify_provider(session, view, notification_type=NotificationType.BOOKING_UPDATED, title="Turno cancelado", body="El cliente canceló una contratación.", link_path="/prestador/contrataciones", resource_type="booking")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 
@@ -203,7 +244,9 @@ async def view_request(request_id: UUID, principal: ProviderPrincipal, session: 
 @provider_router.post("/service-requests/{request_id}/quotes", response_model=ServiceRequestView, status_code=status.HTTP_201_CREATED)
 async def create_quote(request_id: UUID, payload: QuoteCreate, principal: ProviderPrincipal, session: AsyncSession = Depends(get_session)) -> ServiceRequestView:
     try:
-        return await workflow(session).quote_request(principal.user_id, request_id, payload)
+        view = await workflow(session).quote_request(principal.user_id, request_id, payload)
+        await notify_client(session, view, notification_type=NotificationType.QUOTE_RECEIVED, title="Recibiste un presupuesto", body="El prestador respondió tu solicitud con un presupuesto.", resource_type="service_request")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 
@@ -211,7 +254,9 @@ async def create_quote(request_id: UUID, payload: QuoteCreate, principal: Provid
 @provider_router.post("/service-requests/{request_id}/accept", response_model=BookingView)
 async def accept_fixed_request(request_id: UUID, payload: BookingSchedule | None, principal: ProviderPrincipal, session: AsyncSession = Depends(get_session)) -> BookingView:
     try:
-        return await workflow(session).accept_fixed_request(principal.user_id, request_id, payload)
+        view = await workflow(session).accept_fixed_request(principal.user_id, request_id, payload)
+        await notify_client(session, view, notification_type=NotificationType.BOOKING_UPDATED, title="Solicitud aceptada", body="El prestador confirmó tu servicio con precio directo.", resource_type="booking")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 
@@ -219,7 +264,9 @@ async def accept_fixed_request(request_id: UUID, payload: BookingSchedule | None
 @provider_router.post("/service-requests/{request_id}/decline", response_model=ServiceRequestView)
 async def decline_request(request_id: UUID, principal: ProviderPrincipal, session: AsyncSession = Depends(get_session)) -> ServiceRequestView:
     try:
-        return await workflow(session).decline_request(principal.user_id, request_id)
+        view = await workflow(session).decline_request(principal.user_id, request_id)
+        await notify_client(session, view, notification_type=NotificationType.REQUEST_UPDATED, title="Solicitud rechazada", body="El prestador no pudo aceptar tu solicitud.", resource_type="service_request")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 
@@ -242,7 +289,10 @@ async def provider_bookings(principal: ProviderPrincipal, session: AsyncSession 
 
 async def provider_booking_action(action: str, booking_id: UUID, principal: ProviderPrincipal, session: AsyncSession) -> BookingView:
     try:
-        return await workflow(session).booking_action(principal.user_id, booking_id, action)
+        view = await workflow(session).booking_action(principal.user_id, booking_id, action)
+        titles = {"confirm": "Horario confirmado", "start": "Servicio iniciado", "complete": "Servicio completado", "cancel": "Turno cancelado", "no_show": "Ausencia registrada"}
+        await notify_client(session, view, notification_type=NotificationType.BOOKING_UPDATED, title=titles.get(action, "Contratación actualizada"), body="El prestador actualizó el estado de tu contratación.", resource_type="booking")
+        return view
     except ENGAGEMENT_ERRORS as error:
         raise engagement_error(error) from error
 

@@ -18,6 +18,13 @@ from .modules.subscriptions.api import webhook_router as billing_webhook_router
 from .modules.search.api import router as public_search_router
 from .modules.engagements.api import client_router as client_engagements_router
 from .modules.engagements.api import provider_router as provider_engagements_router
+from .modules.messaging.api import router as messaging_router
+from .modules.notifications.api import router as notifications_router
+from .modules.favorites.api import router as favorites_router
+from .modules.reviews.api import admin_router as admin_reviews_router
+from .modules.reviews.api import client_router as client_reviews_router
+from .modules.reviews.api import provider_router as provider_reviews_router
+from .modules.reviews.api import public_router as public_reviews_router
 
 settings = get_settings()
 app = FastAPI(title=settings.app_name, version=settings.api_version)
@@ -35,6 +42,13 @@ app.include_router(billing_webhook_router)
 app.include_router(public_search_router)
 app.include_router(client_engagements_router)
 app.include_router(provider_engagements_router)
+app.include_router(messaging_router)
+app.include_router(notifications_router)
+app.include_router(favorites_router)
+app.include_router(client_reviews_router)
+app.include_router(provider_reviews_router)
+app.include_router(admin_reviews_router)
+app.include_router(public_reviews_router)
 
 
 @app.middleware("http")

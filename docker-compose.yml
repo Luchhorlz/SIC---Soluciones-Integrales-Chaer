@@ -96,6 +96,13 @@ services:
     environment:
       REDIS_URL: redis://redis:6379/0
       DATABASE_URL: postgresql+asyncpg://sic:${POSTGRES_PASSWORD:-sic-development-only}@postgres:5432/sic
+      APP_URL: ${APP_URL:-http://localhost:3000}
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      EMAIL_FROM: ${EMAIL_FROM:-notificaciones@sic.local}
+      SMTP_USE_TLS: ${SMTP_USE_TLS:-false}
     depends_on:
       redis:
         condition: service_healthy

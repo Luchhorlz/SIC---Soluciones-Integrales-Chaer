@@ -270,6 +270,8 @@ class EngagementService:
         elif action == "cancel":
             item.cancelled_at = now
         await self.repository.save_booking(item)
+        if action == "complete":
+            await self.repository.recompute_completed_services(item.provider_id)
         return self._booking_view(await self.repository.get_booking(booking_id, actor_user_id))
 
     async def upload_attachment(self, client_id: UUID, request_id: UUID, content: bytes, filename: str, declared_mime: str | None) -> ServiceRequestView:

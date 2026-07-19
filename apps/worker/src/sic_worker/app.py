@@ -9,6 +9,10 @@ celery_app.conf.beat_schedule = {
         "task": "sic.documents.expire",
         "schedule": 3600.0,
     },
+    "send-transactional-notifications-every-minute": {
+        "task": "sic.notifications.email",
+        "schedule": 60.0,
+    },
 }
 
 
@@ -39,3 +43,32 @@ async def _expire_documents() -> int:
 @celery_app.task(name="sic.documents.expire")
 def expire_documents() -> dict[str, int]:
     return {"expired_documents": asyncio.run(_expire_documents())}
+
+
+async def _send_notification_emails() -> int:
+    from sic_api.db.session import SessionFactory, engine
+    from sic_api.modules.notifications.email import NotificationEmailDispatcher, SmtpConfiguration
+    from sic_api.modules.notifications.repository import SqlAlchemyNotificationRepository
+
+    try:
+        async with SessionFactory() as session:
+            dispatcher = NotificationEmailDispatcher(
+                SqlAlchemyNotificationRepository(session),
+                SmtpConfiguration(
+                    host=os.getenv("SMTP_HOST") or None,
+                    port=int(os.getenv("SMTP_PORT", "1025")),
+                    user=os.getenv("SMTP_USER") or None,
+                    password=os.getenv("SMTP_PASSWORD") or None,
+                    sender=os.getenv("EMAIL_FROM") or None,
+                    use_tls=os.getenv("SMTP_USE_TLS", "false").lower() == "true",
+                    app_url=os.getenv("APP_URL", "http://localhost:3000"),
+                ),
+            )
+            return await dispatcher.dispatch()
+    finally:
+        await engine.dispose()
+
+
+@celery_app.task(name="sic.notifications.email")
+def send_notification_emails() -> dict[str, int]:
+    return {"emails_sent": asyncio.run(_send_notification_emails())}
