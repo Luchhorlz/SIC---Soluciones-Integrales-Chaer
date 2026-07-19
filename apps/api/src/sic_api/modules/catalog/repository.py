@@ -20,6 +20,7 @@ class CatalogNotFoundError(LookupError):
 class CatalogRepository(Protocol):
     async def list_tree(self, active_only: bool) -> list[CategoryView]: ...
     async def list_services(self, active_only: bool) -> list[ServiceView]: ...
+    async def get_service(self, item_id: UUID, active_only: bool) -> ServiceView | None: ...
     async def create_category(self, payload: CategoryCreate) -> CategoryView: ...
     async def update_category(self, item_id: UUID, payload: CategoryUpdate) -> CategoryView: ...
     async def create_subcategory(self, payload: SubcategoryCreate) -> SubcategoryView: ...
@@ -71,6 +72,13 @@ class SqlAlchemyCatalogRepository:
         if active_only:
             query = query.where(Service.is_active.is_(True))
         return [self._service_view(item) for item in (await self.session.scalars(query)).all()]
+
+    async def get_service(self, item_id: UUID, active_only: bool) -> ServiceView | None:
+        query = select(Service).where(Service.id == item_id)
+        if active_only:
+            query = query.where(Service.is_active.is_(True))
+        item = await self.session.scalar(query)
+        return self._service_view(item) if item else None
 
     async def _commit(self) -> None:
         try:

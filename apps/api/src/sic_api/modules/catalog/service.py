@@ -14,6 +14,9 @@ class CatalogService:
     async def public_services(self) -> list[ServiceView]:
         return await self.repository.list_services(active_only=True)
 
+    async def get_service(self, item_id: UUID, active_only: bool = True) -> ServiceView | None:
+        return await self.repository.get_service(item_id, active_only)
+
     async def admin_tree(self) -> list[CategoryView]:
         return await self.repository.list_tree(active_only=False)
 

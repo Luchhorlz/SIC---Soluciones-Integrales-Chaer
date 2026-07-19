@@ -17,6 +17,7 @@ class AddressNotFoundError(LookupError):
 
 class AddressRepository(Protocol):
     async def has_addresses(self, user_id: UUID) -> bool: ...
+    async def get(self, user_id: UUID, address_id: UUID) -> AddressView: ...
     async def create(self, user_id: UUID, payload: AddressCreate, make_default: bool) -> AddressView: ...
     async def list(self, user_id: UUID) -> list[AddressView]: ...
     async def update(self, user_id: UUID, address_id: UUID, payload: AddressUpdate) -> AddressView: ...
@@ -42,6 +43,9 @@ class SqlAlchemyAddressRepository:
         if row is None:
             raise AddressNotFoundError
         return self._view(row[0], float(row[1]), float(row[2]))
+
+    async def get(self, user_id: UUID, address_id: UUID) -> AddressView:
+        return await self._get_with_coordinates(user_id, address_id)
 
     async def create(self, user_id: UUID, payload: AddressCreate, make_default: bool) -> AddressView:
         if make_default:

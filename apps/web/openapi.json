@@ -394,6 +394,201 @@
         "title": "AddressView",
         "type": "object"
       },
+      "AvailabilityExceptionCreate": {
+        "properties": {
+          "ends_at": {
+            "format": "date-time",
+            "title": "Ends At",
+            "type": "string"
+          },
+          "is_available_override": {
+            "default": false,
+            "title": "Is Available Override",
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 240,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "starts_at": {
+            "format": "date-time",
+            "title": "Starts At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "starts_at",
+          "ends_at"
+        ],
+        "title": "AvailabilityExceptionCreate",
+        "type": "object"
+      },
+      "AvailabilityExceptionView": {
+        "properties": {
+          "ends_at": {
+            "format": "date-time",
+            "title": "Ends At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_available_override": {
+            "default": false,
+            "title": "Is Available Override",
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 240,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "starts_at": {
+            "format": "date-time",
+            "title": "Starts At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "starts_at",
+          "ends_at",
+          "id"
+        ],
+        "title": "AvailabilityExceptionView",
+        "type": "object"
+      },
+      "AvailabilityRuleInput": {
+        "properties": {
+          "day_of_week": {
+            "maximum": 6.0,
+            "minimum": 0.0,
+            "title": "Day Of Week",
+            "type": "integer"
+          },
+          "end_time": {
+            "format": "time",
+            "title": "End Time",
+            "type": "string"
+          },
+          "is_active": {
+            "default": true,
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "slot_duration_minutes": {
+            "default": 60,
+            "maximum": 480.0,
+            "minimum": 15.0,
+            "title": "Slot Duration Minutes",
+            "type": "integer"
+          },
+          "start_time": {
+            "format": "time",
+            "title": "Start Time",
+            "type": "string"
+          },
+          "timezone": {
+            "default": "America/Argentina/Buenos_Aires",
+            "maxLength": 64,
+            "minLength": 3,
+            "title": "Timezone",
+            "type": "string"
+          }
+        },
+        "required": [
+          "day_of_week",
+          "start_time",
+          "end_time"
+        ],
+        "title": "AvailabilityRuleInput",
+        "type": "object"
+      },
+      "AvailabilityRuleView": {
+        "properties": {
+          "day_of_week": {
+            "maximum": 6.0,
+            "minimum": 0.0,
+            "title": "Day Of Week",
+            "type": "integer"
+          },
+          "end_time": {
+            "format": "time",
+            "title": "End Time",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_active": {
+            "default": true,
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "slot_duration_minutes": {
+            "default": 60,
+            "maximum": 480.0,
+            "minimum": 15.0,
+            "title": "Slot Duration Minutes",
+            "type": "integer"
+          },
+          "start_time": {
+            "format": "time",
+            "title": "Start Time",
+            "type": "string"
+          },
+          "timezone": {
+            "default": "America/Argentina/Buenos_Aires",
+            "maxLength": 64,
+            "minLength": 3,
+            "title": "Timezone",
+            "type": "string"
+          }
+        },
+        "required": [
+          "day_of_week",
+          "start_time",
+          "end_time",
+          "id"
+        ],
+        "title": "AvailabilityRuleView",
+        "type": "object"
+      },
+      "AvailabilityRulesReplace": {
+        "properties": {
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/AvailabilityRuleInput"
+            },
+            "maxItems": 50,
+            "title": "Rules",
+            "type": "array"
+          }
+        },
+        "required": [
+          "rules"
+        ],
+        "title": "AvailabilityRulesReplace",
+        "type": "object"
+      },
       "CategoryCreate": {
         "properties": {
           "code": {
@@ -655,6 +850,760 @@
         "title": "HTTPValidationError",
         "type": "object"
       },
+      "PortfolioItemCreate": {
+        "properties": {
+          "description": {
+            "maxLength": 2000,
+            "minLength": 10,
+            "title": "Description",
+            "type": "string"
+          },
+          "position": {
+            "default": 0,
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Position",
+            "type": "integer"
+          },
+          "title": {
+            "maxLength": 140,
+            "minLength": 2,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "description"
+        ],
+        "title": "PortfolioItemCreate",
+        "type": "object"
+      },
+      "PortfolioItemView": {
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "type": "integer"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "position"
+        ],
+        "title": "PortfolioItemView",
+        "type": "object"
+      },
+      "PricingType": {
+        "enum": [
+          "FIXED",
+          "FROM",
+          "QUOTE",
+          "HOURLY",
+          "PER_SESSION",
+          "PER_UNIT"
+        ],
+        "title": "PricingType",
+        "type": "string"
+      },
+      "ProviderModality": {
+        "enum": [
+          "AT_CLIENT_ADDRESS",
+          "REMOTE",
+          "HYBRID",
+          "AT_PROVIDER_LOCATION",
+          "PICKUP_DELIVERY"
+        ],
+        "title": "ProviderModality",
+        "type": "string"
+      },
+      "ProviderOnboarding": {
+        "properties": {
+          "base_address_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Address Id"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "maxLength": 3000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "business_name": {
+            "anyOf": [
+              {
+                "maxLength": 180,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Business Name"
+          },
+          "display_name": {
+            "maxLength": 180,
+            "minLength": 2,
+            "title": "Display Name",
+            "type": "string"
+          },
+          "experience_years": {
+            "anyOf": [
+              {
+                "maximum": 80.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Experience Years"
+          }
+        },
+        "required": [
+          "display_name"
+        ],
+        "title": "ProviderOnboarding",
+        "type": "object"
+      },
+      "ProviderPauseRequest": {
+        "properties": {
+          "paused": {
+            "title": "Paused",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "paused"
+        ],
+        "title": "ProviderPauseRequest",
+        "type": "object"
+      },
+      "ProviderProfileStatus": {
+        "enum": [
+          "DRAFT",
+          "PENDING_REVIEW",
+          "APPROVED",
+          "PAUSED",
+          "SUSPENDED",
+          "BLOCKED"
+        ],
+        "title": "ProviderProfileStatus",
+        "type": "string"
+      },
+      "ProviderProfileUpdate": {
+        "properties": {
+          "base_address_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Address Id"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "maxLength": 3000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "business_name": {
+            "anyOf": [
+              {
+                "maxLength": 180,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Business Name"
+          },
+          "display_name": {
+            "anyOf": [
+              {
+                "maxLength": 180,
+                "minLength": 2,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
+          },
+          "experience_years": {
+            "anyOf": [
+              {
+                "maximum": 80.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Experience Years"
+          }
+        },
+        "title": "ProviderProfileUpdate",
+        "type": "object"
+      },
+      "ProviderProfileView": {
+        "properties": {
+          "average_response_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Response Minutes"
+          },
+          "base_address_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Address Id"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "business_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Business Name"
+          },
+          "completed_services_count": {
+            "title": "Completed Services Count",
+            "type": "integer"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "experience_years": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Experience Years"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_identity_verified": {
+            "title": "Is Identity Verified",
+            "type": "boolean"
+          },
+          "is_paused": {
+            "title": "Is Paused",
+            "type": "boolean"
+          },
+          "portfolio": {
+            "items": {
+              "$ref": "#/components/schemas/PortfolioItemView"
+            },
+            "title": "Portfolio",
+            "type": "array"
+          },
+          "profile_completeness": {
+            "title": "Profile Completeness",
+            "type": "integer"
+          },
+          "profile_status": {
+            "$ref": "#/components/schemas/ProviderProfileStatus"
+          },
+          "rating_average": {
+            "title": "Rating Average",
+            "type": "number"
+          },
+          "rating_count": {
+            "title": "Rating Count",
+            "type": "integer"
+          },
+          "response_rate": {
+            "title": "Response Rate",
+            "type": "number"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "subscription_visibility_status": {
+            "$ref": "#/components/schemas/SubscriptionVisibilityStatus"
+          }
+        },
+        "required": [
+          "id",
+          "display_name",
+          "slug",
+          "business_name",
+          "bio",
+          "experience_years",
+          "base_address_id",
+          "profile_status",
+          "subscription_visibility_status",
+          "rating_average",
+          "rating_count",
+          "completed_services_count",
+          "response_rate",
+          "average_response_minutes",
+          "profile_completeness",
+          "is_identity_verified",
+          "is_paused",
+          "portfolio"
+        ],
+        "title": "ProviderProfileView",
+        "type": "object"
+      },
+      "ProviderServiceCreate": {
+        "properties": {
+          "accepts_urgent": {
+            "default": false,
+            "title": "Accepts Urgent",
+            "type": "boolean"
+          },
+          "area": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServiceAreaInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "maxLength": 4000,
+            "minLength": 20,
+            "title": "Description",
+            "type": "string"
+          },
+          "estimated_duration_minutes": {
+            "anyOf": [
+              {
+                "maximum": 43200.0,
+                "minimum": 15.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Duration Minutes"
+          },
+          "guarantee_days": {
+            "anyOf": [
+              {
+                "maximum": 3650.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Guarantee Days"
+          },
+          "headline": {
+            "maxLength": 180,
+            "minLength": 4,
+            "title": "Headline",
+            "type": "string"
+          },
+          "modalities": {
+            "items": {
+              "$ref": "#/components/schemas/ProviderModality"
+            },
+            "minItems": 1,
+            "title": "Modalities",
+            "type": "array",
+            "uniqueItems": true
+          },
+          "price_amount": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,10}|(?=[\\d.]{1,13}0*$)\\d{0,10}\\.\\d{0,2}0*$)",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Amount"
+          },
+          "pricing_type": {
+            "$ref": "#/components/schemas/PricingType"
+          },
+          "requires_quote_details": {
+            "default": true,
+            "title": "Requires Quote Details",
+            "type": "boolean"
+          },
+          "service_id": {
+            "format": "uuid",
+            "title": "Service Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "service_id",
+          "headline",
+          "description",
+          "pricing_type",
+          "modalities"
+        ],
+        "title": "ProviderServiceCreate",
+        "type": "object"
+      },
+      "ProviderServicePauseRequest": {
+        "properties": {
+          "paused": {
+            "title": "Paused",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "paused"
+        ],
+        "title": "ProviderServicePauseRequest",
+        "type": "object"
+      },
+      "ProviderServiceStatus": {
+        "enum": [
+          "DRAFT",
+          "PENDING_DOCUMENTS",
+          "PENDING_REVIEW",
+          "ACTIVE",
+          "PAUSED",
+          "REJECTED",
+          "SUSPENDED"
+        ],
+        "title": "ProviderServiceStatus",
+        "type": "string"
+      },
+      "ProviderServiceUpdate": {
+        "properties": {
+          "accepts_urgent": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accepts Urgent"
+          },
+          "area": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServiceAreaInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "minLength": 20,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "estimated_duration_minutes": {
+            "anyOf": [
+              {
+                "maximum": 43200.0,
+                "minimum": 15.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Duration Minutes"
+          },
+          "guarantee_days": {
+            "anyOf": [
+              {
+                "maximum": 3650.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Guarantee Days"
+          },
+          "headline": {
+            "anyOf": [
+              {
+                "maxLength": 180,
+                "minLength": 4,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Headline"
+          },
+          "modalities": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProviderModality"
+                },
+                "minItems": 1,
+                "type": "array",
+                "uniqueItems": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modalities"
+          },
+          "price_amount": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,10}|(?=[\\d.]{1,13}0*$)\\d{0,10}\\.\\d{0,2}0*$)",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Amount"
+          },
+          "pricing_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PricingType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "requires_quote_details": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requires Quote Details"
+          }
+        },
+        "title": "ProviderServiceUpdate",
+        "type": "object"
+      },
+      "ProviderServiceView": {
+        "properties": {
+          "accepts_urgent": {
+            "title": "Accepts Urgent",
+            "type": "boolean"
+          },
+          "area": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServiceAreaView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "estimated_duration_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Duration Minutes"
+          },
+          "guarantee_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Guarantee Days"
+          },
+          "headline": {
+            "title": "Headline",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "modalities": {
+            "items": {
+              "$ref": "#/components/schemas/ProviderModality"
+            },
+            "title": "Modalities",
+            "type": "array"
+          },
+          "price_amount": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Amount"
+          },
+          "price_currency": {
+            "title": "Price Currency",
+            "type": "string"
+          },
+          "pricing_type": {
+            "$ref": "#/components/schemas/PricingType"
+          },
+          "requires_quote_details": {
+            "title": "Requires Quote Details",
+            "type": "boolean"
+          },
+          "service_id": {
+            "format": "uuid",
+            "title": "Service Id",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProviderServiceStatus"
+          },
+          "visibility_code": {
+            "$ref": "#/components/schemas/VisibilityCode"
+          },
+          "visible": {
+            "title": "Visible",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "service_id",
+          "status",
+          "headline",
+          "description",
+          "pricing_type",
+          "price_amount",
+          "price_currency",
+          "estimated_duration_minutes",
+          "guarantee_days",
+          "accepts_urgent",
+          "requires_quote_details",
+          "modalities",
+          "area",
+          "visibility_code",
+          "visible"
+        ],
+        "title": "ProviderServiceView",
+        "type": "object"
+      },
       "RoleSelection": {
         "properties": {
           "roles": {
@@ -689,6 +1638,95 @@
           "roles"
         ],
         "title": "RoleSelectionResult",
+        "type": "object"
+      },
+      "ServiceAreaInput": {
+        "properties": {
+          "center_address_id": {
+            "format": "uuid",
+            "title": "Center Address Id",
+            "type": "string"
+          },
+          "radius_meters": {
+            "maximum": 1000000.0,
+            "minimum": 100.0,
+            "title": "Radius Meters",
+            "type": "integer"
+          },
+          "travel_fee_policy": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Travel Fee Policy"
+          },
+          "urgent_radius_meters": {
+            "anyOf": [
+              {
+                "maximum": 1000000.0,
+                "minimum": 100.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Urgent Radius Meters"
+          }
+        },
+        "required": [
+          "center_address_id",
+          "radius_meters"
+        ],
+        "title": "ServiceAreaInput",
+        "type": "object"
+      },
+      "ServiceAreaView": {
+        "properties": {
+          "center_address_id": {
+            "format": "uuid",
+            "title": "Center Address Id",
+            "type": "string"
+          },
+          "radius_meters": {
+            "title": "Radius Meters",
+            "type": "integer"
+          },
+          "travel_fee_policy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Travel Fee Policy"
+          },
+          "urgent_radius_meters": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Urgent Radius Meters"
+          }
+        },
+        "required": [
+          "center_address_id",
+          "radius_meters",
+          "urgent_radius_meters",
+          "travel_fee_policy"
+        ],
+        "title": "ServiceAreaView",
         "type": "object"
       },
       "ServiceCreate": {
@@ -1185,6 +2223,16 @@
         "title": "SubcategoryView",
         "type": "object"
       },
+      "SubscriptionVisibilityStatus": {
+        "enum": [
+          "NOT_CONFIGURED",
+          "ACTIVE",
+          "AUTHORIZED",
+          "INACTIVE"
+        ],
+        "title": "SubscriptionVisibilityStatus",
+        "type": "string"
+      },
       "SyncedUser": {
         "properties": {
           "email": {
@@ -1274,6 +2322,23 @@
         ],
         "title": "ValidationError",
         "type": "object"
+      },
+      "VisibilityCode": {
+        "enum": [
+          "VISIBLE",
+          "USER_INACTIVE",
+          "NO_ACTIVE_SUBSCRIPTION",
+          "PROFILE_NOT_APPROVED",
+          "PROFILE_PAUSED",
+          "SERVICE_PAUSED",
+          "NO_MODALITY",
+          "DOCUMENT_PENDING",
+          "DOCUMENT_EXPIRED",
+          "NO_SERVICE_AREA",
+          "ADMIN_SUSPENDED"
+        ],
+        "title": "VisibilityCode",
+        "type": "string"
       }
     }
   },
@@ -2158,6 +3223,892 @@
         "summary": "Select Roles",
         "tags": [
           "users"
+        ]
+      }
+    },
+    "/v1/provider/availability/exceptions": {
+      "get": {
+        "operationId": "list_provider_exceptions_v1_provider_availability_exceptions_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AvailabilityExceptionView"
+                  },
+                  "title": "Response List Provider Exceptions V1 Provider Availability Exceptions Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Provider Exceptions",
+        "tags": [
+          "provider"
+        ]
+      },
+      "post": {
+        "operationId": "add_provider_exception_v1_provider_availability_exceptions_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailabilityExceptionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityExceptionView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Provider Exception",
+        "tags": [
+          "provider"
+        ]
+      }
+    },
+    "/v1/provider/availability/exceptions/{item_id}": {
+      "delete": {
+        "operationId": "delete_provider_exception_v1_provider_availability_exceptions__item_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Provider Exception",
+        "tags": [
+          "provider"
+        ]
+      }
+    },
+    "/v1/provider/onboarding": {
+      "post": {
+        "operationId": "onboard_provider_v1_provider_onboarding_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProviderOnboarding"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderProfileView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Onboard Provider",
+        "tags": [
+          "provider"
+        ]
+      }
+    },
+    "/v1/provider/portfolio": {
+      "post": {
+        "operationId": "add_portfolio_item_v1_provider_portfolio_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortfolioItemCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderProfileView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Portfolio Item",
+        "tags": [
+          "provider"
+        ]
+      }
+    },
+    "/v1/provider/portfolio/{item_id}": {
+      "delete": {
+        "operationId": "delete_portfolio_item_v1_provider_portfolio__item_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderProfileView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Portfolio Item",
+        "tags": [
+          "provider"
+        ]
+      }
+    },
+    "/v1/provider/profile": {
+      "get": {
+        "operationId": "get_provider_profile_v1_provider_profile_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderProfileView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Provider Profile",
+        "tags": [
+          "provider"
+        ]
+      },
+      "patch": {
+        "operationId": "update_provider_profile_v1_provider_profile_patch",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProviderProfileUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderProfileView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Provider Profile",
+        "tags": [
+          "provider"
+        ]
+      }
+    },
+    "/v1/provider/profile/pause": {
+      "post": {
+        "operationId": "pause_provider_profile_v1_provider_profile_pause_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProviderPauseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderProfileView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Pause Provider Profile",
+        "tags": [
+          "provider"
+        ]
+      }
+    },
+    "/v1/provider/services": {
+      "get": {
+        "operationId": "list_provider_services_v1_provider_services_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderServiceView"
+                  },
+                  "title": "Response List Provider Services V1 Provider Services Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Provider Services",
+        "tags": [
+          "provider"
+        ]
+      },
+      "post": {
+        "operationId": "create_provider_service_v1_provider_services_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProviderServiceCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderServiceView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Provider Service",
+        "tags": [
+          "provider"
+        ]
+      }
+    },
+    "/v1/provider/services/{item_id}": {
+      "patch": {
+        "operationId": "update_provider_service_v1_provider_services__item_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProviderServiceUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderServiceView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Provider Service",
+        "tags": [
+          "provider"
+        ]
+      }
+    },
+    "/v1/provider/services/{item_id}/availability": {
+      "get": {
+        "operationId": "list_provider_availability_v1_provider_services__item_id__availability_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AvailabilityRuleView"
+                  },
+                  "title": "Response List Provider Availability V1 Provider Services  Item Id  Availability Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Provider Availability",
+        "tags": [
+          "provider"
+        ]
+      },
+      "put": {
+        "operationId": "replace_provider_availability_v1_provider_services__item_id__availability_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailabilityRulesReplace"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AvailabilityRuleView"
+                  },
+                  "title": "Response Replace Provider Availability V1 Provider Services  Item Id  Availability Put",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Replace Provider Availability",
+        "tags": [
+          "provider"
+        ]
+      }
+    },
+    "/v1/provider/services/{item_id}/pause": {
+      "post": {
+        "operationId": "pause_provider_service_v1_provider_services__item_id__pause_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProviderServicePauseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderServiceView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Pause Provider Service",
+        "tags": [
+          "provider"
         ]
       }
     }

@@ -48,6 +48,7 @@ jobs:
       DATABASE_URL: postgresql+asyncpg://sic:sic-ci-only@127.0.0.1:5432/sic
       INTERNAL_API_JWT_SECRET: sic-ci-internal-secret-32-characters-minimum
       PYTHONPATH: src
+      RUN_DATABASE_TESTS: "1"
     defaults:
       run:
         working-directory: apps/api

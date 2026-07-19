@@ -35,3 +35,21 @@ El BFF expone `POST /api/places/autocomplete` y `POST /api/places/details` únic
 - `PATCH /v1/admin/catalog/categories|subcategories|services/{id}`: edición o activación/desactivación; requiere `ADMIN`.
 
 No existen endpoints `DELETE` del catálogo. Los códigos son estables e independientes del nombre visible; los slugs son únicos por tipo de recurso. El seed aprobado reside en `seeds/taxonomy.json` y usa upsert por código.
+
+## Prestador
+
+Todos requieren token interno, rol `PROVIDER` y propiedad derivada del UUID autenticado:
+
+- `POST /v1/provider/onboarding`
+- `GET|PATCH /v1/provider/profile`
+- `POST /v1/provider/profile/pause`
+- `POST|DELETE /v1/provider/portfolio[/{id}]`
+- `GET|POST /v1/provider/services`
+- `PATCH /v1/provider/services/{id}`
+- `POST /v1/provider/services/{id}/pause`
+- `GET|PUT /v1/provider/services/{id}/availability`
+- `GET|POST|DELETE /v1/provider/availability/exceptions[/{id}]`
+
+El servicio del prestador referencia una prestación canónica activa y valida sus capacidades de presupuesto, precio directo y urgencia. Las modalidades presenciales que visitan o retiran en el domicilio del cliente exigen un área propia cuyo centro proviene de una dirección Google ya validada y propiedad del usuario.
+
+La respuesta de cada servicio incluye `visible` y `visibility_code`, ambos derivados exclusivamente por `ProviderVisibilityService`. Durante Fase 5 permanecen no visibles porque documentación y suscripción todavía no pueden aprobarse.

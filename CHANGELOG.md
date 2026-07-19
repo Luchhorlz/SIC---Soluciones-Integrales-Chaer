@@ -20,3 +20,6 @@
 - Incorporada la taxonomía canónica aprobada con 29 categorías, 140 subcategorías y 1.392 servicios, documentación íntegra y generador reproducible.
 - Agregados modelos, migración, endpoints públicos, administración `ADMIN`, panel responsive y desactivación del catálogo sin borrado.
 - Automatizados la exportación OpenAPI, los tipos TypeScript, PostgreSQL/PostGIS en CI y la ejecución doble del seed idempotente.
+- Agregada la Fase 5 con onboarding y panel responsive del prestador, perfil, portfolio descriptivo y pausa global.
+- Incorporada la configuración de múltiples servicios canónicos con precios permitidos, modalidades, cobertura PostGIS, agenda semanal y períodos no disponibles.
+- Centralizada la visibilidad en `ProviderVisibilityService`, con diagnósticos internos y publicación denegada hasta documentación y suscripción válidas.

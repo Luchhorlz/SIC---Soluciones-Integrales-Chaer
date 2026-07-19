@@ -25,6 +25,10 @@ Una cuenta puede tener roles `CLIENT` y `PROVIDER` simultáneamente. Los roles o
 
 `ProviderVisibilityService` deriva la visibilidad. Exige usuario activo, perfil aprobado y no pausado, suscripción válida, servicio activo, modalidad, cobertura cuando corresponda, documentación aprobada/vigente y ausencia de bloqueo administrativo.
 
+El perfil del prestador puede contener hasta 12 casos descriptivos de portfolio. En Fase 5 no acepta URLs externas ni archivos simulados; las imágenes se incorporarán mediante el módulo de medios con almacenamiento controlado.
+
+La disponibilidad semanal pertenece a cada servicio. Los períodos no disponibles —vacaciones u otros bloqueos privados— pertenecen al perfil y se guardan como excepciones con zona horaria explícita de Argentina.
+
 Los diagnósticos internos incluyen `VISIBLE`, `NO_ACTIVE_SUBSCRIPTION`, `PROFILE_NOT_APPROVED`, `SERVICE_PAUSED`, `DOCUMENT_PENDING`, `DOCUMENT_EXPIRED`, `NO_SERVICE_AREA` y `ADMIN_SUSPENDED`.
 
 ## Contratación MVP

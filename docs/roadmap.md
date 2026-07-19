@@ -22,6 +22,8 @@ Estado de Fase 4: modelos y migración del catálogo, API pública, escritura pr
 
 Perfil y servicios del prestador; documentos y revisión; suscripción mensual mediante Mercado Pago sandbox.
 
+Estado de Fase 5: onboarding profesional, perfil privado, portfolio descriptivo, selección múltiple del catálogo, capacidades de precio, modalidades, cobertura PostGIS por servicio, agenda semanal, períodos no disponibles, pausa y diagnóstico centralizado de visibilidad implementados. El prestador sigue fuera de resultados porque Fases 6 y 7 deben aprobar documentación y suscripción. Pendiente local: credenciales Google y PostgreSQL/PostGIS para uso persistente; CI valida el flujo real sobre PostGIS.
+
 ## Fases 8 a 10 — Marketplace
 
 Búsqueda geográfica/remota y perfiles públicos; solicitudes, presupuestos y contrataciones; mensajería, notificaciones, favoritos y opiniones verificadas.

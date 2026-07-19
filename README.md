@@ -4,7 +4,7 @@ Marketplace web de servicios presenciales y remotos. Los clientes encuentran y c
 
 ## Estado
 
-El proyecto alcanzó la **Fase 4 — Catálogo y administración**. La base del monorepo, identidad, direcciones privadas, integración BFF de Google y catálogo canónico están implementados; las credenciales externas y la ejecución completa con PostgreSQL/PostGIS local siguen siendo requisitos del entorno.
+El proyecto alcanzó la **Fase 5 — Perfil y servicios del prestador**. La base del monorepo, identidad, direcciones privadas, catálogo canónico y configuración privada de la oferta profesional están implementados; las credenciales externas y la ejecución completa con PostgreSQL/PostGIS local siguen siendo requisitos del entorno.
 
 ## Producto acordado
 
@@ -53,6 +53,10 @@ Rutas visuales disponibles durante el desarrollo:
 - `/cuenta`: panel inicial del cliente.
 - `/cuenta/direcciones`: gestión privada de direcciones y vista geográfica.
 - `/admin/catalogo`: administración protegida de categorías, subcategorías y servicios.
+- `/onboarding/prestador`: activación del perfil profesional.
+- `/prestador/panel`: resumen privado y diagnóstico de visibilidad.
+- `/prestador/perfil`: perfil, experiencia y portfolio.
+- `/prestador/servicios`: aptitudes, modalidades, precios, cobertura y disponibilidad.
 
 La geocodificación requiere Places API (New), Maps Static API, `GOOGLE_MAPS_API_KEY` y `GOOGLE_MAPS_URL_SIGNING_SECRET`. Ambos valores permanecen fuera de Git y del JavaScript enviado al navegador.
 

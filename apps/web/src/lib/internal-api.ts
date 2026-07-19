@@ -6,6 +6,10 @@ export type UserAddress = components["schemas"]["AddressView"];
 export type CatalogService = components["schemas"]["ServiceView"];
 export type CatalogSubcategory = components["schemas"]["SubcategoryView"];
 export type CatalogCategory = components["schemas"]["CategoryView"];
+export type ProviderProfile = components["schemas"]["ProviderProfileView"];
+export type ProviderOffer = components["schemas"]["ProviderServiceView"];
+export type AvailabilityRule = components["schemas"]["AvailabilityRuleView"];
+export type AvailabilityException = components["schemas"]["AvailabilityExceptionView"];
 
 type CatalogCreatePayloads = {
   categories: components["schemas"]["CategoryCreate"];
@@ -104,4 +108,110 @@ export async function createAdminCatalogItem<K extends keyof CatalogCreatePayloa
 
 export async function updateAdminCatalogItem<K extends keyof CatalogUpdatePayloads>(input: { userId: string; roles: string[]; sessionId: string; kind: K; id: string; body: CatalogUpdatePayloads[K] }) {
   return (await adminCatalogRequest({ ...input, path: `/${input.kind}/${input.id}`, method: "PATCH" })).json();
+}
+
+export async function getCatalogServices(): Promise<CatalogService[]> {
+  const response = await fetch(`${apiUrl}/v1/catalog/services`, { cache: "no-store", signal: AbortSignal.timeout(5000) });
+  if (!response.ok) throw new Error(`Catalog services failed with status ${response.status}`);
+  return response.json() as Promise<CatalogService[]>;
+}
+
+type ProviderRequestInput = {
+  userId: string;
+  roles: string[];
+  sessionId: string;
+  path: string;
+  method?: "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
+  body?: unknown;
+};
+
+async function providerRequest(input: ProviderRequestInput) {
+  const token = await createUserToken(input.userId, input.roles, input.sessionId);
+  return fetch(`${apiUrl}/v1/provider${input.path}`, {
+    method: input.method ?? "GET",
+    headers: { authorization: `Bearer ${token}`, ...(input.body !== undefined ? { "content-type": "application/json" } : {}) },
+    body: input.body !== undefined ? JSON.stringify(input.body) : undefined,
+    cache: "no-store",
+    signal: AbortSignal.timeout(5000),
+  });
+}
+
+type ProviderAuth = { userId: string; roles: string[]; sessionId: string };
+
+export async function getProviderProfile(input: ProviderAuth): Promise<ProviderProfile | null> {
+  const response = await providerRequest({ ...input, path: "/profile" });
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error(`Provider profile failed with status ${response.status}`);
+  return response.json() as Promise<ProviderProfile>;
+}
+
+export async function onboardProvider(input: ProviderAuth & { body: components["schemas"]["ProviderOnboarding"] }): Promise<ProviderProfile> {
+  const response = await providerRequest({ ...input, path: "/onboarding", method: "POST", body: input.body });
+  if (!response.ok) throw new Error(`Provider onboarding failed with status ${response.status}`);
+  return response.json() as Promise<ProviderProfile>;
+}
+
+export async function updateProviderProfile(input: ProviderAuth & { body: components["schemas"]["ProviderProfileUpdate"] }): Promise<ProviderProfile> {
+  const response = await providerRequest({ ...input, path: "/profile", method: "PATCH", body: input.body });
+  if (!response.ok) throw new Error(`Provider profile update failed with status ${response.status}`);
+  return response.json() as Promise<ProviderProfile>;
+}
+
+export async function pauseProviderProfile(input: ProviderAuth & { paused: boolean }): Promise<ProviderProfile> {
+  const response = await providerRequest({ ...input, path: "/profile/pause", method: "POST", body: { paused: input.paused } });
+  if (!response.ok) throw new Error(`Provider profile pause failed with status ${response.status}`);
+  return response.json() as Promise<ProviderProfile>;
+}
+
+export async function addProviderPortfolioItem(input: ProviderAuth & { body: components["schemas"]["PortfolioItemCreate"] }): Promise<ProviderProfile> {
+  const response = await providerRequest({ ...input, path: "/portfolio", method: "POST", body: input.body });
+  if (!response.ok) throw new Error(`Portfolio creation failed with status ${response.status}`);
+  return response.json() as Promise<ProviderProfile>;
+}
+
+export async function deleteProviderPortfolioItem(input: ProviderAuth & { itemId: string }): Promise<ProviderProfile> {
+  const response = await providerRequest({ ...input, path: `/portfolio/${input.itemId}`, method: "DELETE" });
+  if (!response.ok) throw new Error(`Portfolio deletion failed with status ${response.status}`);
+  return response.json() as Promise<ProviderProfile>;
+}
+
+export async function getProviderOffers(input: ProviderAuth): Promise<ProviderOffer[]> {
+  const response = await providerRequest({ ...input, path: "/services" });
+  if (!response.ok) throw new Error(`Provider services failed with status ${response.status}`);
+  return response.json() as Promise<ProviderOffer[]>;
+}
+
+export async function createProviderOffer(input: ProviderAuth & { body: components["schemas"]["ProviderServiceCreate"] }): Promise<ProviderOffer> {
+  const response = await providerRequest({ ...input, path: "/services", method: "POST", body: input.body });
+  if (!response.ok) throw new Error(`Provider service creation failed with status ${response.status}`);
+  return response.json() as Promise<ProviderOffer>;
+}
+
+export async function pauseProviderOffer(input: ProviderAuth & { itemId: string; paused: boolean }): Promise<ProviderOffer> {
+  const response = await providerRequest({ ...input, path: `/services/${input.itemId}/pause`, method: "POST", body: { paused: input.paused } });
+  if (!response.ok) throw new Error(`Provider service pause failed with status ${response.status}`);
+  return response.json() as Promise<ProviderOffer>;
+}
+
+export async function replaceProviderAvailability(input: ProviderAuth & { itemId: string; body: components["schemas"]["AvailabilityRulesReplace"] }): Promise<AvailabilityRule[]> {
+  const response = await providerRequest({ ...input, path: `/services/${input.itemId}/availability`, method: "PUT", body: input.body });
+  if (!response.ok) throw new Error(`Provider availability failed with status ${response.status}`);
+  return response.json() as Promise<AvailabilityRule[]>;
+}
+
+export async function getProviderAvailabilityExceptions(input: ProviderAuth): Promise<AvailabilityException[]> {
+  const response = await providerRequest({ ...input, path: "/availability/exceptions" });
+  if (!response.ok) throw new Error(`Provider exceptions failed with status ${response.status}`);
+  return response.json() as Promise<AvailabilityException[]>;
+}
+
+export async function addProviderAvailabilityException(input: ProviderAuth & { body: components["schemas"]["AvailabilityExceptionCreate"] }): Promise<AvailabilityException> {
+  const response = await providerRequest({ ...input, path: "/availability/exceptions", method: "POST", body: input.body });
+  if (!response.ok) throw new Error(`Provider exception creation failed with status ${response.status}`);
+  return response.json() as Promise<AvailabilityException>;
+}
+
+export async function deleteProviderAvailabilityException(input: ProviderAuth & { itemId: string }): Promise<void> {
+  const response = await providerRequest({ ...input, path: `/availability/exceptions/${input.itemId}`, method: "DELETE" });
+  if (!response.ok) throw new Error(`Provider exception deletion failed with status ${response.status}`);
 }

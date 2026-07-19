@@ -41,6 +41,12 @@ La clave debe restringirse por API a Places API (New) y Maps Static API y, al op
 
 Los endpoints de escritura y la pantalla `/admin/catalogo` aplican deny by default y exigen el rol persistido `ADMIN`; el onboarding no puede autoconcederlo. La desactivación reemplaza al borrado para conservar referencias históricas. La API valida códigos, slugs, relaciones y al menos una modalidad de precio (`precio fijo` o `presupuesto`) para cada servicio.
 
+## Perfil y oferta del prestador
+
+La API exige rol `PROVIDER` y usa exclusivamente el UUID del token para consultar o modificar perfil, portfolio, servicios, cobertura y agenda; no acepta un `provider_id` enviado por el navegador. Los centros geográficos se copian desde una dirección validada perteneciente al mismo usuario y nunca se exponen como domicilio exacto público.
+
+`ProviderVisibilityService` aplica deny by default. Un perfil incompleto, pausado, pendiente de revisión, sin suscripción, con documentación pendiente, sin modalidad o sin cobertura requerida devuelve un diagnóstico interno y no es publicable. La Fase 5 no contiene rutas públicas de prestadores.
+
 ## Host Windows
 
 La API de control escucha únicamente en loopback, requiere un token local protegido y no expone secretos en la UI ni logs. Online/Offline controla procesos de forma explícita. Las credenciales del Named Tunnel quedan fuera del repositorio y con permisos restrictivos.

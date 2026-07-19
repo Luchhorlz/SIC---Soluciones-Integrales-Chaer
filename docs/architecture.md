@@ -33,6 +33,8 @@ La API no acepta un `user_id` confiado desde el navegador. Next.js valida sesió
 
 Identity, users, addresses, catalog, providers, provider services, documents, subscriptions, search, requests, bookings, messaging, reviews, notifications, media, moderation, audit y admin. Se crearán cuando su fase los necesite, evitando paquetes vacíos.
 
+En Fase 5, `providers` posee el perfil, portfolio y `ProviderVisibilityService`; `provider_services` posee modalidades, precios, áreas PostGIS, reglas semanales y excepciones de disponibilidad. Los controladores coordinan ambos módulos mediante servicios y repositorios, sin convertir un booleano persistido en fuente de verdad de visibilidad.
+
 Cada módulo separa transporte (`api.py`), esquemas, casos de uso, repositorios, modelos, permisos, eventos y pruebas. Las transacciones comienzan en el caso de uso.
 
 ## Host Windows y URL pública

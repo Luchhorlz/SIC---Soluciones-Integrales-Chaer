@@ -261,6 +261,197 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/provider/availability/exceptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Provider Exceptions */
+        get: operations["list_provider_exceptions_v1_provider_availability_exceptions_get"];
+        put?: never;
+        /** Add Provider Exception */
+        post: operations["add_provider_exception_v1_provider_availability_exceptions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/availability/exceptions/{item_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Provider Exception */
+        delete: operations["delete_provider_exception_v1_provider_availability_exceptions__item_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/onboarding": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Onboard Provider */
+        post: operations["onboard_provider_v1_provider_onboarding_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/portfolio": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Portfolio Item */
+        post: operations["add_portfolio_item_v1_provider_portfolio_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/portfolio/{item_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Portfolio Item */
+        delete: operations["delete_portfolio_item_v1_provider_portfolio__item_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Provider Profile */
+        get: operations["get_provider_profile_v1_provider_profile_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Provider Profile */
+        patch: operations["update_provider_profile_v1_provider_profile_patch"];
+        trace?: never;
+    };
+    "/v1/provider/profile/pause": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Pause Provider Profile */
+        post: operations["pause_provider_profile_v1_provider_profile_pause_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/services": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Provider Services */
+        get: operations["list_provider_services_v1_provider_services_get"];
+        put?: never;
+        /** Create Provider Service */
+        post: operations["create_provider_service_v1_provider_services_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/services/{item_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Provider Service */
+        patch: operations["update_provider_service_v1_provider_services__item_id__patch"];
+        trace?: never;
+    };
+    "/v1/provider/services/{item_id}/availability": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Provider Availability */
+        get: operations["list_provider_availability_v1_provider_services__item_id__availability_get"];
+        /** Replace Provider Availability */
+        put: operations["replace_provider_availability_v1_provider_services__item_id__availability_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/services/{item_id}/pause": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Pause Provider Service */
+        post: operations["pause_provider_service_v1_provider_services__item_id__pause_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -367,6 +558,121 @@ export interface components {
             /** Unit */
             unit: string | null;
         };
+        /** AvailabilityExceptionCreate */
+        AvailabilityExceptionCreate: {
+            /**
+             * Ends At
+             * Format: date-time
+             */
+            ends_at: string;
+            /**
+             * Is Available Override
+             * @default false
+             */
+            is_available_override: boolean;
+            /** Reason */
+            reason?: string | null;
+            /**
+             * Starts At
+             * Format: date-time
+             */
+            starts_at: string;
+        };
+        /** AvailabilityExceptionView */
+        AvailabilityExceptionView: {
+            /**
+             * Ends At
+             * Format: date-time
+             */
+            ends_at: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Is Available Override
+             * @default false
+             */
+            is_available_override: boolean;
+            /** Reason */
+            reason?: string | null;
+            /**
+             * Starts At
+             * Format: date-time
+             */
+            starts_at: string;
+        };
+        /** AvailabilityRuleInput */
+        AvailabilityRuleInput: {
+            /** Day Of Week */
+            day_of_week: number;
+            /**
+             * End Time
+             * Format: time
+             */
+            end_time: string;
+            /**
+             * Is Active
+             * @default true
+             */
+            is_active: boolean;
+            /**
+             * Slot Duration Minutes
+             * @default 60
+             */
+            slot_duration_minutes: number;
+            /**
+             * Start Time
+             * Format: time
+             */
+            start_time: string;
+            /**
+             * Timezone
+             * @default America/Argentina/Buenos_Aires
+             */
+            timezone: string;
+        };
+        /** AvailabilityRuleView */
+        AvailabilityRuleView: {
+            /** Day Of Week */
+            day_of_week: number;
+            /**
+             * End Time
+             * Format: time
+             */
+            end_time: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Is Active
+             * @default true
+             */
+            is_active: boolean;
+            /**
+             * Slot Duration Minutes
+             * @default 60
+             */
+            slot_duration_minutes: number;
+            /**
+             * Start Time
+             * Format: time
+             */
+            start_time: string;
+            /**
+             * Timezone
+             * @default America/Argentina/Buenos_Aires
+             */
+            timezone: string;
+        };
+        /** AvailabilityRulesReplace */
+        AvailabilityRulesReplace: {
+            /** Rules */
+            rules: components["schemas"]["AvailabilityRuleInput"][];
+        };
         /** CategoryCreate */
         CategoryCreate: {
             /** Code */
@@ -448,6 +754,218 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** PortfolioItemCreate */
+        PortfolioItemCreate: {
+            /** Description */
+            description: string;
+            /**
+             * Position
+             * @default 0
+             */
+            position: number;
+            /** Title */
+            title: string;
+        };
+        /** PortfolioItemView */
+        PortfolioItemView: {
+            /** Description */
+            description: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Position */
+            position: number;
+            /** Title */
+            title: string;
+        };
+        /**
+         * PricingType
+         * @enum {string}
+         */
+        PricingType: "FIXED" | "FROM" | "QUOTE" | "HOURLY" | "PER_SESSION" | "PER_UNIT";
+        /**
+         * ProviderModality
+         * @enum {string}
+         */
+        ProviderModality: "AT_CLIENT_ADDRESS" | "REMOTE" | "HYBRID" | "AT_PROVIDER_LOCATION" | "PICKUP_DELIVERY";
+        /** ProviderOnboarding */
+        ProviderOnboarding: {
+            /** Base Address Id */
+            base_address_id?: string | null;
+            /** Bio */
+            bio?: string | null;
+            /** Business Name */
+            business_name?: string | null;
+            /** Display Name */
+            display_name: string;
+            /** Experience Years */
+            experience_years?: number | null;
+        };
+        /** ProviderPauseRequest */
+        ProviderPauseRequest: {
+            /** Paused */
+            paused: boolean;
+        };
+        /**
+         * ProviderProfileStatus
+         * @enum {string}
+         */
+        ProviderProfileStatus: "DRAFT" | "PENDING_REVIEW" | "APPROVED" | "PAUSED" | "SUSPENDED" | "BLOCKED";
+        /** ProviderProfileUpdate */
+        ProviderProfileUpdate: {
+            /** Base Address Id */
+            base_address_id?: string | null;
+            /** Bio */
+            bio?: string | null;
+            /** Business Name */
+            business_name?: string | null;
+            /** Display Name */
+            display_name?: string | null;
+            /** Experience Years */
+            experience_years?: number | null;
+        };
+        /** ProviderProfileView */
+        ProviderProfileView: {
+            /** Average Response Minutes */
+            average_response_minutes: number | null;
+            /** Base Address Id */
+            base_address_id: string | null;
+            /** Bio */
+            bio: string | null;
+            /** Business Name */
+            business_name: string | null;
+            /** Completed Services Count */
+            completed_services_count: number;
+            /** Display Name */
+            display_name: string;
+            /** Experience Years */
+            experience_years: number | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Identity Verified */
+            is_identity_verified: boolean;
+            /** Is Paused */
+            is_paused: boolean;
+            /** Portfolio */
+            portfolio: components["schemas"]["PortfolioItemView"][];
+            /** Profile Completeness */
+            profile_completeness: number;
+            profile_status: components["schemas"]["ProviderProfileStatus"];
+            /** Rating Average */
+            rating_average: number;
+            /** Rating Count */
+            rating_count: number;
+            /** Response Rate */
+            response_rate: number;
+            /** Slug */
+            slug: string;
+            subscription_visibility_status: components["schemas"]["SubscriptionVisibilityStatus"];
+        };
+        /** ProviderServiceCreate */
+        ProviderServiceCreate: {
+            /**
+             * Accepts Urgent
+             * @default false
+             */
+            accepts_urgent: boolean;
+            area?: components["schemas"]["ServiceAreaInput"] | null;
+            /** Description */
+            description: string;
+            /** Estimated Duration Minutes */
+            estimated_duration_minutes?: number | null;
+            /** Guarantee Days */
+            guarantee_days?: number | null;
+            /** Headline */
+            headline: string;
+            /** Modalities */
+            modalities: components["schemas"]["ProviderModality"][];
+            /** Price Amount */
+            price_amount?: number | string | null;
+            pricing_type: components["schemas"]["PricingType"];
+            /**
+             * Requires Quote Details
+             * @default true
+             */
+            requires_quote_details: boolean;
+            /**
+             * Service Id
+             * Format: uuid
+             */
+            service_id: string;
+        };
+        /** ProviderServicePauseRequest */
+        ProviderServicePauseRequest: {
+            /** Paused */
+            paused: boolean;
+        };
+        /**
+         * ProviderServiceStatus
+         * @enum {string}
+         */
+        ProviderServiceStatus: "DRAFT" | "PENDING_DOCUMENTS" | "PENDING_REVIEW" | "ACTIVE" | "PAUSED" | "REJECTED" | "SUSPENDED";
+        /** ProviderServiceUpdate */
+        ProviderServiceUpdate: {
+            /** Accepts Urgent */
+            accepts_urgent?: boolean | null;
+            area?: components["schemas"]["ServiceAreaInput"] | null;
+            /** Description */
+            description?: string | null;
+            /** Estimated Duration Minutes */
+            estimated_duration_minutes?: number | null;
+            /** Guarantee Days */
+            guarantee_days?: number | null;
+            /** Headline */
+            headline?: string | null;
+            /** Modalities */
+            modalities?: components["schemas"]["ProviderModality"][] | null;
+            /** Price Amount */
+            price_amount?: number | string | null;
+            pricing_type?: components["schemas"]["PricingType"] | null;
+            /** Requires Quote Details */
+            requires_quote_details?: boolean | null;
+        };
+        /** ProviderServiceView */
+        ProviderServiceView: {
+            /** Accepts Urgent */
+            accepts_urgent: boolean;
+            area: components["schemas"]["ServiceAreaView"] | null;
+            /** Description */
+            description: string;
+            /** Estimated Duration Minutes */
+            estimated_duration_minutes: number | null;
+            /** Guarantee Days */
+            guarantee_days: number | null;
+            /** Headline */
+            headline: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Modalities */
+            modalities: components["schemas"]["ProviderModality"][];
+            /** Price Amount */
+            price_amount: string | null;
+            /** Price Currency */
+            price_currency: string;
+            pricing_type: components["schemas"]["PricingType"];
+            /** Requires Quote Details */
+            requires_quote_details: boolean;
+            /**
+             * Service Id
+             * Format: uuid
+             */
+            service_id: string;
+            status: components["schemas"]["ProviderServiceStatus"];
+            visibility_code: components["schemas"]["VisibilityCode"];
+            /** Visible */
+            visible: boolean;
+        };
         /** RoleSelection */
         RoleSelection: {
             /** Roles */
@@ -457,6 +975,34 @@ export interface components {
         RoleSelectionResult: {
             /** Roles */
             roles: components["schemas"]["UserRoleName"][];
+        };
+        /** ServiceAreaInput */
+        ServiceAreaInput: {
+            /**
+             * Center Address Id
+             * Format: uuid
+             */
+            center_address_id: string;
+            /** Radius Meters */
+            radius_meters: number;
+            /** Travel Fee Policy */
+            travel_fee_policy?: string | null;
+            /** Urgent Radius Meters */
+            urgent_radius_meters?: number | null;
+        };
+        /** ServiceAreaView */
+        ServiceAreaView: {
+            /**
+             * Center Address Id
+             * Format: uuid
+             */
+            center_address_id: string;
+            /** Radius Meters */
+            radius_meters: number;
+            /** Travel Fee Policy */
+            travel_fee_policy: string | null;
+            /** Urgent Radius Meters */
+            urgent_radius_meters: number | null;
         };
         /** ServiceCreate */
         ServiceCreate: {
@@ -613,6 +1159,11 @@ export interface components {
             /** Slug */
             slug: string;
         };
+        /**
+         * SubscriptionVisibilityStatus
+         * @enum {string}
+         */
+        SubscriptionVisibilityStatus: "NOT_CONFIGURED" | "ACTIVE" | "AUTHORIZED" | "INACTIVE";
         /** SyncedUser */
         SyncedUser: {
             /**
@@ -650,6 +1201,11 @@ export interface components {
             /** Error Type */
             type: string;
         };
+        /**
+         * VisibilityCode
+         * @enum {string}
+         */
+        VisibilityCode: "VISIBLE" | "USER_INACTIVE" | "NO_ACTIVE_SUBSCRIPTION" | "PROFILE_NOT_APPROVED" | "PROFILE_PAUSED" | "SERVICE_PAUSED" | "NO_MODALITY" | "DOCUMENT_PENDING" | "DOCUMENT_EXPIRED" | "NO_SERVICE_AREA" | "ADMIN_SUSPENDED";
     };
     responses: never;
     parameters: never;
@@ -1179,6 +1735,517 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RoleSelectionResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_provider_exceptions_v1_provider_availability_exceptions_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvailabilityExceptionView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_provider_exception_v1_provider_availability_exceptions_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AvailabilityExceptionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvailabilityExceptionView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_provider_exception_v1_provider_availability_exceptions__item_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    onboard_provider_v1_provider_onboarding_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProviderOnboarding"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderProfileView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_portfolio_item_v1_provider_portfolio_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PortfolioItemCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderProfileView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_portfolio_item_v1_provider_portfolio__item_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderProfileView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_provider_profile_v1_provider_profile_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderProfileView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_provider_profile_v1_provider_profile_patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProviderProfileUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderProfileView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    pause_provider_profile_v1_provider_profile_pause_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProviderPauseRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderProfileView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_provider_services_v1_provider_services_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderServiceView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_provider_service_v1_provider_services_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProviderServiceCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderServiceView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_provider_service_v1_provider_services__item_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProviderServiceUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderServiceView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_provider_availability_v1_provider_services__item_id__availability_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvailabilityRuleView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    replace_provider_availability_v1_provider_services__item_id__availability_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AvailabilityRulesReplace"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvailabilityRuleView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    pause_provider_service_v1_provider_services__item_id__pause_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProviderServicePauseRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderServiceView"];
                 };
             };
             /** @description Validation Error */

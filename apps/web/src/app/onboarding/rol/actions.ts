@@ -22,5 +22,5 @@ export async function saveRoles(_state: RoleActionState, formData: FormData): Pr
   } catch {
     return { error: "No pudimos guardar los roles. Revisá que la base de datos y la API estén disponibles." };
   }
-  redirect("/cuenta");
+  redirect(selectedRoles.includes("PROVIDER") ? "/onboarding/prestador" : "/cuenta");
 }
