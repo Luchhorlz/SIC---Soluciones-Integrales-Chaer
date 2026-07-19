@@ -68,7 +68,10 @@ async def test_postgis_search_coverage_boundary_and_public_privacy() -> None:
             public_profile = await search.profile(profile.slug)
             assert public_profile is not None
             assert public_profile.services[0].approximate_latitude is None
-            assert "address" not in public_profile.model_dump_json().lower()
+            public_payload = public_profile.model_dump()
+            private_location_fields = {"address", "address_id", "base_address_id", "base_point", "center", "latitude", "longitude"}
+            assert private_location_fields.isdisjoint(public_payload)
+            assert private_location_fields.isdisjoint(public_payload["services"][0])
 
             origin = cast(func.ST_SetSRID(func.ST_MakePoint(-58.3816, -34.6037), 4326), Geography(geometry_type="POINT", srid=4326))
             boundary = func.ST_Project(origin, 1500, func.radians(90))
