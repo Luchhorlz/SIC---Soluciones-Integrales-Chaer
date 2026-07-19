@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 type ProviderShellProps = {
-  active: "panel" | "profile" | "services" | "requests" | "bookings" | "documents" | "subscription";
+  active: "panel" | "profile" | "services" | "requests" | "bookings" | "messages" | "reviews" | "notifications" | "documents" | "subscription";
   displayName?: string | null;
   children: ReactNode;
 };
@@ -13,6 +13,9 @@ const links = [
   { key: "services", href: "/prestador/servicios", icon: "▣", label: "Mis servicios" },
   { key: "requests", href: "/prestador/solicitudes", icon: "◫", label: "Solicitudes" },
   { key: "bookings", href: "/prestador/contrataciones", icon: "▤", label: "Contrataciones" },
+  { key: "messages", href: "/prestador/mensajes", icon: "◇", label: "Mensajes" },
+  { key: "reviews", href: "/prestador/opiniones", icon: "★", label: "Opiniones" },
+  { key: "notifications", href: "/prestador/notificaciones", icon: "◉", label: "Notificaciones" },
   { key: "documents", href: "/prestador/documentacion", icon: "▤", label: "Documentación" },
   { key: "subscription", href: "/prestador/suscripcion", icon: "◇", label: "Suscripción" },
 ] as const;

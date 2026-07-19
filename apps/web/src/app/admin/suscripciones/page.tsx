@@ -29,7 +29,7 @@ export default async function AdminSubscriptionsPage({ searchParams }: { searchP
 
   return (
     <main className="admin-documents-page">
-      <header className="admin-header"><Link className="brand" href="/"><span className="brand-mark">S<span>Í</span>C</span><span>Soluciones Integrales Chaer</span></Link><div><span>Administración</span><Link href="/admin/catalogo">Catálogo</Link><Link href="/admin/documentos">Documentos</Link><Link href="/cuenta">Volver a mi cuenta</Link></div></header>
+      <header className="admin-header"><Link className="brand" href="/"><span className="brand-mark">S<span>Í</span>C</span><span>Soluciones Integrales Chaer</span></Link><div><span>Administración</span><Link href="/admin/catalogo">Catálogo</Link><Link href="/admin/documentos">Documentos</Link><Link href="/admin/opiniones">Opiniones</Link><Link href="/cuenta">Volver a mi cuenta</Link></div></header>
       <section className="admin-document-content">
         <div className="admin-title"><div><p className="eyebrow">FASE 7 · CONFIGURACIÓN COMERCIAL</p><h1>Suscripción mensual</h1><p>Definí el único plan inicial sin publicar precios ni beneficios ficticios.</p></div><span className="admin-lock">▣ Solo ADMIN</span></div>
         {!configured && <div className="preview-notice admin-notice">Vista previa protegida. La edición requiere una sesión ADMIN y PostgreSQL.</div>}

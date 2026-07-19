@@ -45,7 +45,7 @@ export default async function AdminDocumentsPage({ searchParams }: { searchParam
 
   return (
     <main className="admin-documents-page">
-      <header className="admin-header"><Link className="brand" href="/"><span className="brand-mark">S<span>Í</span>C</span><span>Soluciones Integrales Chaer</span></Link><div><span>Administración</span><Link href="/admin/catalogo">Catálogo</Link><Link href="/cuenta">Volver a mi cuenta</Link></div></header>
+      <header className="admin-header"><Link className="brand" href="/"><span className="brand-mark">S<span>Í</span>C</span><span>Soluciones Integrales Chaer</span></Link><div><span>Administración</span><Link href="/admin/catalogo">Catálogo</Link><Link href="/admin/opiniones">Opiniones</Link><Link href="/cuenta">Volver a mi cuenta</Link></div></header>
       <section className="admin-document-content">
         <div className="admin-title"><div><p className="eyebrow">FASE 6 · CONTROL PRIVADO</p><h1>Revisión documental</h1><p>Configurá requisitos por servicio y registrá cada decisión sin sobrescribir el historial.</p></div><span className="admin-lock">▣ ADMIN · DOCUMENT_REVIEWER</span></div>
         {!configured && <div className="preview-notice admin-notice">Vista previa protegida. La cola real requiere una sesión revisora y PostgreSQL.</div>}

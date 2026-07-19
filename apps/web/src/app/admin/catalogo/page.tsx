@@ -49,7 +49,7 @@ export default async function AdminCatalogPage({ searchParams }: { searchParams:
           <span className="brand-mark">S<span>Í</span>C</span>
           <span>Soluciones Integrales Chaer</span>
         </Link>
-        <div><span>Administración</span><Link href="/cuenta">Volver a mi cuenta</Link></div>
+        <div><span>Administración</span><Link href="/admin/documentos">Documentos</Link><Link href="/admin/opiniones">Opiniones</Link><Link href="/cuenta">Volver a mi cuenta</Link></div>
       </header>
 
       <section className="admin-catalog-content">

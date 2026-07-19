@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import { clientBookingAction, clientRequestAction, decideClientQuote } from "@/lib/internal-api";
+import { clientBookingAction, clientRequestAction, decideClientQuote, submitClientReview, updateClientReview } from "@/lib/internal-api";
 
 function value(formData: FormData, key: string) { return String(formData.get(key) ?? "").trim(); }
 function argentinaDateTime(raw: string) {
@@ -39,4 +39,19 @@ export async function updateClientBooking(formData: FormData) {
   try { await clientBookingAction({ ...await clientSession(), bookingId: value(formData, "booking_id"), action, reason: value(formData, "reason") || undefined }); }
   catch { redirect("/cuenta/contrataciones?error=booking"); }
   done(`booking-${action}`);
+}
+
+export async function saveReview(formData: FormData) {
+  const rating = Number(value(formData, "rating"));
+  const comment = value(formData, "comment");
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5 || comment.length < 10 || comment.length > 2000) redirect("/cuenta/contrataciones?error=review");
+  try {
+    const session = await clientSession();
+    const reviewId = value(formData, "review_id");
+    if (reviewId) await updateClientReview({ ...session, reviewId, rating, comment });
+    else await submitClientReview({ ...session, bookingId: value(formData, "booking_id"), rating, comment });
+  } catch {
+    redirect("/cuenta/contrataciones?error=review");
+  }
+  done("review-saved");
 }

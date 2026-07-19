@@ -19,6 +19,13 @@ export type ProviderSubscriptionPage = components["schemas"]["ProviderSubscripti
 export type SubscriptionCheckout = components["schemas"]["SubscriptionCheckoutView"];
 export type ServiceRequest = components["schemas"]["ServiceRequestView"];
 export type ServiceBooking = components["schemas"]["BookingView"];
+export type ConversationSummary = components["schemas"]["ConversationSummary"];
+export type Conversation = components["schemas"]["ConversationView"];
+export type NotificationPage = components["schemas"]["NotificationPage"];
+export type UserNotification = components["schemas"]["NotificationView"];
+export type FavoriteProvider = components["schemas"]["FavoriteProviderView"];
+export type ServiceReview = components["schemas"]["ReviewView"];
+export type PublicReview = components["schemas"]["PublicReviewView"];
 
 type CatalogCreatePayloads = {
   categories: components["schemas"]["CategoryCreate"];
@@ -343,7 +350,7 @@ async function responseError(response: Response, fallback: string): Promise<Erro
   }
 }
 
-async function clientRequest(input: ProviderAuth & { path: string; method?: "GET" | "POST"; body?: unknown; formData?: FormData }) {
+async function clientRequest(input: ProviderAuth & { path: string; method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"; body?: unknown; formData?: FormData }) {
   const token = await createUserToken(input.userId, input.roles, input.sessionId);
   return fetch(`${apiUrl}/v1/client${input.path}`, {
     method: input.method ?? "GET",
@@ -430,4 +437,107 @@ export async function providerBookingAction(input: ProviderAuth & { bookingId: s
   const response = await providerRequest({ ...input, path: `/bookings/${input.bookingId}/${input.action}`, method: "POST" });
   if (!response.ok) throw await responseError(response, "No se pudo actualizar la contratación.");
   return response.json() as Promise<ServiceBooking>;
+}
+
+async function meRequest(input: ProviderAuth & { path: string; method?: "GET" | "POST"; body?: unknown }) {
+  const token = await createUserToken(input.userId, input.roles, input.sessionId);
+  return fetch(`${apiUrl}/v1/me${input.path}`, {
+    method: input.method ?? "GET",
+    headers: { authorization: `Bearer ${token}`, ...(input.body !== undefined ? { "content-type": "application/json" } : {}) },
+    body: input.body !== undefined ? JSON.stringify(input.body) : undefined,
+    cache: "no-store",
+    signal: AbortSignal.timeout(8000),
+  });
+}
+
+export async function getConversations(input: ProviderAuth): Promise<ConversationSummary[]> {
+  const response = await meRequest({ ...input, path: "/conversations" });
+  if (!response.ok) throw await responseError(response, "No se pudieron cargar las conversaciones.");
+  return response.json() as Promise<ConversationSummary[]>;
+}
+
+export async function getConversation(input: ProviderAuth & { requestId: string }): Promise<Conversation> {
+  const response = await meRequest({ ...input, path: `/conversations/${input.requestId}` });
+  if (!response.ok) throw await responseError(response, "No se pudo cargar la conversación.");
+  return response.json() as Promise<Conversation>;
+}
+
+export async function sendConversationMessage(input: ProviderAuth & { requestId: string; body: string }): Promise<Conversation> {
+  const response = await meRequest({ ...input, path: `/conversations/${input.requestId}/messages`, method: "POST", body: { body: input.body } });
+  if (!response.ok) throw await responseError(response, "No se pudo enviar el mensaje.");
+  return response.json() as Promise<Conversation>;
+}
+
+export async function getNotifications(input: ProviderAuth): Promise<NotificationPage> {
+  const response = await meRequest({ ...input, path: "/notifications" });
+  if (!response.ok) throw await responseError(response, "No se pudieron cargar las notificaciones.");
+  return response.json() as Promise<NotificationPage>;
+}
+
+export async function markNotificationRead(input: ProviderAuth & { notificationId?: string }): Promise<void> {
+  const path = input.notificationId ? `/notifications/${input.notificationId}/read` : "/notifications/read-all";
+  const response = await meRequest({ ...input, path, method: "POST" });
+  if (!response.ok) throw await responseError(response, "No se pudo actualizar la notificación.");
+}
+
+export async function getClientFavorites(input: ProviderAuth): Promise<FavoriteProvider[]> {
+  const response = await clientRequest({ ...input, path: "/favorites" });
+  if (!response.ok) throw await responseError(response, "No se pudieron cargar los favoritos.");
+  return response.json() as Promise<FavoriteProvider[]>;
+}
+
+export async function setClientFavorite(input: ProviderAuth & { providerSlug: string; favorite: boolean }): Promise<void> {
+  const response = await clientRequest({ ...input, path: `/favorites/${encodeURIComponent(input.providerSlug)}`, method: input.favorite ? "PUT" : "DELETE" });
+  if (!response.ok) throw await responseError(response, "No se pudo actualizar el favorito.");
+}
+
+export async function getClientReviews(input: ProviderAuth): Promise<ServiceReview[]> {
+  const response = await clientRequest({ ...input, path: "/reviews" });
+  if (!response.ok) throw await responseError(response, "No se pudieron cargar las opiniones.");
+  return response.json() as Promise<ServiceReview[]>;
+}
+
+export async function submitClientReview(input: ProviderAuth & { bookingId: string; rating: number; comment: string }): Promise<ServiceReview> {
+  const response = await clientRequest({ ...input, path: `/reviews/bookings/${input.bookingId}`, method: "POST", body: { rating: input.rating, comment: input.comment } });
+  if (!response.ok) throw await responseError(response, "No se pudo enviar la opinión.");
+  return response.json() as Promise<ServiceReview>;
+}
+
+export async function updateClientReview(input: ProviderAuth & { reviewId: string; rating: number; comment: string }): Promise<ServiceReview> {
+  const response = await clientRequest({ ...input, path: `/reviews/${input.reviewId}`, method: "PATCH", body: { rating: input.rating, comment: input.comment } });
+  if (!response.ok) throw await responseError(response, "No se pudo actualizar la opinión.");
+  return response.json() as Promise<ServiceReview>;
+}
+
+export async function getProviderReviews(input: ProviderAuth): Promise<ServiceReview[]> {
+  const response = await providerRequest({ ...input, path: "/reviews" });
+  if (!response.ok) throw await responseError(response, "No se pudieron cargar las opiniones.");
+  return response.json() as Promise<ServiceReview[]>;
+}
+
+export async function getAdminReviews(input: ProviderAuth): Promise<ServiceReview[]> {
+  const response = await adminDocumentRequest({ ...input, path: "/reviews" });
+  if (!response.ok) throw await responseError(response, "No se pudo cargar la moderación de opiniones.");
+  return response.json() as Promise<ServiceReview[]>;
+}
+
+export async function moderateAdminReview(input: ProviderAuth & { reviewId: string; action: "publish" | "reject" | "hide"; reason?: string }): Promise<ServiceReview> {
+  const response = await adminDocumentRequest({
+    ...input,
+    path: `/reviews/${input.reviewId}/moderate`,
+    method: "POST",
+    body: { action: input.action, reason: input.reason || null },
+  });
+  if (!response.ok) throw await responseError(response, "No se pudo moderar la opinión.");
+  return response.json() as Promise<ServiceReview>;
+}
+
+export async function getPublicReviews(providerSlug: string): Promise<PublicReview[]> {
+  try {
+    const response = await fetch(`${apiUrl}/v1/providers/${encodeURIComponent(providerSlug)}/reviews`, { cache: "no-store", signal: AbortSignal.timeout(5000) });
+    if (!response.ok) return [];
+    return response.json() as Promise<PublicReview[]>;
+  } catch {
+    return [];
+  }
 }

@@ -1,15 +1,16 @@
 import Link from "next/link";
 
 import { auth } from "@/auth";
-import { getClientBookings, getClientServiceRequests, type ServiceBooking, type ServiceRequest } from "@/lib/internal-api";
+import { getClientBookings, getClientReviews, getClientServiceRequests, type ServiceBooking, type ServiceRequest, type ServiceReview } from "@/lib/internal-api";
 
-import { cancelServiceRequest, decideQuote, updateClientBooking } from "./actions";
+import { cancelServiceRequest, decideQuote, saveReview, updateClientBooking } from "./actions";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Mis contrataciones | SIC" };
 
 const requestStatus: Record<string, string> = { REQUESTED: "Enviada", VIEWED: "Vista por el prestador", QUOTED: "Presupuestada", DECLINED: "Rechazada", CANCELLED: "Cancelada", EXPIRED: "Vencida", CONVERTED_TO_BOOKING: "Turno confirmado" };
 const bookingStatus: Record<string, string> = { PENDING_PROVIDER: "Esperando confirmación", CONFIRMED: "Confirmada", IN_PROGRESS: "En curso", COMPLETED: "Completada", CANCELLED_BY_CLIENT: "Cancelada por vos", CANCELLED_BY_PROVIDER: "Cancelada por el prestador", NO_SHOW: "Ausencia registrada", DISPUTED: "Reportada" };
+const reviewStatus: Record<string, string> = { PENDING: "Pendiente de moderación", PUBLISHED: "Publicada", REJECTED: "Requiere cambios", HIDDEN: "Oculta por moderación" };
 const openRequests = new Set(["REQUESTED", "VIEWED", "QUOTED"]);
 
 function formatDate(value: string | null) {
@@ -23,10 +24,10 @@ function money(value: string | null, currency: string) {
 export default async function ClientEngagementsPage({ searchParams }: { searchParams: Promise<{ status?: string; error?: string; warning?: string }> }) {
   const configured = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET && process.env.AUTH_SECRET && process.env.INTERNAL_API_JWT_SECRET);
   const session = configured ? await auth() : null;
-  let requests: ServiceRequest[] = []; let bookings: ServiceBooking[] = []; let unavailable = false;
+  let requests: ServiceRequest[] = []; let bookings: ServiceBooking[] = []; let reviews: ServiceReview[] = []; let unavailable = false;
   if (session?.user?.roles.includes("CLIENT")) {
     const input = { userId: session.user.id, roles: session.user.roles, sessionId: session.internalSessionId };
-    try { [requests, bookings] = await Promise.all([getClientServiceRequests(input), getClientBookings(input)]); } catch { unavailable = true; }
+    try { [requests, bookings, reviews] = await Promise.all([getClientServiceRequests(input), getClientBookings(input), getClientReviews(input)]); } catch { unavailable = true; }
   }
   const query = await searchParams;
   const enabled = Boolean(session?.user?.roles.includes("CLIENT") && !unavailable);
@@ -39,7 +40,7 @@ export default async function ClientEngagementsPage({ searchParams }: { searchPa
     {query.error && <div className="form-error account-preview">No pudimos completar la acción. Revisá el estado y los horarios.</div>}
 
     <section className="engagement-section"><div className="engagement-heading"><div><p className="eyebrow">TURNOS</p><h2>Contrataciones confirmadas</h2></div><span>{bookings.length}</span></div>
-      <div className="engagement-grid">{bookings.length ? bookings.map((booking) => <ClientBookingCard key={booking.id} booking={booking} enabled={enabled} />) : <div className="engagement-empty"><span>▣</span><h3>No hay turnos confirmados</h3><p>Cuando aceptes un presupuesto o el prestador confirme una oferta directa, aparecerá acá.</p></div>}</div>
+      <div className="engagement-grid">{bookings.length ? bookings.map((booking) => <ClientBookingCard key={booking.id} booking={booking} review={reviews.find((item) => item.booking_id === booking.id)} enabled={enabled} />) : <div className="engagement-empty"><span>▣</span><h3>No hay turnos confirmados</h3><p>Cuando aceptes un presupuesto o el prestador confirme una oferta directa, aparecerá acá.</p></div>}</div>
     </section>
 
     <section className="engagement-section"><div className="engagement-heading"><div><p className="eyebrow">SOLICITUDES</p><h2>Conversaciones previas</h2></div><span>{requests.length}</span></div>
@@ -48,14 +49,25 @@ export default async function ClientEngagementsPage({ searchParams }: { searchPa
   </>;
 }
 
-function ClientBookingCard({ booking, enabled }: { booking: ServiceBooking; enabled: boolean }) {
+function ClientBookingCard({ booking, review, enabled }: { booking: ServiceBooking; review?: ServiceReview; enabled: boolean }) {
   return <article className="engagement-card"><header><div><small>{booking.service_name}</small><h3>{booking.offer_headline}</h3><p>con {booking.provider_name}</p></div><span data-state={booking.status}>{bookingStatus[booking.status] ?? booking.status}</span></header>
     <div className="booking-facts"><span><small>Fecha</small><b>{formatDate(booking.starts_at)}</b></span><span><small>Importe acordado</small><b>{money(booking.agreed_price, booking.currency)}</b></span><span><small>Modalidad</small><b>{booking.modality}</b></span></div>
     {booking.address && <div className="private-address"><b>⌖ Dirección privada del turno</b><span>{booking.address.formatted_address}{booking.address.unit ? ` · ${booking.address.unit}` : ""}</span></div>}
     {(booking.status === "PENDING_PROVIDER" || booking.status === "CONFIRMED") && <form action={updateClientBooking}><input type="hidden" name="booking_id" value={booking.id} /><input type="hidden" name="action" value="cancel" /><button className="secondary" disabled={!enabled}>Cancelar turno</button></form>}
+    <div className="engagement-actions"><Link className="secondary" href={`/cuenta/mensajes?request=${booking.request_id}`}>Abrir mensajes</Link></div>
     {booking.status === "COMPLETED" && !booking.client_confirmed_at && <div className="engagement-actions"><form action={updateClientBooking}><input type="hidden" name="booking_id" value={booking.id} /><input type="hidden" name="action" value="confirm" /><button className="primary" disabled={!enabled}>Confirmar finalización</button></form><form className="dispute-form" action={updateClientBooking}><input type="hidden" name="booking_id" value={booking.id} /><input type="hidden" name="action" value="dispute" /><input name="reason" minLength={10} maxLength={500} required placeholder="Explicá qué ocurrió" disabled={!enabled} /><button className="secondary" disabled={!enabled}>Reportar problema</button></form></div>}
     {booking.client_confirmed_at && <p className="confirmed-copy">✓ Finalización confirmada por vos.</p>}{booking.dispute_reason && <p className="dispute-copy">Reporte: {booking.dispute_reason}</p>}
+    {booking.status === "COMPLETED" && booking.client_confirmed_at && <ReviewBox booking={booking} review={review} enabled={enabled} />}
   </article>;
+}
+
+function ReviewBox({ booking, review, enabled }: { booking: ServiceBooking; review?: ServiceReview; enabled: boolean }) {
+  const canEdit = !review || review.status !== "HIDDEN";
+  return <section className="booking-review-box">
+    <div><div><span>★</span><h4>Opinión verificada</h4></div>{review && <b data-status={review.status}>{reviewStatus[review.status] ?? review.status}</b>}</div>
+    {review && <><p className="review-stars" aria-label={`${review.rating} de 5 estrellas`}>{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</p><blockquote>{review.comment}</blockquote>{review.moderation_reason && <p className="review-moderation-note">Moderación: {review.moderation_reason}</p>}</>}
+    {canEdit && <details open={!review}><summary>{review ? "Editar mi opinión" : "Calificar este servicio"}</summary><form action={saveReview} className="review-form"><input type="hidden" name="booking_id" value={booking.id} />{review && <input type="hidden" name="review_id" value={review.id} />}<label>Calificación<select name="rating" defaultValue={String(review?.rating ?? 5)} required disabled={!enabled}>{[5,4,3,2,1].map((rating) => <option key={rating} value={rating}>{rating} {rating === 1 ? "estrella" : "estrellas"}</option>)}</select></label><label>Contá cómo fue el trabajo<textarea name="comment" defaultValue={review?.comment ?? ""} minLength={10} maxLength={2000} rows={4} required disabled={!enabled} /></label><button className="primary" disabled={!enabled}>{review ? "Guardar cambios" : "Enviar opinión"}</button><small>Solo se publica después de la moderación. Si editás una opinión publicada, vuelve a revisión.</small></form></details>}
+  </section>;
 }
 
 function ClientRequestCard({ request, enabled }: { request: ServiceRequest; enabled: boolean }) {
@@ -64,6 +76,7 @@ function ClientRequestCard({ request, enabled }: { request: ServiceRequest; enab
     <p className="engagement-description">{request.description}</p><div className="request-meta"><span>Preferencia: <b>{formatDate(request.preferred_start_at)}</b></span><span>Modalidad: <b>{request.selected_modality}</b></span>{request.client_address_label && <span>Dirección privada: <b>{request.client_address_label}</b></span>}</div>
     {request.attachments.length > 0 && <div className="attachment-list"><b>Adjuntos privados</b>{request.attachments.map((item) => <span key={item.id}>▤ {item.filename}</span>)}</div>}
     {activeQuote && <div className="quote-box"><div><small>PRESUPUESTO DEL PRESTADOR</small><b>{money(activeQuote.amount, activeQuote.currency)}</b><p>{activeQuote.description}</p><span>Válido hasta {formatDate(activeQuote.valid_until)}</span></div><form action={decideQuote}><input type="hidden" name="request_id" value={request.id} /><input type="hidden" name="quote_id" value={activeQuote.id} /><div><label>Inicio<input name="starts_at" type="datetime-local" required disabled={!enabled} /></label><label>Fin<input name="ends_at" type="datetime-local" required disabled={!enabled} /></label></div><button className="primary" name="decision" value="accept" disabled={!enabled}>Aceptar y reservar</button><button className="secondary" name="decision" value="reject" formNoValidate disabled={!enabled}>Rechazar</button></form></div>}
+    <div className="engagement-actions"><Link className="secondary" href={`/cuenta/mensajes?request=${request.id}`}>Abrir mensajes</Link></div>
     {openRequests.has(request.status) && !activeQuote && <form action={cancelServiceRequest}><input type="hidden" name="request_id" value={request.id} /><button className="secondary" disabled={!enabled}>Cancelar solicitud</button></form>}
   </article>;
 }

@@ -1,0 +1,8 @@
+import Link from "next/link";
+
+import { updateNotification } from "@/app/notification-actions";
+import type { NotificationPage } from "@/lib/internal-api";
+
+export function NotificationList({ page, returnPath, enabled }: { page: NotificationPage; returnPath: string; enabled: boolean }) {
+  return <section className="notification-panel"><header><div><h2>Actividad reciente</h2><p>{page.unread_count ? `${page.unread_count} sin leer` : "Todo al día"}</p></div>{page.unread_count > 0 && <form action={updateNotification}><input type="hidden" name="return_path" value={returnPath} /><button className="secondary" disabled={!enabled}>Marcar todas como leídas</button></form>}</header><div>{page.notifications.length ? page.notifications.map((item) => <article key={item.id} className={item.read_at ? "read" : "unread"}><span>{item.read_at ? "✓" : "●"}</span><div><small>{item.type.replaceAll("_", " ")}</small><h3>{item.title}</h3><p>{item.body}</p><time>{new Intl.DateTimeFormat("es-AR", { timeZone: "America/Argentina/Buenos_Aires", dateStyle: "medium", timeStyle: "short" }).format(new Date(item.created_at))}</time></div><div>{item.link_path && <Link className="secondary" href={item.link_path}>Abrir</Link>}{!item.read_at && <form action={updateNotification}><input type="hidden" name="return_path" value={returnPath} /><button name="notification_id" value={item.id} disabled={!enabled}>Marcar leída</button></form>}</div></article>) : <div className="engagement-empty"><span>◉</span><h3>No hay notificaciones</h3><p>Los cambios de solicitudes, presupuestos, turnos y opiniones aparecerán acá.</p></div>}</div></section>;
+}

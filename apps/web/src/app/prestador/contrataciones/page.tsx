@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { ProviderShell } from "@/components/provider-shell";
 import { getProviderBookings, type ServiceBooking } from "@/lib/internal-api";
 import { providerPageContext } from "@/lib/provider-page";
@@ -26,6 +28,7 @@ function ProviderBookingCard({ booking, enabled }: { booking: ServiceBooking; en
     <div className="booking-facts"><span><small>Inicio</small><b>{formatDate(booking.starts_at)}</b></span><span><small>Fin</small><b>{formatDate(booking.ends_at)}</b></span><span><small>Importe</small><b>{booking.agreed_price ? `${booking.currency} ${booking.agreed_price}` : "A convenir"}</b></span></div>
     {booking.address && <div className="private-address"><b>⌖ Dirección compartida para este turno</b><span>{booking.address.formatted_address}{booking.address.unit ? ` · ${booking.address.unit}` : ""}</span></div>}
     <div className="engagement-actions">{booking.status === "PENDING_PROVIDER" && <><Action booking={booking} action="confirm" label="Confirmar horario" primary enabled={enabled} /><Action booking={booking} action="cancel" label="Rechazar horario" enabled={enabled} /></>}{booking.status === "CONFIRMED" && <><Action booking={booking} action="start" label="Iniciar servicio" primary enabled={enabled} /><Action booking={booking} action="cancel" label="Cancelar" enabled={enabled} /><Action booking={booking} action="no-show" label="Registrar ausencia" enabled={enabled} /></>}{booking.status === "IN_PROGRESS" && <Action booking={booking} action="complete" label="Marcar como completado" primary enabled={enabled} />}</div>
+    <div className="engagement-actions"><Link className="secondary" href={`/prestador/mensajes?request=${booking.request_id}`}>Abrir mensajes</Link></div>
     {booking.client_confirmed_at && <p className="confirmed-copy">✓ El cliente confirmó la finalización.</p>}{booking.dispute_reason && <p className="dispute-copy">Reporte del cliente: {booking.dispute_reason}</p>}
   </article>;
 }

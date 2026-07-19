@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { ProviderShell } from "@/components/provider-shell";
 import { getProviderServiceRequests, type ServiceRequest } from "@/lib/internal-api";
 import { providerPageContext } from "@/lib/provider-page";
@@ -30,6 +32,7 @@ function ProviderRequestCard({ request, enabled }: { request: ServiceRequest; en
     {request.status === "REQUESTED" && <form action={markRequestViewed}><input type="hidden" name="request_id" value={request.id} /><button className="secondary" disabled={!enabled}>Marcar como vista</button></form>}
     {canAct && request.pricing_type !== "FIXED" && <form className="engagement-response-form" action={quoteProviderRequest}><input type="hidden" name="request_id" value={request.id} /><h3>Enviar presupuesto</h3><div><label>Importe ARS<input name="amount" type="number" min="1" step="0.01" required disabled={!enabled} /></label><label>Válido hasta<input name="valid_until" type="datetime-local" required disabled={!enabled} /></label></div><label>Alcance y condiciones<textarea name="description" minLength={10} maxLength={3000} required disabled={!enabled}></textarea></label><button className="primary" disabled={!enabled}>Enviar presupuesto</button></form>}
     {canAct && request.pricing_type === "FIXED" && <form className="engagement-response-form" action={acceptDirectRequest}><input type="hidden" name="request_id" value={request.id} /><h3>Confirmar por {request.price_currency} {request.configured_price}</h3><div><label>Inicio<input name="starts_at" type="datetime-local" required disabled={!enabled} /></label><label>Fin<input name="ends_at" type="datetime-local" required disabled={!enabled} /></label></div><button className="primary" disabled={!enabled}>Aceptar y crear turno</button></form>}
+    <div className="engagement-actions"><Link className="secondary" href={`/prestador/mensajes?request=${request.id}`}>Abrir mensajes</Link></div>
     {canAct && <form action={declineProviderRequest}><input type="hidden" name="request_id" value={request.id} /><button className="secondary" disabled={!enabled}>Rechazar solicitud</button></form>}
   </article>;
 }
