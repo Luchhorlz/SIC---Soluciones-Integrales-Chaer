@@ -53,11 +53,21 @@ No existe bolsa pública de pedidos. Sólo el cliente propietario y el usuario a
 
 El pago del trabajo ocurre fuera de SIC en el MVP. Mercado Pago se usa únicamente para la suscripción mensual del prestador.
 
+## Comunicación y reputación
+
+Una conversación pertenece a una única solicitud; sus participantes se derivan del cliente propietario y del usuario asociado al perfil destinatario. Una solicitud cerrada sin contratación queda en modo lectura. Cada mensaje conserva remitente, fecha, lectura y estado de moderación; el envío se limita a veinte mensajes por minuto y no existe mensajería masiva ni contacto sin contexto.
+
+Las notificaciones internas registran eventos de solicitud, presupuesto, turno, mensaje y opinión. Los correos son únicamente transaccionales, se encolan en el mismo registro y el worker intenta entregarlos por SMTP sin bloquear la operación principal.
+
+Un cliente puede guardar perfiles, pero la lista vuelve a consultar la visibilidad pública central antes de mostrarlos. Una opinión es única por contratación, exige estado `COMPLETED` y confirmación del cliente, y comienza `PENDING`. Sólo `PUBLISHED` participa del promedio. Editar conserva la versión anterior y devuelve la reseña a moderación; administración puede publicar, rechazar u ocultar con motivo cuando restringe contenido.
+
 ## Invariantes
 
 - No existen solicitudes públicas ni feed social.
 - La suscripción nunca omite documentación o bloqueos.
 - Una opinión requiere contratación completada.
+- Sólo opiniones publicadas por moderación participan del promedio público.
+- No existe conversación sin una solicitud válida y participantes derivados.
 - La dirección exacta no es pública.
 - Los documentos profesionales no tienen URL pública permanente.
 - El historial documental, financiero y de auditoría no se sobrescribe.

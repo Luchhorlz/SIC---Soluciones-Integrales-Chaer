@@ -43,6 +43,8 @@ En Fase 8, `search` agrega una proyección pública de sólo lectura para evitar
 
 En Fase 9, `engagements` coordina solicitudes, adjuntos, presupuestos y turnos sin crear publicaciones públicas. Cada lectura combina RBAC con propiedad del cliente o pertenencia al perfil del prestador. Los cambios pasan por máquinas de estado explícitas y la agenda agrega una restricción de exclusión GiST para evitar solapamientos confirmados incluso ante concurrencia. El domicilio del cliente se copia al confirmar y se cifra con AES-256-GCM; la dirección original no se replica en respuestas públicas. La decisión está en `docs/decisions/0005-private-engagement-state-machine.md`.
 
+En Fase 10, `messaging` deriva participantes desde la solicitud y nunca acepta destinatarios arbitrarios; Next.js actualiza el hilo mediante sondeo de ocho segundos pausado cuando la pestaña no está visible. `notifications` conserva la bandeja interna y el estado de una salida transaccional procesada por Celery/SMTP. `favorites` reutiliza la proyección pública y no vuelve visible un perfil. `reviews` exige turno completado y confirmado, conserva revisiones de edición y actualiza la reputación sólo después de moderación. La decisión está en `docs/decisions/0006-contextual-communication-and-reviews.md`.
+
 Cada módulo separa transporte (`api.py`), esquemas, casos de uso, repositorios, modelos, permisos, eventos y pruebas. Las transacciones comienzan en el caso de uso.
 
 ## Host Windows y URL pública

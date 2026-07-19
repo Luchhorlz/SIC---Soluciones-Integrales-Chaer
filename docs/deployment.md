@@ -6,6 +6,8 @@ Docker Compose ejecuta web, API, worker/beat, PostGIS, Redis, MinIO, ClamAV y Ma
 
 ClamAV requiere memoria suficiente para cargar las firmas; el host productivo debe reservar recursos y verificar el healthcheck antes de poner la suite Online. `S3_PRESIGN_ENDPOINT` debe apuntar a una URL alcanzable por el navegador sin convertir el bucket en público.
 
+Mailpit recibe correo transaccional en desarrollo mediante `SMTP_HOST=mailpit`, `SMTP_PORT=1025` y `EMAIL_FROM`. En staging o producción se reemplaza por un proveedor SMTP aprobado y TLS configurable; el worker procesa la bandeja cada minuto y registra únicamente el tipo de error, sin contenido ni credenciales.
+
 ## Staging
 
 Dominio, base, bucket y credenciales sandbox separados. Misma topología que producción y datos exclusivamente ficticios.

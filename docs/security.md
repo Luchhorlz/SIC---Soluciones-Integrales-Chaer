@@ -57,6 +57,14 @@ Los adjuntos usan el mismo pipeline privado de firma real, tamaño, hash, clave 
 
 Las transiciones inválidas se rechazan y una restricción de exclusión de PostgreSQL impide dos turnos confirmados o en curso superpuestos para el mismo prestador. Esta garantía no depende de una comprobación previa vulnerable a carreras.
 
+## Mensajería, avisos y opiniones
+
+Las conversaciones aplican ABAC sobre la solicitud en cada lectura y escritura. Conocer el UUID devuelve `404` a terceros; una solicitud cerrada sin turno no acepta mensajes nuevos. El cuerpo se valida entre 1 y 2.000 caracteres y cada remitente dispone de un límite persistente de veinte mensajes por minuto. No existe búsqueda de usuarios, destinatario libre ni envío masivo.
+
+Los enlaces de notificación sólo admiten rutas locales iniciadas en `/` y rechazan valores `//` o URLs externas. El correo se genera en texto y HTML escapado, no contiene domicilio ni adjuntos privados y se entrega desde una bandeja reintentable por el worker. La falta de SMTP no bloquea la notificación interna.
+
+Favoritos no evitan `ProviderVisibilityService`: un perfil deja de mostrarse aunque conserve la relación privada. Las reseñas exigen cliente propietario, booking completado y confirmación; la unicidad en PostgreSQL impide duplicados. Sólo una decisión `ADMIN` publica contenido y el promedio se recalcula desde filas `PUBLISHED`, evitando que pendientes, rechazadas u ocultas alteren reputación.
+
 ## Documentos profesionales privados
 
 Las cargas atraviesan el BFF autenticado y la API deriva el prestador del UUID del token. Se admiten únicamente PDF, PNG y JPEG cuyo contenido coincide con la firma declarada, con límite configurable de 10 MB y hash SHA-256 único por propietario. El objeto usa una clave UUID bajo `documents/{user_id}/`, permanece en bucket privado y no se registra su contenido ni el domicilio en logs.

@@ -36,7 +36,9 @@ Estado de Fase 8: navegación pública del catálogo, búsqueda textual por slug
 
 Estado de Fase 9: solicitud privada desde una oferta visible, cobertura por dirección propia, hasta cinco adjuntos PDF/PNG/JPEG controlados, presupuestos con vigencia, aceptación o rechazo, turnos con dirección cifrada, estados estrictos y protección de doble reserva implementados. Cliente y prestador disponen de bandejas separadas; no existe endpoint ni publicación pública de pedidos. Pendiente local: configurar `BOOKING_ADDRESS_ENCRYPTION_KEY`, autenticación, PostgreSQL/PostGIS y MinIO/ClamAV para ejecutar el recorrido persistente con archivos; CI valida migración, ABAC, estados, cifrado y solapamientos.
 
-Quedan cuatro fases principales desde el inicio de esta entrega: Fase 9 (esta entrega), Fase 10 (mensajería, notificaciones, favoritos y opiniones verificadas), Fase 11 (operación, soporte, administración y reportes) y Fase 12 (hardening y lanzamiento). Al cerrar Fase 9 quedan tres.
+Estado de Fase 10: mensajería contextual con lectura y límite de envío, notificaciones internas, correo transaccional en segundo plano, favoritos sujetos a visibilidad y opiniones únicas de trabajos completados con edición versionada y moderación administrativa implementados. Las pantallas separadas de cliente y prestador consumen únicamente el BFF; el perfil público muestra sólo reseñas aprobadas. Pendiente local: configurar autenticación, PostgreSQL/PostGIS y SMTP/Mailpit para recorrer datos persistentes; CI valida migración, ABAC, moderación y recálculo de reputación.
+
+Al cerrar Fase 10 quedan dos fases principales: Fase 11 (operación, soporte, administración y reportes) y Fase 12 (hardening y lanzamiento).
 
 ## Fases 11 y 12 — Operación y lanzamiento
 

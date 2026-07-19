@@ -4,7 +4,7 @@ Marketplace web de servicios presenciales y remotos. Los clientes encuentran y c
 
 ## Estado
 
-El proyecto alcanzó la **Fase 9 — Solicitudes, presupuestos y contrataciones**. La base del monorepo, identidad, direcciones privadas, catálogo, oferta profesional, revisión documental, suscripción mensual, búsqueda segura y el circuito privado de contratación están implementados; las credenciales externas y la ejecución completa de PostgreSQL/PostGIS, MinIO, ClamAV y Mercado Pago sandbox siguen siendo requisitos del entorno local.
+El proyecto alcanzó la **Fase 10 — Comunicación y reputación verificadas**. La base del monorepo, identidad, direcciones privadas, catálogo, oferta profesional, revisión documental, suscripción mensual, búsqueda segura, contratación privada, mensajería contextual, notificaciones, favoritos y opiniones verificadas están implementados; las credenciales externas y la ejecución completa de PostgreSQL/PostGIS, MinIO, ClamAV, SMTP y Mercado Pago sandbox siguen siendo requisitos del entorno local.
 
 ## Producto acordado
 
@@ -58,6 +58,9 @@ Rutas visuales disponibles durante el desarrollo:
 - `/onboarding/rol`: selección interactiva de cliente/prestador.
 - `/cuenta`: panel inicial del cliente.
 - `/cuenta/contrataciones`: solicitudes, presupuestos y turnos privados del cliente.
+- `/cuenta/mensajes`: conversaciones privadas ligadas a solicitudes o turnos.
+- `/cuenta/notificaciones`: actividad transaccional del cliente.
+- `/cuenta/favoritos`: prestadores visibles guardados por el cliente.
 - `/cuenta/direcciones`: gestión privada de direcciones y vista geográfica.
 - `/admin/catalogo`: administración protegida de categorías, subcategorías y servicios.
 - `/onboarding/prestador`: activación del perfil profesional.
@@ -66,10 +69,14 @@ Rutas visuales disponibles durante el desarrollo:
 - `/prestador/servicios`: aptitudes, modalidades, precios, cobertura y disponibilidad.
 - `/prestador/solicitudes`: bandeja privada para ver, cotizar, aceptar o rechazar pedidos.
 - `/prestador/contrataciones`: agenda privada para iniciar, completar, cancelar o registrar ausencia.
+- `/prestador/mensajes`: conversaciones contextuales con clientes legítimos.
+- `/prestador/opiniones`: reseñas verificadas recibidas y su estado de moderación.
+- `/prestador/notificaciones`: actividad transaccional del perfil.
 - `/prestador/documentacion`: requisitos, carga privada y seguimiento de documentos.
 - `/admin/documentos`: configuración de requisitos y cola de revisión protegida.
 - `/prestador/suscripcion`: plan mensual, checkout externo y estado verificado.
 - `/admin/suscripciones`: configuración protegida del plan mensual real.
+- `/admin/opiniones`: cola protegida para publicar, rechazar u ocultar reseñas.
 
 La geocodificación requiere Places API (New), Maps Static API, `GOOGLE_MAPS_API_KEY` y `GOOGLE_MAPS_URL_SIGNING_SECRET`. Ambos valores permanecen fuera de Git y del JavaScript enviado al navegador.
 
@@ -86,6 +93,8 @@ El mismo comando puede ejecutarse nuevamente: actualiza por código estable y no
 Los requisitos documentales no se infieren ni se inventan. `seeds/service-requirements.json` comienza vacío y administración los configura por servicio y jurisdicción. Las cargas admiten PDF, PNG y JPEG de hasta 10 MB, se guardan en el bucket privado y deben pasar ClamAV antes de entrar a revisión.
 
 El plan de suscripción también comienza sin datos ficticios: un `ADMIN` define nombre, precio, moneda y beneficios. El checkout sólo se habilita con un plan activo, credenciales sandbox, URL de retorno y secreto de webhook. La URL pública de notificaciones prevista es `/api/webhooks/mercado-pago`; Next.js conserva la API detrás del BFF y reenvía la firma y el cuerpo originales.
+
+Los correos de actividad son transaccionales y salen desde el worker mediante una bandeja persistente. En desarrollo se entregan a Mailpit cuando `SMTP_HOST` y `EMAIL_FROM` están configurados; sin SMTP, las notificaciones dentro de SIC continúan funcionando y no se intenta una entrega externa.
 
 ## Reglas centrales
 

@@ -7,6 +7,7 @@
 - Repositorio: `Luchhorlz/SIC---Soluciones-Integrales-Chaer`.
 - El producto necesita servidor propio `.exe` y control desde Systray.
 - Marca y referencias visuales entregadas.
+- La mensajería forma parte del MVP y sólo existe dentro de solicitudes o contrataciones válidas.
 
 ## Necesarias antes de su fase
 
@@ -16,7 +17,7 @@
 4. Visibilidad del teléfono antes de una solicitud.
 5. Posible comisión futura.
 6. Política de cancelación y quién confirma la finalización.
-7. Moderación de opiniones.
+7. Política editorial definitiva de moderación de opiniones; mientras se define, toda reseña requiere aprobación `ADMIN` antes de publicarse.
 8. Documentos requeridos por profesión y jurisdicción.
 9. Radio máximo de cobertura.
 10. Idiomas para servicios remotos.
@@ -24,9 +25,8 @@
 12. Infraestructura física inicial y requisitos mínimos del equipo Windows.
 13. Retención de documentos.
 14. Reglas de perfiles destacados.
-15. Inclusión del chat en el MVP.
-16. Textos legales revisados profesionalmente.
-17. Certificado de firma de código para los `.exe` y estrategia de actualizaciones.
-18. Si Offline detiene solo la publicación o también toda la suite local. Recomendación: acciones separadas.
+15. Textos legales revisados profesionalmente.
+16. Certificado de firma de código para los `.exe` y estrategia de actualizaciones.
+17. Si Offline detiene solo la publicación o también toda la suite local. Recomendación: acciones separadas.
 
 Estas preguntas no bloquean la Fase 1. Se usarán configuración y feature flags donde corresponda.

@@ -37,3 +37,8 @@
 - Agregada la Fase 9 con solicitudes privadas sobre ofertas visibles, validación de modalidad/cobertura y adjuntos controlados.
 - Incorporados presupuestos con vigencia, aceptación/rechazo, turnos, estados estrictos por actor y bandejas separadas de cliente/prestador.
 - Cifradas las instantáneas de domicilio con AES-256-GCM y protegida la agenda contra reservas confirmadas superpuestas mediante exclusión GiST.
+- Agregada la Fase 10 con conversaciones privadas ligadas a solicitudes, lectura contextual, sondeo inteligente y límite de envío por usuario.
+- Incorporadas notificaciones internas y correos transaccionales encolados, sin contacto masivo ni enlaces externos arbitrarios.
+- Añadidos favoritos que sólo muestran perfiles todavía visibles y reseñas únicas para turnos completados y confirmados.
+- Implementadas edición con revisiones inmutables, moderación administrativa y recálculo del promedio usando únicamente opiniones publicadas.
+- Conectadas las vistas de mensajes, notificaciones, favoritos, opiniones del prestador y cola `/admin/opiniones` mediante el BFF de Next.js.

@@ -111,3 +111,26 @@ Prestador con rol `PROVIDER` y perfil derivado del token:
 - `GET /v1/provider/bookings` y acciones `confirm`, `start`, `complete`, `cancel` o `no-show` según estado.
 
 La API nunca acepta `client_id` ni `provider_id` del navegador. Crear una solicitud vuelve a comprobar `ProviderVisibilityService`, modalidad y cobertura; aceptar crea una sola reserva por solicitud. PostgreSQL rechaza turnos `CONFIRMED`/`IN_PROGRESS` superpuestos del mismo prestador.
+
+## Mensajería, notificaciones, favoritos y opiniones
+
+Para cualquier usuario participante:
+
+- `GET /v1/me/conversations` y `GET /v1/me/conversations/{requestId}`.
+- `POST /v1/me/conversations/{requestId}/messages`.
+- `GET /v1/me/notifications`, `POST /v1/me/notifications/read-all` y `POST /v1/me/notifications/{id}/read`.
+
+La conversación se crea de forma idempotente desde una solicitud válida y el UUID no concede acceso. Los mensajes se actualizan por BFF con sondeo inteligente; no hay WebSocket ni endpoint para destinatarios arbitrarios.
+
+Cliente con rol `CLIENT`:
+
+- `GET /v1/client/favorites` y `PUT|DELETE /v1/client/favorites/{providerSlug}`.
+- `GET /v1/client/reviews`, `POST /v1/client/reviews/bookings/{bookingId}` y `PATCH /v1/client/reviews/{reviewId}`.
+
+Prestador y administración:
+
+- `GET /v1/provider/reviews`.
+- `GET /v1/admin/reviews` y `POST /v1/admin/reviews/{reviewId}/moderate` con rol `ADMIN`.
+- `GET /v1/providers/{providerSlug}/reviews` devuelve únicamente reseñas `PUBLISHED` de un perfil todavía visible.
+
+La API impone una opinión por booking, calificación de 1 a 5 y comentario de 10 a 2.000 caracteres. Editar una opinión publicada la retira del promedio hasta una nueva aprobación.
