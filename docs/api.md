@@ -85,3 +85,11 @@ Administración:
 - `PATCH /v1/admin/subscription-plans/{id}`: edita sin borrar; sólo puede existir un plan activo.
 
 Mercado Pago llama públicamente a `POST /api/webhooks/mercado-pago` en Next.js. El BFF reenvía cuerpo, `x-signature`, `x-request-id` y `data.id` a `POST /v1/webhooks/mercado-pago` en la API privada. FastAPI valida la firma antes de persistir, guarda sólo el hash del cuerpo, deduplica por evento externo y consulta `/preapproval/{id}` o `/authorized_payments/{id}` antes de aplicar efectos.
+
+## Búsqueda y perfiles públicos
+
+- `GET /v1/search/providers`: acepta texto, slugs canónicos, modalidad, disponibilidad, orden, cursor y, cuando el navegador la autoriza, latitud/longitud con radio entre 500 m y 100 km.
+- `GET /v1/providers/{slug}`: perfil público seguro o `404` si ninguna oferta del prestador es visible.
+- `GET /v1/providers/{slug}/services`: únicamente ofertas visibles del mismo perfil.
+
+Los endpoints son consumidos por componentes servidor de Next.js; el navegador navega por el BFF y no conoce `API_INTERNAL_URL`. Una búsqueda presencial exige coordenadas, nunca una localidad escrita libremente. PostGIS filtra con `ST_DWithin` antes de calcular distancia. La respuesta redondea distancias a 100 metros y puntos de mapa a dos decimales; nunca incluye domicilio, `address_id`, punto base ni centro exacto de cobertura. Las modalidades remotas no reciben distancia y su ranking no cambia por ubicación.

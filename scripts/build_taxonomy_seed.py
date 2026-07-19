@@ -119,12 +119,14 @@ def main() -> None:
     parser.add_argument("--seed", type=Path, default=Path("seeds/taxonomy.json"))
     parser.add_argument("--documentation", type=Path, default=Path("docs/taxonomy.md"))
     parser.add_argument("--manifest", type=Path, default=Path("apps/web/src/data/taxonomy-manifest.json"))
+    parser.add_argument("--web-catalog", type=Path, default=Path("apps/web/src/data/taxonomy.json"))
     args = parser.parse_args()
     markdown = args.source.read_text(encoding="utf-8")
     seed = build_seed(markdown)
     args.seed.parent.mkdir(parents=True, exist_ok=True)
     args.documentation.parent.mkdir(parents=True, exist_ok=True)
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
+    args.web_catalog.parent.mkdir(parents=True, exist_ok=True)
     seed_text = json.dumps(seed, ensure_ascii=False, indent=2) + "\n"
     args.seed.write_text(seed_text, encoding="utf-8")
     args.documentation.write_text(markdown.rstrip() + "\n", encoding="utf-8")
@@ -132,6 +134,9 @@ def main() -> None:
     services = sum(len(subcategory["services"]) for category in seed["categories"] for subcategory in category["subcategories"])
     manifest = {"version": seed["version"], "categories": len(seed["categories"]), "subcategories": subcategories, "services": services, "seed_sha256": hashlib.sha256(seed_text.encode("utf-8")).hexdigest()}
     args.manifest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    # Next keeps this canonical snapshot as a read-only fallback when the local
+    # API/database is not running (for example, during a visual preview).
+    args.web_catalog.write_text(seed_text, encoding="utf-8")
     print(f"Generated {len(seed['categories'])} categories, {subcategories} subcategories and {services} services")
 
 

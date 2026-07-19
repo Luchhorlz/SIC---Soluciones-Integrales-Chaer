@@ -30,3 +30,7 @@
 - Agregada la Fase 7 con plan mensual configurable desde `/admin/suscripciones`, sin precio ni niveles ficticios.
 - Incorporado el checkout externo de Mercado Pago en `/prestador/suscripcion`, con URL permitida y datos de tarjeta fuera de SIC.
 - Implementados eventos de cobro persistidos e idempotentes, firma HMAC, consulta posterior de preaprobaciones/facturas y estados normalizados conectados a la visibilidad.
+- Agregada la Fase 8 con navegación pública de las 29 categorías, 140 subcategorías y 1.392 servicios canónicos.
+- Incorporada búsqueda remota, presencial e híbrida con `ST_DWithin`, distancia posterior al filtro, disponibilidad, ranking inicial y cursor.
+- Publicados perfiles seguros que dependen exclusivamente de `ProviderVisibilityService` y responden `404` cuando dejan de ser visibles.
+- Añadidas vistas responsive de resultados en lista/mapa, ubicación aproximada sin domicilios, metadatos SSR, canonical, Open Graph, JSON-LD, sitemap y robots.

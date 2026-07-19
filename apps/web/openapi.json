@@ -1863,6 +1863,124 @@
         "title": "ProviderRequirementView",
         "type": "object"
       },
+      "ProviderSearchPage": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "location_applied": {
+            "title": "Location Applied",
+            "type": "boolean"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/SearchMode"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/ProviderSearchResult"
+            },
+            "title": "Results",
+            "type": "array"
+          }
+        },
+        "required": [
+          "results",
+          "count",
+          "next_cursor",
+          "mode",
+          "location_applied"
+        ],
+        "title": "ProviderSearchPage",
+        "type": "object"
+      },
+      "ProviderSearchResult": {
+        "properties": {
+          "average_response_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Response Minutes"
+          },
+          "business_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Business Name"
+          },
+          "completed_services_count": {
+            "title": "Completed Services Count",
+            "type": "integer"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "is_identity_verified": {
+            "title": "Is Identity Verified",
+            "type": "boolean"
+          },
+          "offer": {
+            "$ref": "#/components/schemas/PublicProviderOffer"
+          },
+          "profile_completeness": {
+            "title": "Profile Completeness",
+            "type": "integer"
+          },
+          "provider_slug": {
+            "title": "Provider Slug",
+            "type": "string"
+          },
+          "rating_average": {
+            "title": "Rating Average",
+            "type": "number"
+          },
+          "rating_count": {
+            "title": "Rating Count",
+            "type": "integer"
+          },
+          "response_rate": {
+            "title": "Response Rate",
+            "type": "number"
+          }
+        },
+        "required": [
+          "provider_slug",
+          "display_name",
+          "business_name",
+          "rating_average",
+          "rating_count",
+          "completed_services_count",
+          "response_rate",
+          "average_response_minutes",
+          "profile_completeness",
+          "is_identity_verified",
+          "offer"
+        ],
+        "title": "ProviderSearchResult",
+        "type": "object"
+      },
       "ProviderServiceCreate": {
         "properties": {
           "accepts_urgent": {
@@ -2382,6 +2500,306 @@
         "title": "ProviderSubscriptionView",
         "type": "object"
       },
+      "PublicPortfolioItem": {
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "type": "integer"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "position"
+        ],
+        "title": "PublicPortfolioItem",
+        "type": "object"
+      },
+      "PublicProviderOffer": {
+        "properties": {
+          "accepts_urgent": {
+            "title": "Accepts Urgent",
+            "type": "boolean"
+          },
+          "approximate_latitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Coarse point rounded to two decimal degrees",
+            "title": "Approximate Latitude"
+          },
+          "approximate_longitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Coarse point rounded to two decimal degrees",
+            "title": "Approximate Longitude"
+          },
+          "available_today": {
+            "title": "Available Today",
+            "type": "boolean"
+          },
+          "category_name": {
+            "title": "Category Name",
+            "type": "string"
+          },
+          "category_slug": {
+            "title": "Category Slug",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "distance_meters": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Approximate distance rounded to 100 metres",
+            "title": "Distance Meters"
+          },
+          "estimated_duration_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Duration Minutes"
+          },
+          "guarantee_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Guarantee Days"
+          },
+          "headline": {
+            "title": "Headline",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "modalities": {
+            "items": {
+              "$ref": "#/components/schemas/ProviderModality"
+            },
+            "title": "Modalities",
+            "type": "array"
+          },
+          "price_amount": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Amount"
+          },
+          "price_currency": {
+            "title": "Price Currency",
+            "type": "string"
+          },
+          "pricing_type": {
+            "$ref": "#/components/schemas/PricingType"
+          },
+          "service_id": {
+            "format": "uuid",
+            "title": "Service Id",
+            "type": "string"
+          },
+          "service_name": {
+            "title": "Service Name",
+            "type": "string"
+          },
+          "service_slug": {
+            "title": "Service Slug",
+            "type": "string"
+          },
+          "subcategory_name": {
+            "title": "Subcategory Name",
+            "type": "string"
+          },
+          "subcategory_slug": {
+            "title": "Subcategory Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "service_id",
+          "service_name",
+          "service_slug",
+          "subcategory_name",
+          "subcategory_slug",
+          "category_name",
+          "category_slug",
+          "headline",
+          "description",
+          "pricing_type",
+          "price_amount",
+          "price_currency",
+          "estimated_duration_minutes",
+          "guarantee_days",
+          "accepts_urgent",
+          "modalities",
+          "available_today"
+        ],
+        "title": "PublicProviderOffer",
+        "type": "object"
+      },
+      "PublicProviderProfile": {
+        "properties": {
+          "average_response_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Response Minutes"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "business_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Business Name"
+          },
+          "completed_services_count": {
+            "title": "Completed Services Count",
+            "type": "integer"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "documents_verified": {
+            "title": "Documents Verified",
+            "type": "boolean"
+          },
+          "experience_years": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Experience Years"
+          },
+          "is_identity_verified": {
+            "title": "Is Identity Verified",
+            "type": "boolean"
+          },
+          "portfolio": {
+            "items": {
+              "$ref": "#/components/schemas/PublicPortfolioItem"
+            },
+            "title": "Portfolio",
+            "type": "array"
+          },
+          "profile_completeness": {
+            "title": "Profile Completeness",
+            "type": "integer"
+          },
+          "rating_average": {
+            "title": "Rating Average",
+            "type": "number"
+          },
+          "rating_count": {
+            "title": "Rating Count",
+            "type": "integer"
+          },
+          "response_rate": {
+            "title": "Response Rate",
+            "type": "number"
+          },
+          "services": {
+            "items": {
+              "$ref": "#/components/schemas/PublicProviderOffer"
+            },
+            "title": "Services",
+            "type": "array"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "display_name",
+          "business_name",
+          "bio",
+          "experience_years",
+          "rating_average",
+          "rating_count",
+          "completed_services_count",
+          "response_rate",
+          "average_response_minutes",
+          "profile_completeness",
+          "is_identity_verified",
+          "documents_verified",
+          "portfolio",
+          "services"
+        ],
+        "title": "PublicProviderProfile",
+        "type": "object"
+      },
       "RequirementUpsert": {
         "properties": {
           "document_type": {
@@ -2554,6 +2972,27 @@
         ],
         "title": "RoleSelectionResult",
         "type": "object"
+      },
+      "SearchMode": {
+        "enum": [
+          "ALL",
+          "NEARBY",
+          "REMOTE",
+          "HYBRID",
+          "AT_PROVIDER_LOCATION",
+          "PICKUP_DELIVERY"
+        ],
+        "title": "SearchMode",
+        "type": "string"
+      },
+      "SearchSort": {
+        "enum": [
+          "RELEVANCE",
+          "RATING",
+          "DISTANCE"
+        ],
+        "title": "SearchSort",
+        "type": "string"
       },
       "ServiceAreaInput": {
         "properties": {
@@ -6452,6 +6891,301 @@
         "summary": "Create Provider Subscription Checkout",
         "tags": [
           "provider-subscription"
+        ]
+      }
+    },
+    "/v1/providers/{slug}": {
+      "get": {
+        "operationId": "public_provider_v1_providers__slug__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicProviderProfile"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Public Provider",
+        "tags": [
+          "public-search"
+        ]
+      }
+    },
+    "/v1/providers/{slug}/services": {
+      "get": {
+        "operationId": "public_provider_services_v1_providers__slug__services_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PublicProviderOffer"
+                  },
+                  "title": "Response Public Provider Services V1 Providers  Slug  Services Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Public Provider Services",
+        "tags": [
+          "public-search"
+        ]
+      }
+    },
+    "/v1/search/providers": {
+      "get": {
+        "operationId": "search_providers_v1_search_providers_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 160,
+                  "minLength": 2,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "service_slug",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 160,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Service Slug"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category_slug",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 140,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category Slug"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subcategory_slug",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 140,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Subcategory Slug"
+            }
+          },
+          {
+            "in": "query",
+            "name": "mode",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SearchMode",
+              "default": "ALL"
+            }
+          },
+          {
+            "in": "query",
+            "name": "latitude",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maximum": 90,
+                  "minimum": -90,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Latitude"
+            }
+          },
+          {
+            "in": "query",
+            "name": "longitude",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maximum": 180,
+                  "minimum": -180,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Longitude"
+            }
+          },
+          {
+            "in": "query",
+            "name": "radius_meters",
+            "required": false,
+            "schema": {
+              "default": 20000,
+              "maximum": 100000,
+              "minimum": 500,
+              "title": "Radius Meters",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "available_today",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Available Today",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SearchSort",
+              "default": "RELEVANCE"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 100,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderSearchPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Search Providers",
+        "tags": [
+          "public-search"
         ]
       }
     },

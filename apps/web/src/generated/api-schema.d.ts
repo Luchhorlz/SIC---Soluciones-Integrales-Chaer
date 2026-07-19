@@ -744,6 +744,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/providers/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Public Provider */
+        get: operations["public_provider_v1_providers__slug__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/providers/{slug}/services": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Public Provider Services */
+        get: operations["public_provider_services_v1_providers__slug__services_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/search/providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search Providers */
+        get: operations["search_providers_v1_search_providers_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/webhooks/mercado-pago": {
         parameters: {
             query?: never;
@@ -1380,6 +1431,42 @@ export interface components {
             /** Service Name */
             service_name: string;
         };
+        /** ProviderSearchPage */
+        ProviderSearchPage: {
+            /** Count */
+            count: number;
+            /** Location Applied */
+            location_applied: boolean;
+            mode: components["schemas"]["SearchMode"];
+            /** Next Cursor */
+            next_cursor: string | null;
+            /** Results */
+            results: components["schemas"]["ProviderSearchResult"][];
+        };
+        /** ProviderSearchResult */
+        ProviderSearchResult: {
+            /** Average Response Minutes */
+            average_response_minutes: number | null;
+            /** Business Name */
+            business_name: string | null;
+            /** Completed Services Count */
+            completed_services_count: number;
+            /** Display Name */
+            display_name: string;
+            /** Is Identity Verified */
+            is_identity_verified: boolean;
+            offer: components["schemas"]["PublicProviderOffer"];
+            /** Profile Completeness */
+            profile_completeness: number;
+            /** Provider Slug */
+            provider_slug: string;
+            /** Rating Average */
+            rating_average: number;
+            /** Rating Count */
+            rating_count: number;
+            /** Response Rate */
+            response_rate: number;
+        };
         /** ProviderServiceCreate */
         ProviderServiceCreate: {
             /**
@@ -1529,6 +1616,107 @@ export interface components {
              */
             updated_at: string;
         };
+        /** PublicPortfolioItem */
+        PublicPortfolioItem: {
+            /** Description */
+            description: string;
+            /** Position */
+            position: number;
+            /** Title */
+            title: string;
+        };
+        /** PublicProviderOffer */
+        PublicProviderOffer: {
+            /** Accepts Urgent */
+            accepts_urgent: boolean;
+            /**
+             * Approximate Latitude
+             * @description Coarse point rounded to two decimal degrees
+             */
+            approximate_latitude?: number | null;
+            /**
+             * Approximate Longitude
+             * @description Coarse point rounded to two decimal degrees
+             */
+            approximate_longitude?: number | null;
+            /** Available Today */
+            available_today: boolean;
+            /** Category Name */
+            category_name: string;
+            /** Category Slug */
+            category_slug: string;
+            /** Description */
+            description: string;
+            /**
+             * Distance Meters
+             * @description Approximate distance rounded to 100 metres
+             */
+            distance_meters?: number | null;
+            /** Estimated Duration Minutes */
+            estimated_duration_minutes: number | null;
+            /** Guarantee Days */
+            guarantee_days: number | null;
+            /** Headline */
+            headline: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Modalities */
+            modalities: components["schemas"]["ProviderModality"][];
+            /** Price Amount */
+            price_amount: string | null;
+            /** Price Currency */
+            price_currency: string;
+            pricing_type: components["schemas"]["PricingType"];
+            /**
+             * Service Id
+             * Format: uuid
+             */
+            service_id: string;
+            /** Service Name */
+            service_name: string;
+            /** Service Slug */
+            service_slug: string;
+            /** Subcategory Name */
+            subcategory_name: string;
+            /** Subcategory Slug */
+            subcategory_slug: string;
+        };
+        /** PublicProviderProfile */
+        PublicProviderProfile: {
+            /** Average Response Minutes */
+            average_response_minutes: number | null;
+            /** Bio */
+            bio: string | null;
+            /** Business Name */
+            business_name: string | null;
+            /** Completed Services Count */
+            completed_services_count: number;
+            /** Display Name */
+            display_name: string;
+            /** Documents Verified */
+            documents_verified: boolean;
+            /** Experience Years */
+            experience_years: number | null;
+            /** Is Identity Verified */
+            is_identity_verified: boolean;
+            /** Portfolio */
+            portfolio: components["schemas"]["PublicPortfolioItem"][];
+            /** Profile Completeness */
+            profile_completeness: number;
+            /** Rating Average */
+            rating_average: number;
+            /** Rating Count */
+            rating_count: number;
+            /** Response Rate */
+            response_rate: number;
+            /** Services */
+            services: components["schemas"]["PublicProviderOffer"][];
+            /** Slug */
+            slug: string;
+        };
         /** RequirementUpsert */
         RequirementUpsert: {
             /** Document Type */
@@ -1609,6 +1797,16 @@ export interface components {
             /** Roles */
             roles: components["schemas"]["UserRoleName"][];
         };
+        /**
+         * SearchMode
+         * @enum {string}
+         */
+        SearchMode: "ALL" | "NEARBY" | "REMOTE" | "HYBRID" | "AT_PROVIDER_LOCATION" | "PICKUP_DELIVERY";
+        /**
+         * SearchSort
+         * @enum {string}
+         */
+        SearchSort: "RELEVANCE" | "RATING" | "DISTANCE";
         /** ServiceAreaInput */
         ServiceAreaInput: {
             /**
@@ -3636,6 +3834,110 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SubscriptionCheckoutView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    public_provider_v1_providers__slug__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicProviderProfile"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    public_provider_services_v1_providers__slug__services_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicProviderOffer"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_providers_v1_search_providers_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+                service_slug?: string | null;
+                category_slug?: string | null;
+                subcategory_slug?: string | null;
+                mode?: components["schemas"]["SearchMode"];
+                latitude?: number | null;
+                longitude?: number | null;
+                radius_meters?: number;
+                available_today?: boolean;
+                sort?: components["schemas"]["SearchSort"];
+                cursor?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderSearchPage"];
                 };
             };
             /** @description Validation Error */

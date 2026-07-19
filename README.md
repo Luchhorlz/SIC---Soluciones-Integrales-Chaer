@@ -4,7 +4,7 @@ Marketplace web de servicios presenciales y remotos. Los clientes encuentran y c
 
 ## Estado
 
-El proyecto alcanzó la **Fase 7 — Suscripciones**. La base del monorepo, identidad, direcciones privadas, catálogo, oferta profesional, revisión documental y suscripción mensual configurable están implementados; las credenciales externas y la ejecución completa de PostgreSQL/PostGIS, MinIO, ClamAV y Mercado Pago sandbox siguen siendo requisitos del entorno local.
+El proyecto alcanzó la **Fase 8 — Búsqueda y perfiles públicos**. La base del monorepo, identidad, direcciones privadas, catálogo, oferta profesional, revisión documental, suscripción mensual, búsqueda geográfica/remota y perfiles públicos seguros están implementados; las credenciales externas y la ejecución completa de PostgreSQL/PostGIS, MinIO, ClamAV y Mercado Pago sandbox siguen siendo requisitos del entorno local.
 
 ## Producto acordado
 
@@ -48,6 +48,11 @@ Cuando Docker Desktop esté instalado, la suite completa se iniciará con `docke
 
 Rutas visuales disponibles durante el desarrollo:
 
+- `/servicios`: directorio público de las 29 categorías canónicas.
+- `/categoria/{slug}` y `/categoria/{slug}/{subcategorySlug}`: navegación por subcategorías y servicios.
+- `/servicio/{slug}`: detalle SEO del servicio y búsqueda de prestadores visibles.
+- `/buscar`: búsqueda por catálogo, modalidad, ubicación aproximada, disponibilidad, lista y mapa.
+- `/prestador/{slug}`: perfil público seguro; responde como no disponible si no supera visibilidad central.
 - `/ingresar`: ingreso con Google y estado de configuración.
 - `/onboarding/rol`: selección interactiva de cliente/prestador.
 - `/cuenta`: panel inicial del cliente.

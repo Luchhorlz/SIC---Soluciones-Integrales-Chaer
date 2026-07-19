@@ -39,6 +39,8 @@ En Fase 6, `documents` posee requisitos, envíos, estados, revisiones inmutables
 
 En Fase 7, `subscriptions` posee planes, suscripciones y eventos de cobro. `BillingProvider` evita que los DTO de Mercado Pago entren al dominio. La web inicia el checkout por BFF y sólo redirige a hosts oficiales permitidos; el webhook público atraviesa un proxy mínimo de Next.js hacia la API privada. `provider_services` depende de una interfaz de lectura del estado normalizado y `ProviderVisibilityService` sigue siendo el único evaluador final.
 
+En Fase 8, `search` agrega una proyección pública de sólo lectura para evitar consultas por registro. Puede unir catálogo, oferta, perfil y estado de cuenta, pero no replica reglas de publicación: documentación y suscripción se consultan mediante sus interfaces propietarias y cada candidato pasa por `ProviderVisibilityService`. El detalle está registrado en `docs/decisions/0004-public-search-read-model.md`.
+
 Cada módulo separa transporte (`api.py`), esquemas, casos de uso, repositorios, modelos, permisos, eventos y pruebas. Las transacciones comienzan en el caso de uso.
 
 ## Host Windows y URL pública

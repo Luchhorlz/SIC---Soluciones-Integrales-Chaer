@@ -47,6 +47,8 @@ La API exige rol `PROVIDER` y usa exclusivamente el UUID del token para consulta
 
 `ProviderVisibilityService` aplica deny by default. Un perfil incompleto, pausado, pendiente de revisión, sin suscripción, con documentación pendiente, sin modalidad o sin cobertura requerida devuelve un diagnóstico interno y no es publicable. La Fase 5 no contiene rutas públicas de prestadores.
 
+Desde Fase 8, búsqueda y perfil público vuelven a evaluar esa misma regla en cada lectura. Conocer un slug no evita el control: un prestador invisible recibe `404`. La búsqueda presencial sólo acepta coordenadas obtenidas por el navegador, limita el radio a 100 km, filtra cobertura antes de calcular distancia y devuelve únicamente distancia redondeada y un punto de mapa degradado. Direcciones, identificadores de dirección, puntos base y centros exactos no forman parte de los DTO públicos.
+
 ## Documentos profesionales privados
 
 Las cargas atraviesan el BFF autenticado y la API deriva el prestador del UUID del token. Se admiten únicamente PDF, PNG y JPEG cuyo contenido coincide con la firma declarada, con límite configurable de 10 MB y hash SHA-256 único por propietario. El objeto usa una clave UUID bajo `documents/{user_id}/`, permanece en bucket privado y no se registra su contenido ni el domicilio en logs.
