@@ -82,6 +82,15 @@ async def get_provider_principal(principal: CurrentPrincipal) -> Principal:
 ProviderPrincipal = Annotated[Principal, Depends(get_provider_principal)]
 
 
+async def get_client_principal(principal: CurrentPrincipal) -> Principal:
+    if UserRoleName.CLIENT.value not in principal.roles:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Client role required")
+    return principal
+
+
+ClientPrincipal = Annotated[Principal, Depends(get_client_principal)]
+
+
 async def get_identity_sync_principal(authorization: Annotated[str | None, Header()] = None) -> IdentitySyncPrincipal:
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing identity sync token")

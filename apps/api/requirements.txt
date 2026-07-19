@@ -13,3 +13,4 @@ email-validator==2.3.0
 GeoAlchemy2==0.18.4
 boto3==1.43.51
 python-multipart==0.0.22
+cryptography==49.0.0

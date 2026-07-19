@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     mercadopago_success_url: str | None = None
     mercadopago_api_base_url: str = "https://api.mercadopago.com"
     mercadopago_webhook_tolerance_seconds: int = 300
+    booking_address_encryption_key: str | None = None
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
