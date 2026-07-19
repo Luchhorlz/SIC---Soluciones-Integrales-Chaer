@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { ProviderResultCard } from "@/components/provider-result-card";
@@ -28,10 +29,9 @@ export default async function Home() {
             <div><b>◷ Privacidad geográfica</b><span>Sin domicilios públicos</span></div>
           </div>
         </div>
-        <div className="hero-visual" aria-label="Servicios presenciales y remotos conectados por SIC">
-          <div className="orbit orbit-one">⚒</div><div className="orbit orbit-two">⌁</div><div className="orbit orbit-three">✦</div>
-          <div className="person worker"><span>SIC</span></div><div className="person client"><span>24</span></div>
-          <div className="visual-caption">Catálogo real: 1.392 servicios</div>
+        <div className="hero-visual" aria-label="Una profesional asesora a un cliente en SIC">
+          <Image src="/images/demo/sic-hero-demo.png" alt="Profesional y cliente conversando en un entorno de trabajo" fill priority sizes="(max-width: 1100px) 0px, 42vw" />
+          <div className="visual-caption"><b>1.392</b><span>servicios para explorar</span></div>
         </div>
       </section>
 
@@ -43,7 +43,8 @@ export default async function Home() {
       </section>
 
       <section className="section providers" id="prestadores">
-        <div className="section-heading"><div><p className="eyebrow">PRESTADORES VISIBLES</p><h2>Opciones remotas destacadas</h2></div><Link href="/buscar?q=asesoramiento&mode=REMOTE">Explorar búsqueda →</Link></div>
+        <div className="section-heading"><div><p className="eyebrow">PRESTADORES VISIBLES</p><h2>Profesionales de ejemplo</h2></div><Link href="/buscar?q=asesoramiento&mode=REMOTE">Explorar búsqueda →</Link></div>
+        {featured.demoData && <div className="demo-catalog-notice"><b>Entorno demostrativo</b><span>Estos perfiles son ficticios y están identificados para retirarlos antes de la operación real.</span></div>}
         {featured.results.length ? <div className="home-provider-list">{featured.results.map((result) => <ProviderResultCard result={result} key={result.provider_slug} />)}</div> : <div className="public-empty-state"><span>⌕</span><h3>Todavía no hay prestadores públicos para destacar</h3><p>El catálogo ya se puede explorar completo. Los perfiles aparecerán aquí sólo cuando estén aprobados, documentados y con suscripción habilitada.</p></div>}
       </section>
 

@@ -59,6 +59,7 @@ class ProviderSearchResult(BaseModel):
     average_response_minutes: int | None
     profile_completeness: int
     is_identity_verified: bool
+    is_demo: bool
     offer: PublicProviderOffer
 
 
@@ -89,6 +90,7 @@ class PublicProviderProfile(BaseModel):
     average_response_minutes: int | None
     profile_completeness: int
     is_identity_verified: bool
+    is_demo: bool
     documents_verified: bool
     portfolio: list[PublicPortfolioItem]
     services: list[PublicProviderOffer]

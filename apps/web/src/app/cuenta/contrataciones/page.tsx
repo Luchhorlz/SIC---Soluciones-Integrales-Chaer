@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { auth } from "@/auth";
+import { isApplicationAuthConfigured } from "@/lib/auth-config";
 import { getClientBookings, getClientReviews, getClientServiceRequests, type ServiceBooking, type ServiceRequest, type ServiceReview } from "@/lib/internal-api";
 
 import { cancelServiceRequest, decideQuote, saveReview, updateClientBooking } from "./actions";
@@ -22,7 +23,7 @@ function money(value: string | null, currency: string) {
 }
 
 export default async function ClientEngagementsPage({ searchParams }: { searchParams: Promise<{ status?: string; error?: string; warning?: string }> }) {
-  const configured = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET && process.env.AUTH_SECRET && process.env.INTERNAL_API_JWT_SECRET);
+  const configured = isApplicationAuthConfigured();
   const session = configured ? await auth() : null;
   let requests: ServiceRequest[] = []; let bookings: ServiceBooking[] = []; let reviews: ServiceReview[] = []; let unavailable = false;
   if (session?.user?.roles.includes("CLIENT")) {

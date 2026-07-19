@@ -65,4 +65,7 @@ jobs:
       - run: alembic upgrade head
       - run: python -m sic_api.modules.catalog.seed --file ../../seeds/taxonomy.json
       - run: python -m sic_api.modules.catalog.seed --file ../../seeds/taxonomy.json
+      - run: DEMO_MODE=true python -m sic_api.modules.demo.seed --file ../../seeds/demo-data.json
+      - run: DEMO_MODE=true python -m sic_api.modules.demo.seed --file ../../seeds/demo-data.json
+      - run: DEMO_MODE=true python -m sic_api.modules.demo.seed --file ../../seeds/demo-data.json --remove
       - run: pytest

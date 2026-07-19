@@ -2618,6 +2618,10 @@
             "title": "Display Name",
             "type": "string"
           },
+          "is_demo": {
+            "title": "Is Demo",
+            "type": "boolean"
+          },
           "is_identity_verified": {
             "title": "Is Identity Verified",
             "type": "boolean"
@@ -2657,6 +2661,7 @@
           "average_response_minutes",
           "profile_completeness",
           "is_identity_verified",
+          "is_demo",
           "offer"
         ],
         "title": "ProviderSearchResult",
@@ -3422,6 +3427,10 @@
             ],
             "title": "Experience Years"
           },
+          "is_demo": {
+            "title": "Is Demo",
+            "type": "boolean"
+          },
           "is_identity_verified": {
             "title": "Is Identity Verified",
             "type": "boolean"
@@ -3474,6 +3483,7 @@
           "average_response_minutes",
           "profile_completeness",
           "is_identity_verified",
+          "is_demo",
           "documents_verified",
           "portfolio",
           "services"

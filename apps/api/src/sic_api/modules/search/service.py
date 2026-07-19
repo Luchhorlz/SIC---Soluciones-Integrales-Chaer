@@ -12,6 +12,7 @@ from sic_api.modules.provider_services.models import ProviderModality
 from sic_api.modules.providers.models import SubscriptionVisibilityStatus
 from sic_api.modules.providers.visibility import ProviderVisibilityContext, ProviderVisibilityService
 from sic_api.modules.users.models import UserStatus
+from sic_api.settings import get_settings
 
 from .repository import SearchCandidate, SearchRepository
 from .schemas import ProviderSearchPage, ProviderSearchResult, PublicPortfolioItem, PublicProviderOffer, PublicProviderProfile, SearchMode, SearchSort
@@ -162,6 +163,7 @@ class ProviderSearchService:
             average_response_minutes=candidate.average_response_minutes,
             profile_completeness=candidate.profile_completeness,
             is_identity_verified=candidate.is_identity_verified,
+            is_demo=candidate.is_demo,
             offer=cls._public_offer(candidate, request),
         )
 
@@ -169,18 +171,25 @@ class ProviderSearchService:
         subscriptions: dict[UUID, SubscriptionVisibilityStatus] = {}
         documents: dict[tuple[UUID, UUID], RequirementReadiness] = {}
         visible: list[SearchCandidate] = []
+        settings = get_settings()
         for candidate in candidates:
-            if candidate.provider_id not in subscriptions:
-                subscriptions[candidate.provider_id] = await self.subscriptions.status(candidate.provider_id)
-            document_key = (candidate.provider_id, candidate.service_id)
-            if document_key not in documents:
-                documents[document_key] = await self.documents.readiness(*document_key)
-            readiness = documents[document_key]
+            demo_visible = candidate.is_demo and settings.demo_mode and settings.app_env.lower() != "production"
+            if demo_visible:
+                subscription_status = SubscriptionVisibilityStatus.ACTIVE
+                readiness = RequirementReadiness(ready=True, expired=False)
+            else:
+                if candidate.provider_id not in subscriptions:
+                    subscriptions[candidate.provider_id] = await self.subscriptions.status(candidate.provider_id)
+                document_key = (candidate.provider_id, candidate.service_id)
+                if document_key not in documents:
+                    documents[document_key] = await self.documents.readiness(*document_key)
+                subscription_status = subscriptions[candidate.provider_id]
+                readiness = documents[document_key]
             result = self.visibility.evaluate(ProviderVisibilityContext(
                 user_active=candidate.user_status == UserStatus.ACTIVE,
                 profile_status=candidate.profile_status,
                 profile_paused=candidate.profile_paused,
-                subscription_status=subscriptions[candidate.provider_id],
+                subscription_status=subscription_status,
                 service_status=candidate.service_status,
                 modalities=candidate.modalities,
                 has_service_area=candidate.has_service_area,
@@ -273,6 +282,7 @@ class ProviderSearchService:
             average_response_minutes=first.average_response_minutes,
             profile_completeness=first.profile_completeness,
             is_identity_verified=first.is_identity_verified,
+            is_demo=first.is_demo,
             documents_verified=True,
             portfolio=[PublicPortfolioItem(title=item.title, description=item.description, position=item.position) for item in portfolio],
             services=[self._public_offer(item) for item in visible],

@@ -1,5 +1,6 @@
 from dataclasses import replace
 from decimal import Decimal
+from types import SimpleNamespace
 from uuid import UUID, uuid4
 
 import pytest
@@ -44,7 +45,7 @@ def candidate(*, modalities: frozenset[ProviderModality] = frozenset({ProviderMo
         offer_id=uuid4(), provider_id=provider_id, user_status=UserStatus.ACTIVE, profile_status=profile_status,
         profile_paused=False, provider_slug=f"prestador-{provider_id.hex}", display_name="Prestador de prueba", business_name=None,
         bio="Perfil público de prueba", experience_years=4, rating_average=4.8, rating_count=12, completed_services_count=20,
-        response_rate=95, average_response_minutes=25, profile_completeness=90, is_identity_verified=True,
+        response_rate=95, average_response_minutes=25, profile_completeness=90, is_identity_verified=True, is_demo=False,
         service_status=ProviderServiceStatus.ACTIVE, service_id=uuid4(), service_name="Reparación de pérdidas", service_slug="reparacion-de-perdidas",
         subcategory_name="Plomería", subcategory_slug="plomeria", category_name="Hogar, instalaciones y mantenimiento",
         category_slug="hogar-instalaciones-y-mantenimiento", headline="Reparación de pérdidas", description="Servicio de prueba visible.",
@@ -85,6 +86,24 @@ async def test_invisible_provider_is_hidden_from_search_and_direct_profile() -> 
 @pytest.mark.anyio
 async def test_inactive_subscription_is_hidden() -> None:
     item = candidate()
+    service = ProviderSearchService(FakeSearchRepository([item]), ReadyDocuments(), Subscriptions(SubscriptionVisibilityStatus.INACTIVE))
+    assert (await service.search(SearchRequest(query="plomería", mode=SearchMode.REMOTE))).count == 0
+
+
+@pytest.mark.anyio
+async def test_demo_provider_bypasses_only_external_readiness_in_demo_mode(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("sic_api.modules.search.service.get_settings", lambda: SimpleNamespace(demo_mode=True, app_env="test"))
+    item = replace(candidate(), is_demo=True)
+    service = ProviderSearchService(FakeSearchRepository([item]), ReadyDocuments(), Subscriptions(SubscriptionVisibilityStatus.INACTIVE))
+    result = await service.search(SearchRequest(query="plomería", mode=SearchMode.REMOTE))
+    assert result.count == 1
+    assert result.results[0].is_demo is True
+
+
+@pytest.mark.anyio
+async def test_demo_provider_never_bypasses_readiness_in_production(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("sic_api.modules.search.service.get_settings", lambda: SimpleNamespace(demo_mode=True, app_env="production"))
+    item = replace(candidate(), is_demo=True)
     service = ProviderSearchService(FakeSearchRepository([item]), ReadyDocuments(), Subscriptions(SubscriptionVisibilityStatus.INACTIVE))
     assert (await service.search(SearchRequest(query="plomería", mode=SearchMode.REMOTE))).count == 0
 

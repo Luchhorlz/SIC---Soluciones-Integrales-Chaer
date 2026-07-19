@@ -2,15 +2,16 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
+import { isApplicationAuthConfigured } from "@/lib/auth-config";
 
 import { RoleSelector } from "./role-selector";
 
 export const metadata = { title: "Elegí cómo usar SIC" };
 
 export default async function RoleOnboardingPage() {
-  const googleReady = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET && process.env.AUTH_SECRET && process.env.INTERNAL_API_JWT_SECRET);
-  const session = googleReady ? await auth() : null;
-  if (googleReady && !session?.user) redirect("/ingresar");
+  const authReady = isApplicationAuthConfigured();
+  const session = authReady ? await auth() : null;
+  if (authReady && !session?.user) redirect("/ingresar");
 
   return (
     <main className="onboarding-shell">
@@ -23,8 +24,9 @@ export default async function RoleOnboardingPage() {
         <p className="eyebrow">PASO 1 DE 3</p>
         <h1>¿Cómo querés usar SIC?</h1>
         <p className="lead">Podés elegir las dos opciones y cambiarlo más adelante.</p>
-        {!googleReady && <div className="preview-notice">Vista previa del onboarding. El guardado se habilitará al conectar Google y PostgreSQL.</div>}
-        <RoleSelector enabled={googleReady} initialRoles={session?.user.roles ?? []} />
+        {!authReady && <div className="preview-notice">Vista previa del onboarding. El guardado se habilitará al configurar la autenticación y PostgreSQL.</div>}
+        {session?.isDemo && <div className="preview-notice">Esta cuenta demo ya tiene un rol fijo. Ingresá con otro usuario demo para recorrer un panel diferente.</div>}
+        <RoleSelector enabled={authReady && !session?.isDemo} initialRoles={session?.user.roles ?? []} />
         <p className="role-help">¿Necesitás ayuda? <a href="mailto:soporte@sic.local">Contactanos</a></p>
       </section>
     </main>

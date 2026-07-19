@@ -38,6 +38,8 @@ Estado de Fase 9: solicitud privada desde una oferta visible, cobertura por dire
 
 Estado de Fase 10: mensajería contextual con lectura y límite de envío, notificaciones internas, correo transaccional en segundo plano, favoritos sujetos a visibilidad y opiniones únicas de trabajos completados con edición versionada y moderación administrativa implementados. Las pantallas separadas de cliente y prestador consumen únicamente el BFF; el perfil público muestra sólo reseñas aprobadas. Pendiente local: configurar autenticación, PostgreSQL/PostGIS y SMTP/Mailpit para recorrer datos persistentes; CI valida migración, ABAC, moderación y recálculo de reputación.
 
+Preparación visual previa a Fase 11: inicio, resultados y perfiles incorporan imágenes ficticias coherentes con la referencia; la búsqueda dispone de 4.176 profesionales demo distintos, exactamente tres por cada servicio. `admin/admin`, `cliente/cliente` y `servicio/servicio` permiten recorrer los tres roles mientras Google OAuth queda pendiente. Todo el conjunto está marcado, aislado, bloqueado en producción y es removible mediante un único comando.
+
 Al cerrar Fase 10 quedan dos fases principales: Fase 11 (operación, soporte, administración y reportes) y Fase 12 (hardening y lanzamiento).
 
 ## Fases 11 y 12 — Operación y lanzamiento

@@ -19,6 +19,10 @@
 
 La Fase 6 implementa la dirección de `(10)` con cola privada, metadatos, decisiones y auditoría; las capturas de desarrollo no reutilizan documentos ni identidades de la referencia.
 
+## Imágenes ficticias de previsualización
+
+La preparación visual anterior a Fase 11 agrega una escena principal y seis retratos generados específicamente para SIC bajo `apps/web/public/images/demo/`. Se rotan entre las fichas para aportar contexto visual sin copiar personas ni fotografías de las referencias. No representan usuarios, matrículas, trabajos ni verificaciones reales; cada ficha que los usa muestra la etiqueta `DEMO`.
+
 ## Lenguaje visual
 
 - Interfaz clara, amplia y de baja densidad aparente.

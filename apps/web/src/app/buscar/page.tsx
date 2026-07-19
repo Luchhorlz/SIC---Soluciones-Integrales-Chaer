@@ -48,7 +48,7 @@ export default async function SearchPage({ searchParams }: Props) {
     getPublicCatalog(),
     q.length >= 2 || single(raw.service_slug) || single(raw.category_slug) || single(raw.subcategory_slug)
       ? searchProviders({ q: q.length >= 2 ? q : undefined, service_slug: single(raw.service_slug), category_slug: single(raw.category_slug), subcategory_slug: single(raw.subcategory_slug), mode, latitude, longitude, radius_meters: numberValue(single(raw.radius_meters)), available_today: availableToday, sort, cursor, limit: 20 })
-      : Promise.resolve({ results: [], count: 0, next_cursor: null, mode, location_applied: hasLocation, apiUnavailable: false }),
+      : Promise.resolve({ results: [], count: 0, next_cursor: null, mode, location_applied: hasLocation, apiUnavailable: false, demoData: false }),
   ]);
   const catalogMatches = q.length >= 2 ? searchCatalog(catalog, q) : [];
 
@@ -73,6 +73,7 @@ export default async function SearchPage({ searchParams }: Props) {
           </div>
         </div>
         {locationRequired && <div className="public-search-notice">⌖ Para usar este filtro, activá tu ubicación aproximada en el buscador. Mientras tanto mostramos únicamente opciones remotas.</div>}
+        {providers.demoData && <div className="demo-catalog-notice"><b>Resultados de demostración</b><span>SIC está mostrando perfiles ficticios claramente marcados. Hay tres identidades demo distintas para cada servicio del catálogo.</span></div>}
         {providers.apiUnavailable && <div className="public-search-notice warning">El catálogo está disponible, pero la base local de prestadores no está conectada en esta previsualización.</div>}
         {providers.results.length ? <><div className="search-count"><b>{providers.count} prestadores visibles</b><span>Lista y mapa usan exactamente los mismos resultados.</span></div><SearchResultsView results={providers.results} />{providers.next_cursor && <Link className="secondary search-more" href={searchLink(parameters, { cursor: providers.next_cursor })}>Ver más resultados</Link>}</> : <div className="public-empty-state search-empty"><span>◎</span><h3>No hay prestadores visibles para estos filtros</h3><p>Esto no oculta el catálogo: los servicios encontrados siguen arriba. Probá “Remoto”, quitá “Disponible hoy” o activá tu ubicación para consultar cobertura.</p></div>}
       </section>}

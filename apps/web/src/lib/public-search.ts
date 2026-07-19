@@ -1,6 +1,8 @@
 import "server-only";
 
 import type { ProviderSearchPage, PublicProviderProfile, SearchMode, SearchSort } from "@/lib/public-search-types";
+import { isDemoMode } from "@/lib/auth-config";
+import { getDemoProvider, searchDemoProviders } from "@/lib/demo-catalog";
 
 export type { SearchMode, SearchSort } from "@/lib/public-search-types";
 export { formatOfferPrice, modalityLabel } from "@/lib/public-search-types";
@@ -22,7 +24,7 @@ export type SearchInput = {
   limit?: number;
 };
 
-export async function searchProviders(input: SearchInput): Promise<ProviderSearchPage & { apiUnavailable: boolean }> {
+export async function searchProviders(input: SearchInput): Promise<ProviderSearchPage & { apiUnavailable: boolean; demoData: boolean }> {
   const parameters = new URLSearchParams();
   for (const [key, value] of Object.entries(input)) {
     if (value !== undefined && value !== "") parameters.set(key, String(value));
@@ -30,19 +32,23 @@ export async function searchProviders(input: SearchInput): Promise<ProviderSearc
   try {
     const response = await fetch(`${apiUrl}/v1/search/providers?${parameters}`, { cache: "no-store", signal: AbortSignal.timeout(3500) });
     if (!response.ok) throw new Error("search unavailable");
-    return { ...(await response.json()) as ProviderSearchPage, apiUnavailable: false };
+    const page = (await response.json()) as ProviderSearchPage;
+    if (isDemoMode() && page.results.length === 0) return { ...searchDemoProviders(input), apiUnavailable: false, demoData: true };
+    return { ...page, apiUnavailable: false, demoData: page.results.some((item) => item.is_demo) };
   } catch {
-    return { results: [], count: 0, next_cursor: null, mode: input.mode ?? "ALL", location_applied: input.latitude !== undefined, apiUnavailable: true };
+    if (isDemoMode()) return { ...searchDemoProviders(input), apiUnavailable: false, demoData: true };
+    return { results: [], count: 0, next_cursor: null, mode: input.mode ?? "ALL", location_applied: input.latitude !== undefined, apiUnavailable: true, demoData: false };
   }
 }
 
 export async function getPublicProvider(slug: string): Promise<{ profile: PublicProviderProfile | null; apiUnavailable: boolean }> {
   try {
     const response = await fetch(`${apiUrl}/v1/providers/${encodeURIComponent(slug)}`, { cache: "no-store", signal: AbortSignal.timeout(3500) });
-    if (response.status === 404) return { profile: null, apiUnavailable: false };
+    if (response.status === 404) return { profile: isDemoMode() ? getDemoProvider(slug) : null, apiUnavailable: false };
     if (!response.ok) throw new Error("provider unavailable");
     return { profile: (await response.json()) as PublicProviderProfile, apiUnavailable: false };
   } catch {
-    return { profile: null, apiUnavailable: true };
+    const demoProfile = isDemoMode() ? getDemoProvider(slug) : null;
+    return { profile: demoProfile, apiUnavailable: !demoProfile };
   }
 }

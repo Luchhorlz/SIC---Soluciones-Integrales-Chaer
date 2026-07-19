@@ -48,6 +48,7 @@ class ProviderProfile(Base):
     average_response_minutes: Mapped[int | None] = mapped_column(Integer)
     profile_completeness: Mapped[int] = mapped_column(Integer, default=0)
     is_identity_verified: Mapped[bool] = mapped_column(Boolean, default=False)
+    is_demo: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
     paused_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

@@ -45,6 +45,8 @@ En Fase 9, `engagements` coordina solicitudes, adjuntos, presupuestos y turnos s
 
 En Fase 10, `messaging` deriva participantes desde la solicitud y nunca acepta destinatarios arbitrarios; Next.js actualiza el hilo mediante sondeo de ocho segundos pausado cuando la pestaña no está visible. `notifications` conserva la bandeja interna y el estado de una salida transaccional procesada por Celery/SMTP. `favorites` reutiliza la proyección pública y no vuelve visible un perfil. `reviews` exige turno completado y confirmado, conserva revisiones de edición y actualiza la reputación sólo después de moderación. La decisión está en `docs/decisions/0006-contextual-communication-and-reviews.md`.
 
+Antes de Fase 11 se incorpora un paquete demo aislado. FastAPI puede materializar tres perfiles distintos para cada servicio canónico y Next.js genera el mismo conjunto de forma determinista como respaldo de previsualización sin base local. Ambos caminos comparten la configuración versionada, marcan cada resultado y quedan deshabilitados en producción. La decisión está en `docs/decisions/0007-isolated-demo-catalog.md`.
+
 Cada módulo separa transporte (`api.py`), esquemas, casos de uso, repositorios, modelos, permisos, eventos y pruebas. Las transacciones comienzan en el caso de uso.
 
 ## Host Windows y URL pública

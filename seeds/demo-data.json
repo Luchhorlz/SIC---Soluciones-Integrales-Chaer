@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "dataset_key": "sic-demo-catalog-v1",
+  "providers_per_service": 3,
+  "first_names": [
+    "Agustina", "Alejandro", "Camila", "Carlos", "Daniela", "Diego",
+    "Elena", "Emiliano", "Florencia", "Gabriel", "Julieta", "Leandro",
+    "Luciana", "Mariano", "Martina", "Nicolás", "Paula", "Santiago"
+  ],
+  "last_names": [
+    "Acosta", "Benítez", "Cabrera", "Domínguez", "Escobar", "Fernández",
+    "Giménez", "Herrera", "Ibarra", "Juárez", "Ledesma", "Méndez",
+    "Navarro", "Ortega", "Pereyra", "Quiroga", "Romero", "Suárez"
+  ],
+  "locations": [
+    { "city": "Moreno", "province": "Buenos Aires", "latitude": -34.6340, "longitude": -58.7914 },
+    { "city": "Córdoba", "province": "Córdoba", "latitude": -31.4201, "longitude": -64.1888 },
+    { "city": "Rosario", "province": "Santa Fe", "latitude": -32.9442, "longitude": -60.6505 },
+    { "city": "Mendoza", "province": "Mendoza", "latitude": -32.8895, "longitude": -68.8458 },
+    { "city": "La Plata", "province": "Buenos Aires", "latitude": -34.9205, "longitude": -57.9536 },
+    { "city": "San Miguel de Tucumán", "province": "Tucumán", "latitude": -26.8083, "longitude": -65.2176 }
+  ],
+  "remote_category_codes": ["CAT_19", "CAT_20", "CAT_21", "CAT_28"],
+  "provider_location_category_codes": ["CAT_14", "CAT_16", "CAT_17", "CAT_24", "CAT_25", "CAT_26"]
+}

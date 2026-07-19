@@ -2379,6 +2379,8 @@ export interface components {
             completed_services_count: number;
             /** Display Name */
             display_name: string;
+            /** Is Demo */
+            is_demo: boolean;
             /** Is Identity Verified */
             is_identity_verified: boolean;
             offer: components["schemas"]["PublicProviderOffer"];
@@ -2626,6 +2628,8 @@ export interface components {
             documents_verified: boolean;
             /** Experience Years */
             experience_years: number | null;
+            /** Is Demo */
+            is_demo: boolean;
             /** Is Identity Verified */
             is_identity_verified: boolean;
             /** Portfolio */

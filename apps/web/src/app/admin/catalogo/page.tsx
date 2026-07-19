@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import manifest from "@/data/taxonomy-manifest.json";
+import { isApplicationAuthConfigured } from "@/lib/auth-config";
 import { getAdminCatalog, type CatalogCategory } from "@/lib/internal-api";
 
 import { createCatalogItem, toggleCatalogItem } from "./actions";
@@ -12,12 +13,7 @@ export const metadata = { title: "Administrar catálogo | SIC" };
 type SearchParams = Promise<{ status?: string; error?: string }>;
 
 export default async function AdminCatalogPage({ searchParams }: { searchParams: SearchParams }) {
-  const configured = Boolean(
-    process.env.AUTH_GOOGLE_ID
-      && process.env.AUTH_GOOGLE_SECRET
-      && process.env.AUTH_SECRET
-      && process.env.INTERNAL_API_JWT_SECRET,
-  );
+  const configured = isApplicationAuthConfigured();
   const session = configured ? await auth() : null;
   if (configured && !session?.user) redirect("/ingresar");
   if (configured && !session?.user.roles.includes("ADMIN")) redirect("/cuenta");

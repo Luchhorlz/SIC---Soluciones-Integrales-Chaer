@@ -3,12 +3,13 @@ import "server-only";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
+import { isApplicationAuthConfigured } from "@/lib/auth-config";
 import { getProviderProfile, type ProviderProfile } from "@/lib/internal-api";
 
 export type ProviderAuthInput = { userId: string; roles: string[]; sessionId: string };
 
 export async function providerPageContext(options: { requireProfile?: boolean } = {}) {
-  const configured = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET && process.env.AUTH_SECRET && process.env.INTERNAL_API_JWT_SECRET);
+  const configured = isApplicationAuthConfigured();
   const session = configured ? await auth() : null;
   if (configured && !session?.user) redirect("/ingresar");
   if (configured && !session?.user.roles.includes("PROVIDER")) redirect("/onboarding/rol");

@@ -36,6 +36,7 @@ class SearchCandidate:
     average_response_minutes: int | None
     profile_completeness: int
     is_identity_verified: bool
+    is_demo: bool
     service_status: ProviderServiceStatus
     service_id: UUID
     service_name: str
@@ -121,6 +122,7 @@ class SqlAlchemySearchRepository:
             average_response_minutes=profile.average_response_minutes,
             profile_completeness=profile.profile_completeness,
             is_identity_verified=profile.is_identity_verified,
+            is_demo=profile.is_demo,
             service_status=offer.status,
             service_id=service.id,
             service_name=service.name,

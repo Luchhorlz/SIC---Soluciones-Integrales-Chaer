@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { isApplicationAuthConfigured } from "@/lib/auth-config";
 import { getUserAddresses, type UserAddress } from "@/lib/internal-api";
 
 import { AddressForm } from "./address-form";
@@ -6,7 +7,7 @@ import { AddressForm } from "./address-form";
 export const metadata = { title: "Mis direcciones | SIC" };
 
 export default async function AddressesPage() {
-  const configured = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET && process.env.AUTH_SECRET && process.env.INTERNAL_API_JWT_SECRET);
+  const configured = isApplicationAuthConfigured();
   const mapsReady = Boolean(process.env.GOOGLE_MAPS_API_KEY);
   const staticMapReady = mapsReady && Boolean(process.env.GOOGLE_MAPS_URL_SIGNING_SECRET);
   const session = configured ? await auth() : null;

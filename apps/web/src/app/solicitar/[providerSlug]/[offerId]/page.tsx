@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { auth } from "@/auth";
 import { PublicFooter, PublicHeader } from "@/components/public-header";
+import { isApplicationAuthConfigured } from "@/lib/auth-config";
 import { getUserAddresses, type UserAddress } from "@/lib/internal-api";
 import { formatOfferPrice, getPublicProvider, modalityLabel } from "@/lib/public-search";
 
@@ -19,7 +20,7 @@ export default async function RequestServicePage({ params, searchParams }: Props
   if (!profile && !apiUnavailable) notFound();
   const offer = profile?.services.find((item) => item.id === offerId);
   if (profile && !offer) notFound();
-  const configured = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET && process.env.AUTH_SECRET && process.env.INTERNAL_API_JWT_SECRET);
+  const configured = isApplicationAuthConfigured();
   const session = configured ? await auth() : null;
   let addresses: UserAddress[] = [];
   if (session?.user?.roles.includes("CLIENT")) {
@@ -32,8 +33,8 @@ export default async function RequestServicePage({ params, searchParams }: Props
       <div className="public-breadcrumbs"><Link href={`/prestador/${profile!.slug}`}>{profile!.display_name}</Link><span>›</span><b>Solicitud privada</b></div>
       <div className="request-layout">
         <div><p className="eyebrow">CONTRATACIÓN SIC</p><h1>Contale qué necesitás</h1><p className="lead">El prestador recibirá esta solicitud en su panel privado. No se publica como anuncio ni queda visible para terceros.</p>
-          {!configured && <div className="preview-notice">Vista previa: para enviar necesitás configurar el ingreso con Google y la API privada.</div>}
-          {configured && !session?.user && <div className="preview-notice">Ingresá con Google para enviar la solicitud.</div>}
+          {!configured && <div className="preview-notice">Vista previa: para enviar necesitás configurar la autenticación y la API privada.</div>}
+          {configured && !session?.user && <div className="preview-notice">Ingresá a SIC para enviar la solicitud.</div>}
           {query.error && <div className="form-error">No pudimos enviar la solicitud. Revisá los datos, la cobertura y los archivos.</div>}
           <form className="request-form" action={submitServiceRequest}>
             <input type="hidden" name="provider_slug" value={providerSlug} /><input type="hidden" name="offer_id" value={offer.id} />

@@ -1,12 +1,13 @@
 import { auth } from "@/auth";
 import { ConversationCenter } from "@/components/conversation-center";
+import { isApplicationAuthConfigured } from "@/lib/auth-config";
 import { getConversation, getConversations, type Conversation, type ConversationSummary } from "@/lib/internal-api";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Mensajes privados | SIC" };
 
 export default async function ClientMessagesPage({ searchParams }: { searchParams: Promise<{ request?: string }> }) {
-  const configured = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET && process.env.AUTH_SECRET && process.env.INTERNAL_API_JWT_SECRET);
+  const configured = isApplicationAuthConfigured();
   const session = configured ? await auth() : null; const query = await searchParams;
   let summaries: ConversationSummary[] = []; let conversation: Conversation | null = null; let unavailable = false;
   if (session?.user?.roles.includes("CLIENT")) {

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { toggleFavorite } from "@/app/favorite-actions";
 import { auth } from "@/auth";
 import { getClientFavorites, type FavoriteProvider } from "@/lib/internal-api";
+import { isApplicationAuthConfigured } from "@/lib/auth-config";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Prestadores favoritos | SIC" };
@@ -10,7 +11,7 @@ export const metadata = { title: "Prestadores favoritos | SIC" };
 function initials(name: string) { return name.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase(); }
 
 export default async function FavoritesPage({ searchParams }: { searchParams: Promise<{ favorite?: string; error?: string }> }) {
-  const configured = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET && process.env.AUTH_SECRET && process.env.INTERNAL_API_JWT_SECRET);
+  const configured = isApplicationAuthConfigured();
   const session = configured ? await auth() : null; let favorites: FavoriteProvider[] = []; let unavailable = false;
   if (session?.user?.roles.includes("CLIENT")) { try { favorites = await getClientFavorites({ userId: session.user.id, roles: session.user.roles, sessionId: session.internalSessionId }); } catch { unavailable = true; } }
   const query = await searchParams;

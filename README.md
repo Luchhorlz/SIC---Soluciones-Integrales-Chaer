@@ -37,6 +37,8 @@ La previsualización local está disponible en `http://127.0.0.1:3000` después 
 .\infra\scripts\Start-SicLocal.ps1
 ```
 
+El iniciador local activa `DEMO_MODE` fuera de producción. Mientras Google OAuth queda pendiente, `/ingresar` ofrece tres cuentas de recorrido: `admin/admin`, `cliente/cliente` y `servicio/servicio`. El catálogo visual incluye 4.176 profesionales ficticios distintos —tres por cada uno de los 1.392 servicios— claramente marcados como demo. La configuración y el procedimiento de borrado están documentados en [seeds/README.md](seeds/README.md).
+
 Estado y parada:
 
 ```powershell
@@ -54,7 +56,7 @@ Rutas visuales disponibles durante el desarrollo:
 - `/buscar`: búsqueda por catálogo, modalidad, ubicación aproximada, disponibilidad, lista y mapa.
 - `/prestador/{slug}`: perfil público seguro; responde como no disponible si no supera visibilidad central.
 - `/solicitar/{slug}/{offerId}`: solicitud privada sobre una oferta visible, con preferencia horaria y adjuntos controlados.
-- `/ingresar`: ingreso con Google y estado de configuración.
+- `/ingresar`: ingreso con Google y accesos temporales demo fuera de producción.
 - `/onboarding/rol`: selección interactiva de cliente/prestador.
 - `/cuenta`: panel inicial del cliente.
 - `/cuenta/contrataciones`: solicitudes, presupuestos y turnos privados del cliente.

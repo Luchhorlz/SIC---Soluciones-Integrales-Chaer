@@ -25,6 +25,12 @@ La primera autenticación sincroniza el perfil mediante un JWT interno de 60 seg
 
 Cada sesión recibe además un identificador aleatorio propio, incluido en los tokens internos para correlación y auditoría sin registrar la cookie ni el token de sesión.
 
+## Entorno demostrativo temporal
+
+Los accesos por credenciales existen únicamente cuando `DEMO_MODE=true` y `APP_ENV` no es `production`; producción ignora el modo demo aunque la variable se configure por error. Sus tres roles son fijos y no pueden modificarse desde onboarding. Las identidades persistidas llevan `is_demo`, correos reservados bajo `.invalid` y sujetos sintéticos, nunca credenciales Google inventadas.
+
+Los 4.176 perfiles ficticios también llevan `is_demo`. Sólo en modo demo pueden omitir suscripción y documentación externas al pasar por el evaluador central de visibilidad; cuenta, perfil, oferta y modalidad continúan sujetos a las demás reglas. La interfaz identifica explícitamente esos datos y existe un comando transaccional para retirar todas sus relaciones. El cargador se bloquea con `APP_ENV=production`.
+
 ## Direcciones privadas
 
 Las direcciones pertenecen siempre al UUID interno autenticado y los endpoints se publican únicamente bajo `/v1/me/addresses`; el cliente no puede consultar ni modificar recursos de otro usuario. El punto geográfico se almacena como `geography(POINT, 4326)` para futuras consultas de cobertura, pero el domicilio exacto no forma parte de perfiles públicos, resultados de búsqueda ni logs de aplicación.
