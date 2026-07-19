@@ -261,7 +261,7 @@ class EngagementService:
         now = datetime.now(timezone.utc)
         if action == "complete":
             item.completed_at = now
-        elif action == "confirm":
+        elif action == "confirm" and actor == "client":
             item.client_confirmed_at = now
         elif action == "dispute":
             if dispute is None:
