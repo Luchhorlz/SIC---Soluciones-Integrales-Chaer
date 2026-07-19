@@ -30,7 +30,9 @@ async def test_provider_offer_round_trip_on_postgis() -> None:
     async with SessionFactory() as session:
         try:
             user = User(id=user_id, google_subject=f"provider-test-{user_id}", email=f"provider-{user_id}@example.invalid", name="Provider integration test")
-            session.add_all([user, UserRole(user_id=user_id, role=UserRoleName.PROVIDER)])
+            session.add(user)
+            await session.flush()
+            session.add(UserRole(user_id=user_id, role=UserRoleName.PROVIDER))
             address = Address(user_id=user_id, label="Base", formatted_address="Dirección de prueba", street="Calle de prueba", street_number="1", unit=None, city="Buenos Aires", administrative_area=None, province="Buenos Aires", postal_code=None, country_code="AR", google_place_id=f"test-{user_id}", point=WKTElement("POINT(-58.3816 -34.6037)", srid=4326), is_default=True)
             session.add(address)
             await session.commit()
@@ -50,5 +52,6 @@ async def test_provider_offer_round_trip_on_postgis() -> None:
             rules = await offer_service.replace_availability(profile, offer.id, AvailabilityRulesReplace(rules=[AvailabilityRuleInput(day_of_week=0, start_time="09:00", end_time="13:00")]))
             assert len(rules) == 1
         finally:
+            await session.rollback()
             await session.execute(delete(User).where(User.id == user_id))
             await session.commit()
