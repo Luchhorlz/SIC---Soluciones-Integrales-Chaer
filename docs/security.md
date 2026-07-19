@@ -53,6 +53,12 @@ Las cargas atraviesan el BFF autenticado y la API deriva el prestador del UUID d
 
 ClamAV analiza el contenido mediante `INSTREAM`. Un resultado infectado elimina el objeto y rechaza el documento; si el scanner no está disponible se conserva el estado `SCANNING` sin permitir descarga ni revisión y un revisor puede reintentar. Solo archivos `CLEAN` reciben URLs S3 firmadas de corta duración. Prestadores descargan únicamente sus archivos; `ADMIN` y `DOCUMENT_REVIEWER` acceden a la cola y cada decisión genera auditoría inmutable.
 
+## Suscripciones y webhooks
+
+El navegador nunca recibe el Access Token ni el secreto de webhook. SIC envía correo, referencia interna opaca, importe, moneda y recurrencia desde el servidor a `/preapproval`; los datos de tarjeta se ingresan en el checkout alojado por Mercado Pago. El BFF valida además que la redirección use HTTPS y el dominio argentino oficial.
+
+La notificación exige `x-signature`, `data.id` y un timestamp dentro de la tolerancia configurada. La API reproduce el manifiesto oficial, compara HMAC-SHA256 en tiempo constante, rechaza antes de escribir si la firma falla y guarda el evento verificado antes de consultar el recurso externo. Reintentos con el mismo identificador no repiten efectos. El cuerpo completo, correo, token y secreto no se persisten ni aparecen en errores.
+
 ## Host Windows
 
 La API de control escucha únicamente en loopback, requiere un token local protegido y no expone secretos en la UI ni logs. Online/Offline controla procesos de forma explícita. Las credenciales del Named Tunnel quedan fuera del repositorio y con permisos restrictivos.

@@ -328,6 +328,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/admin/subscription-plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Subscription Plans */
+        get: operations["list_subscription_plans_v1_admin_subscription_plans_get"];
+        put?: never;
+        /** Create Subscription Plan */
+        post: operations["create_subscription_plan_v1_admin_subscription_plans_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/subscription-plans/{plan_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Subscription Plan */
+        patch: operations["update_subscription_plan_v1_admin_subscription_plans__plan_id__patch"];
+        trace?: never;
+    };
     "/v1/catalog/categories": {
         parameters: {
             query?: never;
@@ -675,6 +710,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/provider/subscription": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Provider Subscription */
+        get: operations["get_provider_subscription_v1_provider_subscription_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/subscription/checkout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Provider Subscription Checkout */
+        post: operations["create_provider_subscription_checkout_v1_provider_subscription_checkout_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/webhooks/mercado-pago": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Receive Mercadopago Webhook */
+        post: operations["receive_mercadopago_webhook_v1_webhooks_mercado_pago_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -947,6 +1033,11 @@ export interface components {
             /** Rules */
             rules: components["schemas"]["AvailabilityRuleInput"][];
         };
+        /**
+         * BillingFrequency
+         * @enum {string}
+         */
+        BillingFrequency: "MONTHLY";
         /** Body_upload_provider_document_v1_provider_documents_post */
         Body_upload_provider_document_v1_provider_documents_post: {
             /** Document Number */
@@ -1389,6 +1480,55 @@ export interface components {
             /** Visible */
             visible: boolean;
         };
+        /** ProviderSubscriptionPage */
+        ProviderSubscriptionPage: {
+            /** Billing Configured */
+            billing_configured: boolean;
+            /** Checkout Available */
+            checkout_available: boolean;
+            /** Message */
+            message: string;
+            plan: components["schemas"]["SubscriptionPlanView"] | null;
+            subscription: components["schemas"]["ProviderSubscriptionView"] | null;
+        };
+        /**
+         * ProviderSubscriptionStatus
+         * @enum {string}
+         */
+        ProviderSubscriptionStatus: "PENDING" | "AUTHORIZED" | "ACTIVE" | "PAST_DUE" | "PAUSED" | "CANCELLED" | "EXPIRED" | "ERROR";
+        /** ProviderSubscriptionView */
+        ProviderSubscriptionView: {
+            /** Cancel At Period End */
+            cancel_at_period_end: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Current Period End */
+            current_period_end?: string | null;
+            /** Current Period Start */
+            current_period_start?: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Last Payment Status */
+            last_payment_status?: string | null;
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            provider_name: components["schemas"]["SubscriptionProvider"];
+            status: components["schemas"]["ProviderSubscriptionStatus"];
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
         /** RequirementUpsert */
         RequirementUpsert: {
             /** Document Type */
@@ -1652,6 +1792,86 @@ export interface components {
             /** Slug */
             slug: string;
         };
+        /** SubscriptionCheckoutView */
+        SubscriptionCheckoutView: {
+            /** Checkout Url */
+            checkout_url: string;
+            status: components["schemas"]["ProviderSubscriptionStatus"];
+        };
+        /** SubscriptionPlanCreate */
+        SubscriptionPlanCreate: {
+            /** @default MONTHLY */
+            billing_frequency: components["schemas"]["BillingFrequency"];
+            /** Code */
+            code: string;
+            /**
+             * Currency
+             * @default ARS
+             */
+            currency: string;
+            /** Features */
+            features?: string[];
+            /**
+             * Is Active
+             * @default true
+             */
+            is_active: boolean;
+            /** Name */
+            name: string;
+            /** Price */
+            price: number | string;
+        };
+        /** SubscriptionPlanUpdate */
+        SubscriptionPlanUpdate: {
+            /** Currency */
+            currency?: string | null;
+            /** Features */
+            features?: string[] | null;
+            /** Is Active */
+            is_active?: boolean | null;
+            /** Name */
+            name?: string | null;
+            /** Price */
+            price?: number | string | null;
+        };
+        /** SubscriptionPlanView */
+        SubscriptionPlanView: {
+            billing_frequency: components["schemas"]["BillingFrequency"];
+            /** Code */
+            code: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Currency */
+            currency: string;
+            /** Features */
+            features: string[];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Active */
+            is_active: boolean;
+            /** Mercado Pago Plan Id */
+            mercado_pago_plan_id?: string | null;
+            /** Name */
+            name: string;
+            /** Price */
+            price: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /**
+         * SubscriptionProvider
+         * @enum {string}
+         */
+        SubscriptionProvider: "MERCADO_PAGO";
         /**
          * SubscriptionVisibilityStatus
          * @enum {string}
@@ -1699,6 +1919,11 @@ export interface components {
          * @enum {string}
          */
         VisibilityCode: "VISIBLE" | "USER_INACTIVE" | "NO_ACTIVE_SUBSCRIPTION" | "PROFILE_NOT_APPROVED" | "PROFILE_PAUSED" | "SERVICE_PAUSED" | "NO_MODALITY" | "DOCUMENT_PENDING" | "DOCUMENT_EXPIRED" | "NO_SERVICE_AREA" | "ADMIN_SUSPENDED";
+        /** WebhookReceipt */
+        WebhookReceipt: {
+            /** Status */
+            status: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -2361,6 +2586,109 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AdminDocumentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_subscription_plans_v1_admin_subscription_plans_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubscriptionPlanView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_subscription_plan_v1_admin_subscription_plans_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubscriptionPlanCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubscriptionPlanView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_subscription_plan_v1_admin_subscription_plans__plan_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubscriptionPlanUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubscriptionPlanView"];
                 };
             };
             /** @description Validation Error */
@@ -3255,6 +3583,88 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_provider_subscription_v1_provider_subscription_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderSubscriptionPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_provider_subscription_checkout_v1_provider_subscription_checkout_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubscriptionCheckoutView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    receive_mercadopago_webhook_v1_webhooks_mercado_pago_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WebhookReceipt"];
                 };
             };
         };

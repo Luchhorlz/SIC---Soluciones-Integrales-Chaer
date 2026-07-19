@@ -13,6 +13,8 @@ from sic_api.modules.provider_services.schemas import AvailabilityExceptionCreat
 from sic_api.modules.provider_services.service import ProviderOfferService
 from sic_api.modules.documents.repository import SqlAlchemyDocumentRepository
 from sic_api.modules.documents.service import DocumentReadinessService
+from sic_api.modules.subscriptions.repository import SqlAlchemySubscriptionRepository
+from sic_api.modules.subscriptions.service import SubscriptionVisibilityService
 
 from .repository import ProviderConflictError, ProviderNotFoundError, SqlAlchemyProviderRepository
 from .schemas import PortfolioItemCreate, ProviderOnboarding, ProviderPauseRequest, ProviderProfileUpdate, ProviderProfileView
@@ -31,6 +33,7 @@ def offer_service(session: AsyncSession) -> ProviderOfferService:
         CatalogService(SqlAlchemyCatalogRepository(session)),
         SqlAlchemyAddressRepository(session),
         DocumentReadinessService(SqlAlchemyDocumentRepository(session)),
+        SubscriptionVisibilityService(SqlAlchemySubscriptionRepository(session)),
     )
 
 

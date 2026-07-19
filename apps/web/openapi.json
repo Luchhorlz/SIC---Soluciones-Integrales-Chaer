@@ -769,6 +769,13 @@
         "title": "AvailabilityRulesReplace",
         "type": "object"
       },
+      "BillingFrequency": {
+        "enum": [
+          "MONTHLY"
+        ],
+        "title": "BillingFrequency",
+        "type": "string"
+      },
       "Body_upload_provider_document_v1_provider_documents_post": {
         "properties": {
           "document_number": {
@@ -2236,6 +2243,145 @@
         "title": "ProviderServiceView",
         "type": "object"
       },
+      "ProviderSubscriptionPage": {
+        "properties": {
+          "billing_configured": {
+            "title": "Billing Configured",
+            "type": "boolean"
+          },
+          "checkout_available": {
+            "title": "Checkout Available",
+            "type": "boolean"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "plan": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SubscriptionPlanView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "subscription": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProviderSubscriptionView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "plan",
+          "subscription",
+          "checkout_available",
+          "billing_configured",
+          "message"
+        ],
+        "title": "ProviderSubscriptionPage",
+        "type": "object"
+      },
+      "ProviderSubscriptionStatus": {
+        "enum": [
+          "PENDING",
+          "AUTHORIZED",
+          "ACTIVE",
+          "PAST_DUE",
+          "PAUSED",
+          "CANCELLED",
+          "EXPIRED",
+          "ERROR"
+        ],
+        "title": "ProviderSubscriptionStatus",
+        "type": "string"
+      },
+      "ProviderSubscriptionView": {
+        "properties": {
+          "cancel_at_period_end": {
+            "title": "Cancel At Period End",
+            "type": "boolean"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "current_period_end": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Period End"
+          },
+          "current_period_start": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Period Start"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "last_payment_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Payment Status"
+          },
+          "plan_id": {
+            "format": "uuid",
+            "title": "Plan Id",
+            "type": "string"
+          },
+          "provider_name": {
+            "$ref": "#/components/schemas/SubscriptionProvider"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProviderSubscriptionStatus"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "plan_id",
+          "provider_name",
+          "status",
+          "cancel_at_period_end",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "ProviderSubscriptionView",
+        "type": "object"
+      },
       "RequirementUpsert": {
         "properties": {
           "document_type": {
@@ -2992,6 +3138,238 @@
         "title": "SubcategoryView",
         "type": "object"
       },
+      "SubscriptionCheckoutView": {
+        "properties": {
+          "checkout_url": {
+            "title": "Checkout Url",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProviderSubscriptionStatus"
+          }
+        },
+        "required": [
+          "checkout_url",
+          "status"
+        ],
+        "title": "SubscriptionCheckoutView",
+        "type": "object"
+      },
+      "SubscriptionPlanCreate": {
+        "properties": {
+          "billing_frequency": {
+            "$ref": "#/components/schemas/BillingFrequency",
+            "default": "MONTHLY"
+          },
+          "code": {
+            "maxLength": 80,
+            "minLength": 3,
+            "pattern": "^[A-Z][A-Z0-9_]+$",
+            "title": "Code",
+            "type": "string"
+          },
+          "currency": {
+            "default": "ARS",
+            "pattern": "^[A-Z]{3}$",
+            "title": "Currency",
+            "type": "string"
+          },
+          "features": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Features",
+            "type": "array"
+          },
+          "is_active": {
+            "default": true,
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "name": {
+            "maxLength": 120,
+            "minLength": 3,
+            "title": "Name",
+            "type": "string"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,10}|(?=[\\d.]{1,13}0*$)\\d{0,10}\\.\\d{0,2}0*$)",
+                "type": "string"
+              }
+            ],
+            "title": "Price"
+          }
+        },
+        "required": [
+          "name",
+          "code",
+          "price"
+        ],
+        "title": "SubscriptionPlanCreate",
+        "type": "object"
+      },
+      "SubscriptionPlanUpdate": {
+        "properties": {
+          "currency": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Z]{3}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency"
+          },
+          "features": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 20,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Features"
+          },
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,10}|(?=[\\d.]{1,13}0*$)\\d{0,10}\\.\\d{0,2}0*$)",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price"
+          }
+        },
+        "title": "SubscriptionPlanUpdate",
+        "type": "object"
+      },
+      "SubscriptionPlanView": {
+        "properties": {
+          "billing_frequency": {
+            "$ref": "#/components/schemas/BillingFrequency"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "currency": {
+            "title": "Currency",
+            "type": "string"
+          },
+          "features": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Features",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "mercado_pago_plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mercado Pago Plan Id"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "price": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Price",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "code",
+          "price",
+          "currency",
+          "billing_frequency",
+          "is_active",
+          "features",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "SubscriptionPlanView",
+        "type": "object"
+      },
+      "SubscriptionProvider": {
+        "enum": [
+          "MERCADO_PAGO"
+        ],
+        "title": "SubscriptionProvider",
+        "type": "string"
+      },
       "SubscriptionVisibilityStatus": {
         "enum": [
           "NOT_CONFIGURED",
@@ -3108,6 +3486,19 @@
         ],
         "title": "VisibilityCode",
         "type": "string"
+      },
+      "WebhookReceipt": {
+        "properties": {
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "WebhookReceipt",
+        "type": "object"
       }
     }
   },
@@ -4279,6 +4670,185 @@
         "summary": "Suspend Document",
         "tags": [
           "admin-documents"
+        ]
+      }
+    },
+    "/v1/admin/subscription-plans": {
+      "get": {
+        "operationId": "list_subscription_plans_v1_admin_subscription_plans_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SubscriptionPlanView"
+                  },
+                  "title": "Response List Subscription Plans V1 Admin Subscription Plans Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Subscription Plans",
+        "tags": [
+          "admin-subscriptions"
+        ]
+      },
+      "post": {
+        "operationId": "create_subscription_plan_v1_admin_subscription_plans_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionPlanCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionPlanView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Subscription Plan",
+        "tags": [
+          "admin-subscriptions"
+        ]
+      }
+    },
+    "/v1/admin/subscription-plans/{plan_id}": {
+      "patch": {
+        "operationId": "update_subscription_plan_v1_admin_subscription_plans__plan_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Plan Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionPlanUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionPlanView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Subscription Plan",
+        "tags": [
+          "admin-subscriptions"
         ]
       }
     },
@@ -5784,6 +6354,125 @@
         "summary": "Pause Provider Service",
         "tags": [
           "provider"
+        ]
+      }
+    },
+    "/v1/provider/subscription": {
+      "get": {
+        "operationId": "get_provider_subscription_v1_provider_subscription_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderSubscriptionPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Provider Subscription",
+        "tags": [
+          "provider-subscription"
+        ]
+      }
+    },
+    "/v1/provider/subscription/checkout": {
+      "post": {
+        "operationId": "create_provider_subscription_checkout_v1_provider_subscription_checkout_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionCheckoutView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Provider Subscription Checkout",
+        "tags": [
+          "provider-subscription"
+        ]
+      }
+    },
+    "/v1/webhooks/mercado-pago": {
+      "post": {
+        "operationId": "receive_mercadopago_webhook_v1_webhooks_mercado_pago_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookReceipt"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Receive Mercadopago Webhook",
+        "tags": [
+          "webhooks"
         ]
       }
     }

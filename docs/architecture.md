@@ -37,6 +37,8 @@ En Fase 5, `providers` posee el perfil, portfolio y `ProviderVisibilityService`;
 
 En Fase 6, `documents` posee requisitos, envíos, estados, revisiones inmutables y vencimientos; `media` conserva metadatos y hash de objetos privados. El contenido reside en MinIO/S3, no en PostgreSQL. La API valida firma real, tamaño y hash, guarda con clave UUID y consulta ClamAV por `INSTREAM`. Celery ejecuta vencimientos horarios; cada cambio recalcula solo los servicios alcanzados por el tipo documental.
 
+En Fase 7, `subscriptions` posee planes, suscripciones y eventos de cobro. `BillingProvider` evita que los DTO de Mercado Pago entren al dominio. La web inicia el checkout por BFF y sólo redirige a hosts oficiales permitidos; el webhook público atraviesa un proxy mínimo de Next.js hacia la API privada. `provider_services` depende de una interfaz de lectura del estado normalizado y `ProviderVisibilityService` sigue siendo el único evaluador final.
+
 Cada módulo separa transporte (`api.py`), esquemas, casos de uso, repositorios, modelos, permisos, eventos y pruebas. Las transacciones comienzan en el caso de uso.
 
 ## Host Windows y URL pública

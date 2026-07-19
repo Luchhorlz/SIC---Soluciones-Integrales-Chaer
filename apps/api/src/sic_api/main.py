@@ -12,6 +12,9 @@ from .modules.catalog.api import public_router as public_catalog_router
 from .modules.providers.api import router as providers_router
 from .modules.documents.api import admin_router as admin_documents_router
 from .modules.documents.api import provider_router as provider_documents_router
+from .modules.subscriptions.api import admin_router as admin_subscriptions_router
+from .modules.subscriptions.api import provider_router as provider_subscriptions_router
+from .modules.subscriptions.api import webhook_router as billing_webhook_router
 
 settings = get_settings()
 app = FastAPI(title=settings.app_name, version=settings.api_version)
@@ -23,6 +26,9 @@ app.include_router(admin_catalog_router)
 app.include_router(providers_router)
 app.include_router(provider_documents_router)
 app.include_router(admin_documents_router)
+app.include_router(provider_subscriptions_router)
+app.include_router(admin_subscriptions_router)
+app.include_router(billing_webhook_router)
 
 
 @app.middleware("http")

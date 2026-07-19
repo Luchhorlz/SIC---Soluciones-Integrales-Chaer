@@ -70,6 +70,10 @@ services:
       S3_BUCKET_PRIVATE: sic-private
       CLAMAV_HOST: clamav
       CLAMAV_PORT: 3310
+      MERCADOPAGO_ACCESS_TOKEN: ${MERCADOPAGO_ACCESS_TOKEN:-}
+      MERCADOPAGO_WEBHOOK_SECRET: ${MERCADOPAGO_WEBHOOK_SECRET:-}
+      MERCADOPAGO_SUCCESS_URL: ${MERCADOPAGO_SUCCESS_URL:-http://localhost:3000/prestador/suscripcion?checkout=return}
+      MERCADOPAGO_WEBHOOK_TOLERANCE_SECONDS: ${MERCADOPAGO_WEBHOOK_TOLERANCE_SECONDS:-300}
     depends_on:
       postgres:
         condition: service_healthy

@@ -27,3 +27,6 @@
 - Integrado ClamAV mediante `INSTREAM`, con estados de escaneo, rechazo de malware y reintento protegido ante indisponibilidad.
 - Incorporadas las vistas `/prestador/documentacion` y `/admin/documentos`, roles de revisión, descargas firmadas, decisiones auditadas y vencimientos automáticos desde Celery beat.
 - Conectada la preparación documental a cada servicio del prestador sin habilitar indiscriminadamente el resto del perfil.
+- Agregada la Fase 7 con plan mensual configurable desde `/admin/suscripciones`, sin precio ni niveles ficticios.
+- Incorporado el checkout externo de Mercado Pago en `/prestador/suscripcion`, con URL permitida y datos de tarjeta fuera de SIC.
+- Implementados eventos de cobro persistidos e idempotentes, firma HMAC, consulta posterior de preaprobaciones/facturas y estados normalizados conectados a la visibilidad.

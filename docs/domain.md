@@ -31,6 +31,12 @@ La disponibilidad semanal pertenece a cada servicio. Los períodos no disponible
 
 Los diagnósticos internos incluyen `VISIBLE`, `NO_ACTIVE_SUBSCRIPTION`, `PROFILE_NOT_APPROVED`, `SERVICE_PAUSED`, `DOCUMENT_PENDING`, `DOCUMENT_EXPIRED`, `NO_SERVICE_AREA` y `ADMIN_SUSPENDED`.
 
+## Suscripción mensual
+
+`subscription_plans` conserva nombre, código, precio, moneda, frecuencia y beneficios configurables; el MVP admite un solo plan activo sin impedir futuros planes. `provider_subscriptions` guarda la relación interna y normaliza `PENDING`, `AUTHORIZED`, `ACTIVE`, `PAST_DUE`, `PAUSED`, `CANCELLED`, `EXPIRED` y `ERROR`. Los objetos y nombres de estado de Mercado Pago no se filtran al resto del dominio.
+
+`billing_events` se inserta antes de aplicar efectos y tiene unicidad por evento externo. No almacena el cuerpo ni correo del pagador: conserva hash SHA-256, referencia privada, tipo, resultado y error saneado. Una suscripción `ACTIVE` o `AUTHORIZED` satisface únicamente el requisito financiero de visibilidad; los demás estados producen `NO_ACTIVE_SUBSCRIPTION`.
+
 ## Documentación profesional
 
 `service_document_requirements` vincula un código documental estable a un servicio canónico. Un documento aprobado puede satisfacer el mismo tipo requerido por más de un servicio del prestador, pero no habilita tipos ni servicios diferentes. La ausencia de requisitos activos significa que el servicio no necesita documentación profesional.

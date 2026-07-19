@@ -26,6 +26,8 @@ Estado de Fase 5: onboarding profesional, perfil privado, portfolio descriptivo,
 
 Estado de Fase 6: requisitos administrables por servicio, carga multipart privada, detección de contenido, límite y hash SHA-256, almacenamiento MinIO/S3, escaneo ClamAV, estados de revisión, cola `ADMIN`/`DOCUMENT_REVIEWER`, descargas breves firmadas, historial inmutable y vencimiento automático implementados. La aprobación recalcula únicamente los servicios que requieren ese tipo. No se cargaron requisitos legales ficticios. Pendiente local: ejecutar la suite completa con Docker/MinIO/ClamAV; CI valida migración, permisos, reglas y vencimientos sobre PostgreSQL.
 
+Estado de Fase 7: plan mensual único configurable y preparado para múltiples planes, checkout de suscripción pendiente, adaptador HTTP de Mercado Pago, BFF público para notificaciones, firma HMAC, tolerancia temporal, persistencia previa, idempotencia y consulta posterior del recurso implementados. Los estados externos se normalizan y `ProviderVisibilityService` los consume sin borrar datos al vencer. Pendiente local: definir el precio comercial, cargar credenciales sandbox, registrar el webhook de prueba y completar un pago de prueba real; CI valida migración, reglas e idempotencia sobre PostgreSQL.
+
 ## Fases 8 a 10 — Marketplace
 
 Búsqueda geográfica/remota y perfiles públicos; solicitudes, presupuestos y contrataciones; mensajería, notificaciones, favoritos y opiniones verificadas.

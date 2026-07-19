@@ -4,7 +4,7 @@ Marketplace web de servicios presenciales y remotos. Los clientes encuentran y c
 
 ## Estado
 
-El proyecto alcanzó la **Fase 6 — Documentación y aprobación**. La base del monorepo, identidad, direcciones privadas, catálogo, oferta profesional y revisión documental privada están implementados; las credenciales externas y la ejecución completa de PostgreSQL/PostGIS, MinIO y ClamAV siguen siendo requisitos del entorno local.
+El proyecto alcanzó la **Fase 7 — Suscripciones**. La base del monorepo, identidad, direcciones privadas, catálogo, oferta profesional, revisión documental y suscripción mensual configurable están implementados; las credenciales externas y la ejecución completa de PostgreSQL/PostGIS, MinIO, ClamAV y Mercado Pago sandbox siguen siendo requisitos del entorno local.
 
 ## Producto acordado
 
@@ -59,6 +59,8 @@ Rutas visuales disponibles durante el desarrollo:
 - `/prestador/servicios`: aptitudes, modalidades, precios, cobertura y disponibilidad.
 - `/prestador/documentacion`: requisitos, carga privada y seguimiento de documentos.
 - `/admin/documentos`: configuración de requisitos y cola de revisión protegida.
+- `/prestador/suscripcion`: plan mensual, checkout externo y estado verificado.
+- `/admin/suscripciones`: configuración protegida del plan mensual real.
 
 La geocodificación requiere Places API (New), Maps Static API, `GOOGLE_MAPS_API_KEY` y `GOOGLE_MAPS_URL_SIGNING_SECRET`. Ambos valores permanecen fuera de Git y del JavaScript enviado al navegador.
 
@@ -73,6 +75,8 @@ $env:PYTHONPATH="src"
 El mismo comando puede ejecutarse nuevamente: actualiza por código estable y no duplica registros.
 
 Los requisitos documentales no se infieren ni se inventan. `seeds/service-requirements.json` comienza vacío y administración los configura por servicio y jurisdicción. Las cargas admiten PDF, PNG y JPEG de hasta 10 MB, se guardan en el bucket privado y deben pasar ClamAV antes de entrar a revisión.
+
+El plan de suscripción también comienza sin datos ficticios: un `ADMIN` define nombre, precio, moneda y beneficios. El checkout sólo se habilita con un plan activo, credenciales sandbox, URL de retorno y secreto de webhook. La URL pública de notificaciones prevista es `/api/webhooks/mercado-pago`; Next.js conserva la API detrás del BFF y reenvía la firma y el cuerpo originales.
 
 ## Reglas centrales
 

@@ -52,7 +52,7 @@ Todos requieren token interno, rol `PROVIDER` y propiedad derivada del UUID aute
 
 El servicio del prestador referencia una prestación canónica activa y valida sus capacidades de presupuesto, precio directo y urgencia. Las modalidades presenciales que visitan o retiran en el domicilio del cliente exigen un área propia cuyo centro proviene de una dirección Google ya validada y propiedad del usuario.
 
-La respuesta de cada servicio incluye `visible` y `visibility_code`, ambos derivados exclusivamente por `ProviderVisibilityService`. Desde Fase 6 la preparación documental se calcula por requisitos aprobados y vigentes; la suscripción y aprobación del perfil continúan bloqueando la publicación.
+La respuesta de cada servicio incluye `visible` y `visibility_code`, ambos derivados exclusivamente por `ProviderVisibilityService`. La preparación documental se calcula por requisitos aprobados y vigentes y, desde Fase 7, la suscripción se consulta desde su módulo normalizado; el campo histórico del perfil no es fuente de verdad.
 
 ## Documentación profesional
 
@@ -71,3 +71,17 @@ Revisión privada:
 - `POST /v1/admin/documents/expire`; mantenimiento manual protegido por `ADMIN` además del worker horario.
 
 El upload usa `multipart/form-data`; solo acepta contenido PDF, PNG o JPEG validado y nunca acepta un `provider_id` del navegador. Las URLs de descarga son firmadas, duran 60 segundos por defecto y solo se generan luego del escaneo limpio.
+
+## Suscripciones
+
+Prestador, siempre derivado del token y de su perfil:
+
+- `GET /v1/provider/subscription`: plan activo, estado normalizado y disponibilidad del checkout.
+- `POST /v1/provider/subscription/checkout`: crea o reutiliza una suscripción pendiente y devuelve exclusivamente una URL oficial validada.
+
+Administración:
+
+- `GET|POST /v1/admin/subscription-plans`: lista o crea planes; la escritura exige `ADMIN`.
+- `PATCH /v1/admin/subscription-plans/{id}`: edita sin borrar; sólo puede existir un plan activo.
+
+Mercado Pago llama públicamente a `POST /api/webhooks/mercado-pago` en Next.js. El BFF reenvía cuerpo, `x-signature`, `x-request-id` y `data.id` a `POST /v1/webhooks/mercado-pago` en la API privada. FastAPI valida la firma antes de persistir, guarda sólo el hash del cuerpo, deduplica por evento externo y consulta `/preapproval/{id}` o `/authorized_payments/{id}` antes de aplicar efectos.

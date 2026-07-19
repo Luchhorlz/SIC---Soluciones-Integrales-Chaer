@@ -10,6 +10,8 @@ ClamAV requiere memoria suficiente para cargar las firmas; el host productivo de
 
 Dominio, base, bucket y credenciales sandbox separados. Misma topología que producción y datos exclusivamente ficticios.
 
+Mercado Pago sandbox requiere `MERCADOPAGO_ACCESS_TOKEN`, `MERCADOPAGO_WEBHOOK_SECRET` y `MERCADOPAGO_SUCCESS_URL`. La URL HTTPS de prueba debe apuntar a `https://sic.thecottonclub.com.ar/api/webhooks/mercado-pago` sólo cuando exista autorización para publicar el túnel. El tópico mínimo es `subscription_preapproval`; para cuotas recurrentes se agrega `subscription_authorized_payment`. Las credenciales de prueba y productivas nunca se mezclan.
+
 ## Producción prevista
 
 - Equipo Windows administrado por el propietario.

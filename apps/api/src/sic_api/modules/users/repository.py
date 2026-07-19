@@ -18,12 +18,19 @@ class SyncedIdentity:
     status: UserStatus
 
 
+@dataclass(frozen=True)
+class UserBillingContact:
+    email: str
+    active: bool
+
+
 class IdentityConflictError(ValueError):
     pass
 
 
 class UserRepository(Protocol):
     async def sync_google_identity(self, google_subject: str, email: str, name: str, avatar_url: str | None) -> SyncedIdentity: ...
+    async def get_billing_contact(self, user_id: UUID) -> UserBillingContact | None: ...
 
 
 class RoleRepository(Protocol):
@@ -45,6 +52,12 @@ class SqlAlchemyRoleRepository:
 class SqlAlchemyUserRepository:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
+
+    async def get_billing_contact(self, user_id: UUID) -> UserBillingContact | None:
+        user = await self.session.get(User, user_id)
+        if user is None:
+            return None
+        return UserBillingContact(email=user.email, active=user.status == UserStatus.ACTIVE)
 
     async def sync_google_identity(self, google_subject: str, email: str, name: str, avatar_url: str | None) -> SyncedIdentity:
         normalized_email = email.strip().lower()

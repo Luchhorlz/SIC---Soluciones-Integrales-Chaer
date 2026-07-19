@@ -14,6 +14,9 @@ export type ProviderRequirement = components["schemas"]["ProviderRequirementView
 export type ProviderDocument = components["schemas"]["ProviderDocumentView"];
 export type AdminDocument = components["schemas"]["AdminDocumentView"];
 export type DocumentRequirement = components["schemas"]["RequirementView"];
+export type SubscriptionPlan = components["schemas"]["SubscriptionPlanView"];
+export type ProviderSubscriptionPage = components["schemas"]["ProviderSubscriptionPage"];
+export type SubscriptionCheckout = components["schemas"]["SubscriptionCheckoutView"];
 
 type CatalogCreatePayloads = {
   categories: components["schemas"]["CategoryCreate"];
@@ -286,4 +289,45 @@ export async function getAdminDocumentDownload(input: AdminDocumentAuth & { docu
   const response = await adminDocumentRequest({ ...input, path: `/documents/${input.documentId}/download-url` });
   if (!response.ok) throw new Error(`Admin document download failed with status ${response.status}`);
   return response.json() as Promise<{ url: string; expires_in_seconds: number }>;
+}
+
+export async function getProviderSubscription(input: ProviderAuth): Promise<ProviderSubscriptionPage> {
+  const response = await providerRequest({ ...input, path: "/subscription" });
+  if (!response.ok) throw new Error(`Provider subscription failed with status ${response.status}`);
+  return response.json() as Promise<ProviderSubscriptionPage>;
+}
+
+export async function createProviderSubscriptionCheckout(input: ProviderAuth): Promise<SubscriptionCheckout> {
+  const response = await providerRequest({ ...input, path: "/subscription/checkout", method: "POST" });
+  if (!response.ok) throw new Error(`Provider subscription checkout failed with status ${response.status}`);
+  return response.json() as Promise<SubscriptionCheckout>;
+}
+
+async function adminSubscriptionRequest(input: ProviderAuth & { path?: string; method?: "GET" | "POST" | "PATCH"; body?: unknown }) {
+  const token = await createUserToken(input.userId, input.roles, input.sessionId);
+  return fetch(`${apiUrl}/v1/admin/subscription-plans${input.path ?? ""}`, {
+    method: input.method ?? "GET",
+    headers: { authorization: `Bearer ${token}`, ...(input.body !== undefined ? { "content-type": "application/json" } : {}) },
+    body: input.body !== undefined ? JSON.stringify(input.body) : undefined,
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000),
+  });
+}
+
+export async function getAdminSubscriptionPlans(input: ProviderAuth): Promise<SubscriptionPlan[]> {
+  const response = await adminSubscriptionRequest(input);
+  if (!response.ok) throw new Error(`Admin subscription plans failed with status ${response.status}`);
+  return response.json() as Promise<SubscriptionPlan[]>;
+}
+
+export async function createAdminSubscriptionPlan(input: ProviderAuth & { body: components["schemas"]["SubscriptionPlanCreate"] }): Promise<SubscriptionPlan> {
+  const response = await adminSubscriptionRequest({ ...input, method: "POST", body: input.body });
+  if (!response.ok) throw new Error(`Admin subscription plan creation failed with status ${response.status}`);
+  return response.json() as Promise<SubscriptionPlan>;
+}
+
+export async function updateAdminSubscriptionPlan(input: ProviderAuth & { planId: string; body: components["schemas"]["SubscriptionPlanUpdate"] }): Promise<SubscriptionPlan> {
+  const response = await adminSubscriptionRequest({ ...input, path: `/${input.planId}`, method: "PATCH", body: input.body });
+  if (!response.ok) throw new Error(`Admin subscription plan update failed with status ${response.status}`);
+  return response.json() as Promise<SubscriptionPlan>;
 }

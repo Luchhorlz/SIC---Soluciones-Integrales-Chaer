@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from typing import Protocol
 from uuid import UUID
 
 from sic_api.modules.addresses.repository import AddressRepository
 from sic_api.modules.catalog.schemas import ServiceView
 from sic_api.modules.catalog.service import CatalogService
 from sic_api.modules.providers.repository import BaseLocation
+from sic_api.modules.providers.models import SubscriptionVisibilityStatus
 from sic_api.modules.providers.schemas import ProviderProfileView
 from sic_api.modules.providers.visibility import ProviderVisibilityContext, ProviderVisibilityService
 from sic_api.modules.documents.repository import RequirementReadiness
@@ -21,15 +23,20 @@ class PendingDocumentReadiness:
         return RequirementReadiness(ready=False, expired=False)
 
 
+class SubscriptionVisibilityReader(Protocol):
+    async def status(self, provider_id: UUID) -> SubscriptionVisibilityStatus: ...
+
+
 class ProviderOfferService:
     coverage_modalities = frozenset({ProviderModality.AT_CLIENT_ADDRESS, ProviderModality.HYBRID, ProviderModality.PICKUP_DELIVERY})
     priced_types = frozenset({PricingType.FIXED, PricingType.FROM, PricingType.HOURLY, PricingType.PER_SESSION, PricingType.PER_UNIT})
 
-    def __init__(self, repository: ProviderServiceRepository, catalog: CatalogService, addresses: AddressRepository, documents: DocumentReadinessReader | None = None) -> None:
+    def __init__(self, repository: ProviderServiceRepository, catalog: CatalogService, addresses: AddressRepository, documents: DocumentReadinessReader | None = None, subscriptions: SubscriptionVisibilityReader | None = None) -> None:
         self.repository = repository
         self.catalog = catalog
         self.addresses = addresses
         self.documents = documents or PendingDocumentReadiness()
+        self.subscriptions = subscriptions
         self.visibility = ProviderVisibilityService()
 
     async def _catalog_service(self, service_id: UUID) -> ServiceView:
@@ -66,11 +73,12 @@ class ProviderOfferService:
         modalities = [entry.modality for entry in configuration.modalities]
         area = ServiceAreaView(center_address_id=configuration.area.center_address_id, radius_meters=configuration.area.radius_meters, urgent_radius_meters=configuration.area.urgent_radius_meters, travel_fee_policy=configuration.area.travel_fee_policy) if configuration.area else None
         document_state = await self.documents.readiness(profile.id, item.service_id)
+        subscription_status = await self.subscriptions.status(profile.id) if self.subscriptions else profile.subscription_visibility_status
         result = self.visibility.evaluate(ProviderVisibilityContext(
             user_active=True,
             profile_status=profile.profile_status,
             profile_paused=profile.is_paused,
-            subscription_status=profile.subscription_visibility_status,
+            subscription_status=subscription_status,
             service_status=item.status,
             modalities=frozenset(modalities),
             has_service_area=area is not None,

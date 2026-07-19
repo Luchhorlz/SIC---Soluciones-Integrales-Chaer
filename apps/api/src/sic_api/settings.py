@@ -20,6 +20,11 @@ class Settings(BaseSettings):
     clamav_host: str = "127.0.0.1"
     clamav_port: int = 3310
     clamav_timeout_seconds: float = 15.0
+    mercadopago_access_token: str | None = None
+    mercadopago_webhook_secret: str | None = None
+    mercadopago_success_url: str | None = None
+    mercadopago_api_base_url: str = "https://api.mercadopago.com"
+    mercadopago_webhook_tolerance_seconds: int = 300
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
