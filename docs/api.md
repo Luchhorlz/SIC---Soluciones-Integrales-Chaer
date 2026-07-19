@@ -93,3 +93,21 @@ Mercado Pago llama públicamente a `POST /api/webhooks/mercado-pago` en Next.js.
 - `GET /v1/providers/{slug}/services`: únicamente ofertas visibles del mismo perfil.
 
 Los endpoints son consumidos por componentes servidor de Next.js; el navegador navega por el BFF y no conoce `API_INTERNAL_URL`. Una búsqueda presencial exige coordenadas, nunca una localidad escrita libremente. PostGIS filtra con `ST_DWithin` antes de calcular distancia. La respuesta redondea distancias a 100 metros y puntos de mapa a dos decimales; nunca incluye domicilio, `address_id`, punto base ni centro exacto de cobertura. Las modalidades remotas no reciben distancia y su ranking no cambia por ubicación.
+
+## Solicitudes, presupuestos y contrataciones
+
+Cliente con rol `CLIENT`:
+
+- `GET|POST /v1/client/service-requests` y `GET /v1/client/service-requests/{id}`.
+- `POST /v1/client/service-requests/{id}/cancel`.
+- `POST /v1/client/service-requests/{id}/attachments` y descarga firmada por adjunto.
+- `POST /v1/client/service-requests/{id}/quotes/accept` y `POST .../quotes/{quoteId}/reject`.
+- `GET /v1/client/bookings` y acciones `confirm`, `dispute` o `cancel` según estado.
+
+Prestador con rol `PROVIDER` y perfil derivado del token:
+
+- `GET /v1/provider/service-requests[/{id}]` y acciones `view`, `quotes`, `accept` o `decline`.
+- Descarga firmada de adjuntos únicamente de solicitudes dirigidas a su perfil.
+- `GET /v1/provider/bookings` y acciones `confirm`, `start`, `complete`, `cancel` o `no-show` según estado.
+
+La API nunca acepta `client_id` ni `provider_id` del navegador. Crear una solicitud vuelve a comprobar `ProviderVisibilityService`, modalidad y cobertura; aceptar crea una sola reserva por solicitud. PostgreSQL rechaza turnos `CONFIRMED`/`IN_PROGRESS` superpuestos del mismo prestador.

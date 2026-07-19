@@ -49,6 +49,14 @@ La API exige rol `PROVIDER` y usa exclusivamente el UUID del token para consulta
 
 Desde Fase 8, búsqueda y perfil público vuelven a evaluar esa misma regla en cada lectura. Conocer un slug no evita el control: un prestador invisible recibe `404`. La búsqueda presencial sólo acepta coordenadas obtenidas por el navegador, limita el radio a 100 km, filtra cobertura antes de calcular distancia y devuelve únicamente distancia redondeada y un punto de mapa degradado. Direcciones, identificadores de dirección, puntos base y centros exactos no forman parte de los DTO públicos.
 
+## Solicitudes y contrataciones privadas
+
+No existe una ruta pública de escritura o listado de solicitudes. `CLIENT` y `PROVIDER` son requisitos RBAC separados y cada recurso aplica además ABAC por `client_id` o perfil derivado del usuario; un tercero obtiene `404` para evitar enumeración. La creación vuelve a comprobar que la oferta continúe visible y nunca confía en identificadores de actores enviados por el navegador.
+
+Los adjuntos usan el mismo pipeline privado de firma real, tamaño, hash, clave UUID, bucket privado, ClamAV y URL breve; sólo se asocian después de quedar `CLEAN`. La dirección exacta se consulta desde una dirección propiedad del cliente, se valida contra cobertura y se cifra para la instantánea del turno con AES-256-GCM y nonce único. `BOOKING_ADDRESS_ENCRYPTION_KEY` permanece fuera de Git y debe conservarse en backups seguros: perderla impide descifrar destinos históricos.
+
+Las transiciones inválidas se rechazan y una restricción de exclusión de PostgreSQL impide dos turnos confirmados o en curso superpuestos para el mismo prestador. Esta garantía no depende de una comprobación previa vulnerable a carreras.
+
 ## Documentos profesionales privados
 
 Las cargas atraviesan el BFF autenticado y la API deriva el prestador del UUID del token. Se admiten únicamente PDF, PNG y JPEG cuyo contenido coincide con la firma declarada, con límite configurable de 10 MB y hash SHA-256 único por propietario. El objeto usa una clave UUID bajo `documents/{user_id}/`, permanece en bucket privado y no se registra su contenido ni el domicilio en logs.

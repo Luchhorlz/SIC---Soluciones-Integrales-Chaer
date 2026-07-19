@@ -41,6 +41,8 @@ En Fase 7, `subscriptions` posee planes, suscripciones y eventos de cobro. `Bill
 
 En Fase 8, `search` agrega una proyección pública de sólo lectura para evitar consultas por registro. Puede unir catálogo, oferta, perfil y estado de cuenta, pero no replica reglas de publicación: documentación y suscripción se consultan mediante sus interfaces propietarias y cada candidato pasa por `ProviderVisibilityService`. El detalle está registrado en `docs/decisions/0004-public-search-read-model.md`.
 
+En Fase 9, `engagements` coordina solicitudes, adjuntos, presupuestos y turnos sin crear publicaciones públicas. Cada lectura combina RBAC con propiedad del cliente o pertenencia al perfil del prestador. Los cambios pasan por máquinas de estado explícitas y la agenda agrega una restricción de exclusión GiST para evitar solapamientos confirmados incluso ante concurrencia. El domicilio del cliente se copia al confirmar y se cifra con AES-256-GCM; la dirección original no se replica en respuestas públicas. La decisión está en `docs/decisions/0005-private-engagement-state-machine.md`.
+
 Cada módulo separa transporte (`api.py`), esquemas, casos de uso, repositorios, modelos, permisos, eventos y pruebas. Las transacciones comienzan en el caso de uso.
 
 ## Host Windows y URL pública

@@ -47,6 +47,10 @@ El flujo válido es `SCANNING → PENDING → IN_REVIEW → APPROVED|OBSERVED|RE
 
 Para precio fijo o presupuesto, el cliente elige un servicio concreto y envía datos privados. El prestador acepta, rechaza o cotiza. Al aceptar se crea una contratación; el prestador inicia/completa y el cliente confirma o reporta. Solo entonces se habilita una opinión.
 
+La solicitud conserva `REQUESTED`, `VIEWED`, `QUOTED`, `ACCEPTED`, `DECLINED`, `CANCELLED`, `EXPIRED` y `CONVERTED_TO_BOOKING`. Un presupuesto enviado puede aceptarse, rechazarse, vencer o retirarse al reemplazarlo. Al aceptarlo se crea un turno `PENDING_PROVIDER` para que el prestador confirme el horario propuesto; luego usa `CONFIRMED`, `IN_PROGRESS`, `COMPLETED`, cancelaciones por actor, `NO_SHOW` y `DISPUTED`. Una transición fuera de orden se rechaza.
+
+No existe bolsa pública de pedidos. Sólo el cliente propietario y el usuario asociado al perfil prestador pueden leer el recurso. Para modalidades con visita/retiro, la solicitud referencia una dirección privada propia y valida cobertura; al confirmar, la reserva guarda una instantánea cifrada para preservar el destino acordado aunque cambie la libreta de direcciones.
+
 El pago del trabajo ocurre fuera de SIC en el MVP. Mercado Pago se usa únicamente para la suscripción mensual del prestador.
 
 ## Invariantes

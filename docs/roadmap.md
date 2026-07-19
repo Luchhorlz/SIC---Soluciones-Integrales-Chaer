@@ -34,6 +34,10 @@ Búsqueda geográfica/remota y perfiles públicos; solicitudes, presupuestos y c
 
 Estado de Fase 8: navegación pública del catálogo, búsqueda textual por slugs canónicos, modalidades remota/presencial/híbrida, cobertura con PostGIS, disponibilidad, orden inicial, cursor, lista/mapa coincidentes y perfiles públicos seguros implementados. El sitio incluye metadatos SSR, canonical, Open Graph, JSON-LD, sitemap y robots. Los puntos son aproximados y los perfiles no publican domicilios. Pendiente local: cargar PostgreSQL/PostGIS y datos legítimos aprobados para ver prestadores reales; CI valida cobertura, borde geográfico, privacidad y visibilidad.
 
+Estado de Fase 9: solicitud privada desde una oferta visible, cobertura por dirección propia, hasta cinco adjuntos PDF/PNG/JPEG controlados, presupuestos con vigencia, aceptación o rechazo, turnos con dirección cifrada, estados estrictos y protección de doble reserva implementados. Cliente y prestador disponen de bandejas separadas; no existe endpoint ni publicación pública de pedidos. Pendiente local: configurar `BOOKING_ADDRESS_ENCRYPTION_KEY`, autenticación, PostgreSQL/PostGIS y MinIO/ClamAV para ejecutar el recorrido persistente con archivos; CI valida migración, ABAC, estados, cifrado y solapamientos.
+
+Quedan cuatro fases principales desde el inicio de esta entrega: Fase 9 (esta entrega), Fase 10 (mensajería, notificaciones, favoritos y opiniones verificadas), Fase 11 (operación, soporte, administración y reportes) y Fase 12 (hardening y lanzamiento). Al cerrar Fase 9 quedan tres.
+
 ## Fases 11 y 12 — Operación y lanzamiento
 
 Paneles de cliente, prestador y administración; hardening, accesibilidad, SEO, backups, observabilidad, staging y runbooks.

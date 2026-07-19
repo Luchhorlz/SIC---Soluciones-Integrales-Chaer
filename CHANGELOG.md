@@ -34,3 +34,6 @@
 - Incorporada búsqueda remota, presencial e híbrida con `ST_DWithin`, distancia posterior al filtro, disponibilidad, ranking inicial y cursor.
 - Publicados perfiles seguros que dependen exclusivamente de `ProviderVisibilityService` y responden `404` cuando dejan de ser visibles.
 - Añadidas vistas responsive de resultados en lista/mapa, ubicación aproximada sin domicilios, metadatos SSR, canonical, Open Graph, JSON-LD, sitemap y robots.
+- Agregada la Fase 9 con solicitudes privadas sobre ofertas visibles, validación de modalidad/cobertura y adjuntos controlados.
+- Incorporados presupuestos con vigencia, aceptación/rechazo, turnos, estados estrictos por actor y bandejas separadas de cliente/prestador.
+- Cifradas las instantáneas de domicilio con AES-256-GCM y protegida la agenda contra reservas confirmadas superpuestas mediante exclusión GiST.

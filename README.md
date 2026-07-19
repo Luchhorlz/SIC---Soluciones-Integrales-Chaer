@@ -4,7 +4,7 @@ Marketplace web de servicios presenciales y remotos. Los clientes encuentran y c
 
 ## Estado
 
-El proyecto alcanzó la **Fase 8 — Búsqueda y perfiles públicos**. La base del monorepo, identidad, direcciones privadas, catálogo, oferta profesional, revisión documental, suscripción mensual, búsqueda geográfica/remota y perfiles públicos seguros están implementados; las credenciales externas y la ejecución completa de PostgreSQL/PostGIS, MinIO, ClamAV y Mercado Pago sandbox siguen siendo requisitos del entorno local.
+El proyecto alcanzó la **Fase 9 — Solicitudes, presupuestos y contrataciones**. La base del monorepo, identidad, direcciones privadas, catálogo, oferta profesional, revisión documental, suscripción mensual, búsqueda segura y el circuito privado de contratación están implementados; las credenciales externas y la ejecución completa de PostgreSQL/PostGIS, MinIO, ClamAV y Mercado Pago sandbox siguen siendo requisitos del entorno local.
 
 ## Producto acordado
 
@@ -53,15 +53,19 @@ Rutas visuales disponibles durante el desarrollo:
 - `/servicio/{slug}`: detalle SEO del servicio y búsqueda de prestadores visibles.
 - `/buscar`: búsqueda por catálogo, modalidad, ubicación aproximada, disponibilidad, lista y mapa.
 - `/prestador/{slug}`: perfil público seguro; responde como no disponible si no supera visibilidad central.
+- `/solicitar/{slug}/{offerId}`: solicitud privada sobre una oferta visible, con preferencia horaria y adjuntos controlados.
 - `/ingresar`: ingreso con Google y estado de configuración.
 - `/onboarding/rol`: selección interactiva de cliente/prestador.
 - `/cuenta`: panel inicial del cliente.
+- `/cuenta/contrataciones`: solicitudes, presupuestos y turnos privados del cliente.
 - `/cuenta/direcciones`: gestión privada de direcciones y vista geográfica.
 - `/admin/catalogo`: administración protegida de categorías, subcategorías y servicios.
 - `/onboarding/prestador`: activación del perfil profesional.
 - `/prestador/panel`: resumen privado y diagnóstico de visibilidad.
 - `/prestador/perfil`: perfil, experiencia y portfolio.
 - `/prestador/servicios`: aptitudes, modalidades, precios, cobertura y disponibilidad.
+- `/prestador/solicitudes`: bandeja privada para ver, cotizar, aceptar o rechazar pedidos.
+- `/prestador/contrataciones`: agenda privada para iniciar, completar, cancelar o registrar ausencia.
 - `/prestador/documentacion`: requisitos, carga privada y seguimiento de documentos.
 - `/admin/documentos`: configuración de requisitos y cola de revisión protegida.
 - `/prestador/suscripcion`: plan mensual, checkout externo y estado verificado.

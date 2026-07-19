@@ -17,6 +17,8 @@ export type DocumentRequirement = components["schemas"]["RequirementView"];
 export type SubscriptionPlan = components["schemas"]["SubscriptionPlanView"];
 export type ProviderSubscriptionPage = components["schemas"]["ProviderSubscriptionPage"];
 export type SubscriptionCheckout = components["schemas"]["SubscriptionCheckoutView"];
+export type ServiceRequest = components["schemas"]["ServiceRequestView"];
+export type ServiceBooking = components["schemas"]["BookingView"];
 
 type CatalogCreatePayloads = {
   categories: components["schemas"]["CategoryCreate"];
@@ -330,4 +332,102 @@ export async function updateAdminSubscriptionPlan(input: ProviderAuth & { planId
   const response = await adminSubscriptionRequest({ ...input, path: `/${input.planId}`, method: "PATCH", body: input.body });
   if (!response.ok) throw new Error(`Admin subscription plan update failed with status ${response.status}`);
   return response.json() as Promise<SubscriptionPlan>;
+}
+
+async function responseError(response: Response, fallback: string): Promise<Error> {
+  try {
+    const body = await response.json() as { detail?: string };
+    return new Error(body.detail || fallback);
+  } catch {
+    return new Error(fallback);
+  }
+}
+
+async function clientRequest(input: ProviderAuth & { path: string; method?: "GET" | "POST"; body?: unknown; formData?: FormData }) {
+  const token = await createUserToken(input.userId, input.roles, input.sessionId);
+  return fetch(`${apiUrl}/v1/client${input.path}`, {
+    method: input.method ?? "GET",
+    headers: { authorization: `Bearer ${token}`, ...(input.body !== undefined ? { "content-type": "application/json" } : {}) },
+    body: input.formData ?? (input.body !== undefined ? JSON.stringify(input.body) : undefined),
+    cache: "no-store",
+    signal: AbortSignal.timeout(input.formData ? 30000 : 8000),
+  });
+}
+
+export async function getClientServiceRequests(input: ProviderAuth): Promise<ServiceRequest[]> {
+  const response = await clientRequest({ ...input, path: "/service-requests" });
+  if (!response.ok) throw await responseError(response, "No se pudieron cargar las solicitudes.");
+  return response.json() as Promise<ServiceRequest[]>;
+}
+
+export async function createClientServiceRequest(input: ProviderAuth & { body: components["schemas"]["ServiceRequestCreate"] }): Promise<ServiceRequest> {
+  const response = await clientRequest({ ...input, path: "/service-requests", method: "POST", body: input.body });
+  if (!response.ok) throw await responseError(response, "No se pudo enviar la solicitud.");
+  return response.json() as Promise<ServiceRequest>;
+}
+
+export async function uploadRequestAttachment(input: ProviderAuth & { requestId: string; file: File }): Promise<ServiceRequest> {
+  const formData = new FormData();
+  formData.set("file", input.file);
+  const response = await clientRequest({ ...input, path: `/service-requests/${input.requestId}/attachments`, method: "POST", formData });
+  if (!response.ok) throw await responseError(response, "No se pudo adjuntar el archivo.");
+  return response.json() as Promise<ServiceRequest>;
+}
+
+export async function clientRequestAction(input: ProviderAuth & { requestId: string; action: "cancel" }): Promise<ServiceRequest> {
+  const response = await clientRequest({ ...input, path: `/service-requests/${input.requestId}/${input.action}`, method: "POST" });
+  if (!response.ok) throw await responseError(response, "No se pudo actualizar la solicitud.");
+  return response.json() as Promise<ServiceRequest>;
+}
+
+export async function decideClientQuote(input: ProviderAuth & { requestId: string; quoteId: string; action: "accept" | "reject"; schedule?: components["schemas"]["BookingSchedule"] }): Promise<ServiceRequest | ServiceBooking> {
+  const path = input.action === "accept"
+    ? `/service-requests/${input.requestId}/quotes/accept`
+    : `/service-requests/${input.requestId}/quotes/${input.quoteId}/reject`;
+  const body = input.action === "accept" ? { quote_id: input.quoteId, schedule: input.schedule ?? null } : undefined;
+  const response = await clientRequest({ ...input, path, method: "POST", body });
+  if (!response.ok) throw await responseError(response, "No se pudo responder el presupuesto.");
+  return response.json() as Promise<ServiceRequest | ServiceBooking>;
+}
+
+export async function getClientBookings(input: ProviderAuth): Promise<ServiceBooking[]> {
+  const response = await clientRequest({ ...input, path: "/bookings" });
+  if (!response.ok) throw await responseError(response, "No se pudieron cargar las contrataciones.");
+  return response.json() as Promise<ServiceBooking[]>;
+}
+
+export async function clientBookingAction(input: ProviderAuth & { bookingId: string; action: "confirm" | "cancel" | "dispute"; reason?: string }): Promise<ServiceBooking> {
+  const response = await clientRequest({ ...input, path: `/bookings/${input.bookingId}/${input.action}`, method: "POST", body: input.action === "dispute" ? { reason: input.reason } : undefined });
+  if (!response.ok) throw await responseError(response, "No se pudo actualizar la contratación.");
+  return response.json() as Promise<ServiceBooking>;
+}
+
+export async function getProviderServiceRequests(input: ProviderAuth): Promise<ServiceRequest[]> {
+  const response = await providerRequest({ ...input, path: "/service-requests" });
+  if (!response.ok) throw await responseError(response, "No se pudieron cargar las solicitudes.");
+  return response.json() as Promise<ServiceRequest[]>;
+}
+
+export async function providerEngagementRequestAction(input: ProviderAuth & { requestId: string; action: "view" | "decline" | "accept"; body?: components["schemas"]["BookingSchedule"] }): Promise<ServiceRequest | ServiceBooking> {
+  const response = await providerRequest({ ...input, path: `/service-requests/${input.requestId}/${input.action}`, method: "POST", body: input.action === "accept" ? (input.body ?? null) : undefined });
+  if (!response.ok) throw await responseError(response, "No se pudo actualizar la solicitud.");
+  return response.json() as Promise<ServiceRequest | ServiceBooking>;
+}
+
+export async function createProviderQuote(input: ProviderAuth & { requestId: string; body: components["schemas"]["QuoteCreate"] }): Promise<ServiceRequest> {
+  const response = await providerRequest({ ...input, path: `/service-requests/${input.requestId}/quotes`, method: "POST", body: input.body });
+  if (!response.ok) throw await responseError(response, "No se pudo enviar el presupuesto.");
+  return response.json() as Promise<ServiceRequest>;
+}
+
+export async function getProviderBookings(input: ProviderAuth): Promise<ServiceBooking[]> {
+  const response = await providerRequest({ ...input, path: "/bookings" });
+  if (!response.ok) throw await responseError(response, "No se pudieron cargar las contrataciones.");
+  return response.json() as Promise<ServiceBooking[]>;
+}
+
+export async function providerBookingAction(input: ProviderAuth & { bookingId: string; action: "confirm" | "start" | "complete" | "cancel" | "no-show" }): Promise<ServiceBooking> {
+  const response = await providerRequest({ ...input, path: `/bookings/${input.bookingId}/${input.action}`, method: "POST" });
+  if (!response.ok) throw await responseError(response, "No se pudo actualizar la contratación.");
+  return response.json() as Promise<ServiceBooking>;
 }
