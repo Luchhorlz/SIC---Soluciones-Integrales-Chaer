@@ -37,6 +37,7 @@ async def test_approval_satisfies_only_matching_service_and_expiry_is_audited() 
             session.add(ProviderService(id=offer_id, provider_id=provider_id, service_id=service.id, status=ProviderServiceStatus.PENDING_DOCUMENTS, headline="Oferta documental", description="Oferta usada para validar requisitos documentales específicos.", pricing_type=PricingType.QUOTE, price_currency="ARS"))
             session.add(ServiceDocumentRequirement(id=requirement_id, service_id=service.id, document_type="MATRICULA_TEST", label="Matrícula de prueba", is_required=True, jurisdiction_type="NONE", requires_expiration=True))
             session.add(MediaFile(id=media_id, owner_user_id=user_id, storage_bucket="test-private", object_key=f"documents/{user_id}/{media_id}.pdf", original_filename="matricula.pdf", mime_type="application/pdf", byte_size=24, sha256=uuid4().hex + uuid4().hex, scan_status=MediaScanStatus.CLEAN))
+            await session.flush()
             session.add(ProviderDocument(id=document_id, provider_id=provider_id, document_type="MATRICULA_TEST", holder_name="Prestador documental", expires_at=date.today() + timedelta(days=30), media_file_id=media_id, status=DocumentStatus.APPROVED))
             await session.commit()
 
