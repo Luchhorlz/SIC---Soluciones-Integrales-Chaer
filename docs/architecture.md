@@ -35,6 +35,8 @@ Identity, users, addresses, catalog, providers, provider services, documents, su
 
 En Fase 5, `providers` posee el perfil, portfolio y `ProviderVisibilityService`; `provider_services` posee modalidades, precios, áreas PostGIS, reglas semanales y excepciones de disponibilidad. Los controladores coordinan ambos módulos mediante servicios y repositorios, sin convertir un booleano persistido en fuente de verdad de visibilidad.
 
+En Fase 6, `documents` posee requisitos, envíos, estados, revisiones inmutables y vencimientos; `media` conserva metadatos y hash de objetos privados. El contenido reside en MinIO/S3, no en PostgreSQL. La API valida firma real, tamaño y hash, guarda con clave UUID y consulta ClamAV por `INSTREAM`. Celery ejecuta vencimientos horarios; cada cambio recalcula solo los servicios alcanzados por el tipo documental.
+
 Cada módulo separa transporte (`api.py`), esquemas, casos de uso, repositorios, modelos, permisos, eventos y pruebas. Las transacciones comienzan en el caso de uso.
 
 ## Host Windows y URL pública

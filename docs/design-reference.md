@@ -17,6 +17,8 @@
 9. `(9)`: planes para prestadores.
 10. `(10)`: revisión administrativa de matrículas.
 
+La Fase 6 implementa la dirección de `(10)` con cola privada, metadatos, decisiones y auditoría; las capturas de desarrollo no reutilizan documentos ni identidades de la referencia.
+
 ## Lenguaje visual
 
 - Interfaz clara, amplia y de baja densidad aparente.

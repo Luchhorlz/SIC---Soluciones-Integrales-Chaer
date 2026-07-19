@@ -31,6 +31,7 @@ class BaseLocation:
 
 class ProviderRepository(Protocol):
     async def get_by_user(self, user_id: UUID) -> ProviderProfileView | None: ...
+    async def get_by_id(self, provider_id: UUID) -> ProviderProfileView | None: ...
     async def onboard(self, user_id: UUID, payload: ProviderOnboarding, location: BaseLocation | None) -> ProviderProfileView: ...
     async def update(self, user_id: UUID, payload: ProviderProfileUpdate, update_location: bool, location: BaseLocation | None) -> ProviderProfileView: ...
     async def set_paused(self, user_id: UUID, paused: bool) -> ProviderProfileView: ...
@@ -102,6 +103,10 @@ class SqlAlchemyProviderRepository:
 
     async def get_by_user(self, user_id: UUID) -> ProviderProfileView | None:
         profile = await self.session.scalar(select(ProviderProfile).where(ProviderProfile.user_id == user_id))
+        return await self._view(profile) if profile else None
+
+    async def get_by_id(self, provider_id: UUID) -> ProviderProfileView | None:
+        profile = await self.session.get(ProviderProfile, provider_id)
         return await self._view(profile) if profile else None
 
     async def onboard(self, user_id: UUID, payload: ProviderOnboarding, location: BaseLocation | None) -> ProviderProfileView:

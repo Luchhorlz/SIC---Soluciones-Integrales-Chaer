@@ -11,6 +11,8 @@ from sic_api.modules.identity.permissions import ProviderPrincipal
 from sic_api.modules.provider_services.repository import ProviderServiceConflictError, ProviderServiceNotFoundError, SqlAlchemyProviderServiceRepository
 from sic_api.modules.provider_services.schemas import AvailabilityExceptionCreate, AvailabilityExceptionView, AvailabilityRuleView, AvailabilityRulesReplace, ProviderServiceCreate, ProviderServicePauseRequest, ProviderServiceUpdate, ProviderServiceView
 from sic_api.modules.provider_services.service import ProviderOfferService
+from sic_api.modules.documents.repository import SqlAlchemyDocumentRepository
+from sic_api.modules.documents.service import DocumentReadinessService
 
 from .repository import ProviderConflictError, ProviderNotFoundError, SqlAlchemyProviderRepository
 from .schemas import PortfolioItemCreate, ProviderOnboarding, ProviderPauseRequest, ProviderProfileUpdate, ProviderProfileView
@@ -24,7 +26,12 @@ def profile_service(session: AsyncSession) -> ProviderProfileService:
 
 
 def offer_service(session: AsyncSession) -> ProviderOfferService:
-    return ProviderOfferService(SqlAlchemyProviderServiceRepository(session), CatalogService(SqlAlchemyCatalogRepository(session)), SqlAlchemyAddressRepository(session))
+    return ProviderOfferService(
+        SqlAlchemyProviderServiceRepository(session),
+        CatalogService(SqlAlchemyCatalogRepository(session)),
+        SqlAlchemyAddressRepository(session),
+        DocumentReadinessService(SqlAlchemyDocumentRepository(session)),
+    )
 
 
 def provider_error(error: Exception) -> HTTPException:

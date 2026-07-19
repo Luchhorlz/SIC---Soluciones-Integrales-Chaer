@@ -157,6 +157,177 @@ export interface paths {
         patch: operations["update_subcategory_v1_admin_catalog_subcategories__item_id__patch"];
         trace?: never;
     };
+    "/v1/admin/document-requirements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Admin Requirements */
+        get: operations["admin_requirements_v1_admin_document_requirements_get"];
+        put?: never;
+        /** Upsert Document Requirement */
+        post: operations["upsert_document_requirement_v1_admin_document_requirements_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Review Queue */
+        get: operations["review_queue_v1_admin_documents_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/documents/expire": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Expire Documents */
+        post: operations["expire_documents_v1_admin_documents_expire_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/documents/{document_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve Document */
+        post: operations["approve_document_v1_admin_documents__document_id__approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/documents/{document_id}/download-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Reviewer Document Download */
+        get: operations["reviewer_document_download_v1_admin_documents__document_id__download_url_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/documents/{document_id}/observe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Observe Document */
+        post: operations["observe_document_v1_admin_documents__document_id__observe_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/documents/{document_id}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reject Document */
+        post: operations["reject_document_v1_admin_documents__document_id__reject_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/documents/{document_id}/rescan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Rescan Document */
+        post: operations["rescan_document_v1_admin_documents__document_id__rescan_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/documents/{document_id}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Begin Document Review */
+        post: operations["begin_document_review_v1_admin_documents__document_id__review_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/documents/{document_id}/suspend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Suspend Document */
+        post: operations["suspend_document_v1_admin_documents__document_id__suspend_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/catalog/categories": {
         parameters: {
             query?: never;
@@ -291,6 +462,58 @@ export interface paths {
         post?: never;
         /** Delete Provider Exception */
         delete: operations["delete_provider_exception_v1_provider_availability_exceptions__item_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/document-requirements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Provider Requirements */
+        get: operations["provider_requirements_v1_provider_document_requirements_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Provider Documents */
+        get: operations["provider_documents_v1_provider_documents_get"];
+        put?: never;
+        /** Upload Provider Document */
+        post: operations["upload_provider_document_v1_provider_documents_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/provider/documents/{document_id}/download-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Provider Document Download */
+        get: operations["provider_document_download_v1_provider_documents__document_id__download_url_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -558,6 +781,57 @@ export interface components {
             /** Unit */
             unit: string | null;
         };
+        /** AdminDocumentView */
+        AdminDocumentView: {
+            /** Byte Size */
+            byte_size: number;
+            /** Document Number */
+            document_number: string | null;
+            /** Document Type */
+            document_type: string;
+            /** Expires At */
+            expires_at: string | null;
+            /** Filename */
+            filename: string;
+            /** Holder Name */
+            holder_name: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Internal Notes */
+            internal_notes: string | null;
+            /** Issued At */
+            issued_at: string | null;
+            /** Issuer */
+            issuer: string | null;
+            /** Jurisdiction */
+            jurisdiction: string | null;
+            /** Mime Type */
+            mime_type: string;
+            /** Provider Display Name */
+            provider_display_name: string;
+            /**
+             * Provider Id
+             * Format: uuid
+             */
+            provider_id: string;
+            /** Rejection Reason */
+            rejection_reason: string | null;
+            /** Reviewed At */
+            reviewed_at: string | null;
+            /** Reviewed By */
+            reviewed_by: string | null;
+            /** Reviews */
+            reviews: components["schemas"]["DocumentReviewView"][];
+            status: components["schemas"]["DocumentStatus"];
+            /**
+             * Submitted At
+             * Format: date-time
+             */
+            submitted_at: string;
+        };
         /** AvailabilityExceptionCreate */
         AvailabilityExceptionCreate: {
             /**
@@ -673,6 +947,25 @@ export interface components {
             /** Rules */
             rules: components["schemas"]["AvailabilityRuleInput"][];
         };
+        /** Body_upload_provider_document_v1_provider_documents_post */
+        Body_upload_provider_document_v1_provider_documents_post: {
+            /** Document Number */
+            document_number?: string | null;
+            /** Document Type */
+            document_type: string;
+            /** Expires At */
+            expires_at?: string | null;
+            /** File */
+            file: string;
+            /** Holder Name */
+            holder_name: string;
+            /** Issued At */
+            issued_at?: string | null;
+            /** Issuer */
+            issuer?: string | null;
+            /** Jurisdiction */
+            jurisdiction?: string | null;
+        };
         /** CategoryCreate */
         CategoryCreate: {
             /** Code */
@@ -735,6 +1028,53 @@ export interface components {
             /** Subcategories */
             subcategories: components["schemas"]["SubcategoryView"][];
         };
+        /** DocumentDecision */
+        DocumentDecision: {
+            /** Internal Notes */
+            internal_notes?: string | null;
+            /** Reason */
+            reason?: string | null;
+        };
+        /** DocumentDownloadView */
+        DocumentDownloadView: {
+            /** Expires In Seconds */
+            expires_in_seconds: number;
+            /** Url */
+            url: string;
+        };
+        /** DocumentReviewView */
+        DocumentReviewView: {
+            actor_kind: components["schemas"]["ReviewActorKind"];
+            /**
+             * Audit Reference
+             * Format: uuid
+             */
+            audit_reference: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            new_status: components["schemas"]["DocumentStatus"];
+            previous_status: components["schemas"]["DocumentStatus"];
+            /** Reason */
+            reason: string | null;
+        };
+        /**
+         * DocumentStatus
+         * @enum {string}
+         */
+        DocumentStatus: "DRAFT" | "UPLOADED" | "SCANNING" | "PENDING" | "IN_REVIEW" | "OBSERVED" | "APPROVED" | "REJECTED" | "EXPIRED" | "SUSPENDED";
+        /** ExpirationSummary */
+        ExpirationSummary: {
+            /** Expired Documents */
+            expired_documents: number;
+        };
         /** GoogleIdentitySync */
         GoogleIdentitySync: {
             /** Avatar Url */
@@ -785,6 +1125,46 @@ export interface components {
          * @enum {string}
          */
         PricingType: "FIXED" | "FROM" | "QUOTE" | "HOURLY" | "PER_SESSION" | "PER_UNIT";
+        /** ProviderDocumentView */
+        ProviderDocumentView: {
+            /** Byte Size */
+            byte_size: number;
+            /** Document Number */
+            document_number: string | null;
+            /** Document Type */
+            document_type: string;
+            /** Expires At */
+            expires_at: string | null;
+            /** Filename */
+            filename: string;
+            /** Holder Name */
+            holder_name: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Issued At */
+            issued_at: string | null;
+            /** Issuer */
+            issuer: string | null;
+            /** Jurisdiction */
+            jurisdiction: string | null;
+            /** Mime Type */
+            mime_type: string;
+            /** Rejection Reason */
+            rejection_reason: string | null;
+            /** Reviewed At */
+            reviewed_at: string | null;
+            /** Reviews */
+            reviews: components["schemas"]["DocumentReviewView"][];
+            status: components["schemas"]["DocumentStatus"];
+            /**
+             * Submitted At
+             * Format: date-time
+             */
+            submitted_at: string;
+        };
         /**
          * ProviderModality
          * @enum {string}
@@ -865,6 +1245,49 @@ export interface components {
             /** Slug */
             slug: string;
             subscription_visibility_status: components["schemas"]["SubscriptionVisibilityStatus"];
+        };
+        /** ProviderRequirementView */
+        ProviderRequirementView: {
+            /** Document Type */
+            document_type: string;
+            /** Expired */
+            expired: boolean;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Instructions */
+            instructions?: string | null;
+            /**
+             * Is Required
+             * @default true
+             */
+            is_required: boolean;
+            /**
+             * Jurisdiction Type
+             * @default NONE
+             */
+            jurisdiction_type: string;
+            /** Label */
+            label: string;
+            latest_document: components["schemas"]["ProviderDocumentView"] | null;
+            /** Provider Service Ids */
+            provider_service_ids: string[];
+            /**
+             * Requires Expiration
+             * @default false
+             */
+            requires_expiration: boolean;
+            /** Satisfied */
+            satisfied: boolean;
+            /**
+             * Service Id
+             * Format: uuid
+             */
+            service_id: string;
+            /** Service Name */
+            service_name: string;
         };
         /** ProviderServiceCreate */
         ProviderServiceCreate: {
@@ -966,6 +1389,76 @@ export interface components {
             /** Visible */
             visible: boolean;
         };
+        /** RequirementUpsert */
+        RequirementUpsert: {
+            /** Document Type */
+            document_type: string;
+            /** Instructions */
+            instructions?: string | null;
+            /**
+             * Is Required
+             * @default true
+             */
+            is_required: boolean;
+            /**
+             * Jurisdiction Type
+             * @default NONE
+             */
+            jurisdiction_type: string;
+            /** Label */
+            label: string;
+            /**
+             * Requires Expiration
+             * @default false
+             */
+            requires_expiration: boolean;
+            /**
+             * Service Id
+             * Format: uuid
+             */
+            service_id: string;
+        };
+        /** RequirementView */
+        RequirementView: {
+            /** Document Type */
+            document_type: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Instructions */
+            instructions?: string | null;
+            /**
+             * Is Required
+             * @default true
+             */
+            is_required: boolean;
+            /**
+             * Jurisdiction Type
+             * @default NONE
+             */
+            jurisdiction_type: string;
+            /** Label */
+            label: string;
+            /**
+             * Requires Expiration
+             * @default false
+             */
+            requires_expiration: boolean;
+            /**
+             * Service Id
+             * Format: uuid
+             */
+            service_id: string;
+            /** Service Name */
+            service_name: string;
+        };
+        /**
+         * ReviewActorKind
+         * @enum {string}
+         */
+        ReviewActorKind: "REVIEWER" | "SYSTEM";
         /** RoleSelection */
         RoleSelection: {
             /** Roles */
@@ -1504,6 +1997,383 @@ export interface operations {
             };
         };
     };
+    admin_requirements_v1_admin_document_requirements_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RequirementView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upsert_document_requirement_v1_admin_document_requirements_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RequirementUpsert"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RequirementView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    review_queue_v1_admin_documents_get: {
+        parameters: {
+            query?: {
+                statuses?: components["schemas"]["DocumentStatus"][] | null;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDocumentView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    expire_documents_v1_admin_documents_expire_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExpirationSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    approve_document_v1_admin_documents__document_id__approve_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentDecision"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDocumentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reviewer_document_download_v1_admin_documents__document_id__download_url_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentDownloadView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    observe_document_v1_admin_documents__document_id__observe_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentDecision"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDocumentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reject_document_v1_admin_documents__document_id__reject_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentDecision"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDocumentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    rescan_document_v1_admin_documents__document_id__rescan_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDocumentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    begin_document_review_v1_admin_documents__document_id__review_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDocumentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    suspend_document_v1_admin_documents__document_id__suspend_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentDecision"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminDocumentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_categories_v1_catalog_categories_get: {
         parameters: {
             query?: never;
@@ -1833,6 +2703,136 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    provider_requirements_v1_provider_document_requirements_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderRequirementView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    provider_documents_v1_provider_documents_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderDocumentView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upload_provider_document_v1_provider_documents_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_upload_provider_document_v1_provider_documents_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderDocumentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    provider_document_download_v1_provider_documents__document_id__download_url_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentDownloadView"];
+                };
             };
             /** @description Validation Error */
             422: {

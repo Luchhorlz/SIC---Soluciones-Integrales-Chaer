@@ -31,6 +31,12 @@ La disponibilidad semanal pertenece a cada servicio. Los períodos no disponible
 
 Los diagnósticos internos incluyen `VISIBLE`, `NO_ACTIVE_SUBSCRIPTION`, `PROFILE_NOT_APPROVED`, `SERVICE_PAUSED`, `DOCUMENT_PENDING`, `DOCUMENT_EXPIRED`, `NO_SERVICE_AREA` y `ADMIN_SUSPENDED`.
 
+## Documentación profesional
+
+`service_document_requirements` vincula un código documental estable a un servicio canónico. Un documento aprobado puede satisfacer el mismo tipo requerido por más de un servicio del prestador, pero no habilita tipos ni servicios diferentes. La ausencia de requisitos activos significa que el servicio no necesita documentación profesional.
+
+El flujo válido es `SCANNING → PENDING → IN_REVIEW → APPROVED|OBSERVED|REJECTED`; un aprobado puede pasar a `SUSPENDED` o `EXPIRED`. Cada decisión humana y vencimiento automático agrega un `document_review` con estado anterior, nuevo estado y referencia de auditoría. Los reemplazos se cargan como documentos nuevos para preservar los envíos anteriores.
+
 ## Contratación MVP
 
 Para precio fijo o presupuesto, el cliente elige un servicio concreto y envía datos privados. El prestador acepta, rechaza o cotiza. Al aceptar se crea una contratación; el prestador inicia/completa y el cliente confirma o reporta. Solo entonces se habilita una opinión.

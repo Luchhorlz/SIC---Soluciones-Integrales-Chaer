@@ -4,5 +4,6 @@ WORKDIR /app
 COPY api/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 COPY worker/src ./worker/src
-ENV PYTHONPATH=/app/worker/src
-CMD ["python", "-m", "celery", "-A", "sic_worker.app:celery_app", "worker", "--loglevel=INFO"]
+COPY api/src ./api/src
+ENV PYTHONPATH=/app/worker/src:/app/api/src
+CMD ["python", "-m", "celery", "-A", "sic_worker.app:celery_app", "worker", "--beat", "--loglevel=INFO"]

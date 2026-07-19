@@ -4,7 +4,7 @@ Marketplace web de servicios presenciales y remotos. Los clientes encuentran y c
 
 ## Estado
 
-El proyecto alcanzó la **Fase 5 — Perfil y servicios del prestador**. La base del monorepo, identidad, direcciones privadas, catálogo canónico y configuración privada de la oferta profesional están implementados; las credenciales externas y la ejecución completa con PostgreSQL/PostGIS local siguen siendo requisitos del entorno.
+El proyecto alcanzó la **Fase 6 — Documentación y aprobación**. La base del monorepo, identidad, direcciones privadas, catálogo, oferta profesional y revisión documental privada están implementados; las credenciales externas y la ejecución completa de PostgreSQL/PostGIS, MinIO y ClamAV siguen siendo requisitos del entorno local.
 
 ## Producto acordado
 
@@ -57,6 +57,8 @@ Rutas visuales disponibles durante el desarrollo:
 - `/prestador/panel`: resumen privado y diagnóstico de visibilidad.
 - `/prestador/perfil`: perfil, experiencia y portfolio.
 - `/prestador/servicios`: aptitudes, modalidades, precios, cobertura y disponibilidad.
+- `/prestador/documentacion`: requisitos, carga privada y seguimiento de documentos.
+- `/admin/documentos`: configuración de requisitos y cola de revisión protegida.
 
 La geocodificación requiere Places API (New), Maps Static API, `GOOGLE_MAPS_API_KEY` y `GOOGLE_MAPS_URL_SIGNING_SECRET`. Ambos valores permanecen fuera de Git y del JavaScript enviado al navegador.
 
@@ -69,6 +71,8 @@ $env:PYTHONPATH="src"
 ```
 
 El mismo comando puede ejecutarse nuevamente: actualiza por código estable y no duplica registros.
+
+Los requisitos documentales no se infieren ni se inventan. `seeds/service-requirements.json` comienza vacío y administración los configura por servicio y jurisdicción. Las cargas admiten PDF, PNG y JPEG de hasta 10 MB, se guardan en el bucket privado y deben pasar ClamAV antes de entrar a revisión.
 
 ## Reglas centrales
 

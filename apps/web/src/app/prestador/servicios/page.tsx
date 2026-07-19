@@ -9,7 +9,7 @@ import { OfferForm } from "./offer-form";
 export const metadata = { title: "Mis servicios profesionales | SIC" };
 
 const modalityLabels: Record<string, string> = { AT_CLIENT_ADDRESS: "A domicilio", REMOTE: "Remoto", HYBRID: "Híbrido", AT_PROVIDER_LOCATION: "En establecimiento", PICKUP_DELIVERY: "Retiro y entrega" };
-const readinessLabels: Record<string, string> = { PROFILE_NOT_APPROVED: "Perfil pendiente", PROFILE_PAUSED: "Perfil pausado", NO_ACTIVE_SUBSCRIPTION: "Suscripción pendiente", SERVICE_PAUSED: "Servicio pendiente o pausado", DOCUMENT_PENDING: "Documentación pendiente", NO_SERVICE_AREA: "Falta cobertura", VISIBLE: "Visible" };
+const readinessLabels: Record<string, string> = { PROFILE_NOT_APPROVED: "Perfil pendiente", PROFILE_PAUSED: "Perfil pausado", NO_ACTIVE_SUBSCRIPTION: "Suscripción pendiente", SERVICE_PAUSED: "Servicio pendiente o pausado", DOCUMENT_PENDING: "Documentación pendiente", DOCUMENT_EXPIRED: "Documentación vencida", NO_SERVICE_AREA: "Falta cobertura", VISIBLE: "Visible" };
 
 export default async function ProviderServicesPage({ searchParams }: { searchParams: Promise<{ status?: string; error?: string }> }) {
   const context = await providerPageContext({ requireProfile: true });

@@ -394,6 +394,186 @@
         "title": "AddressView",
         "type": "object"
       },
+      "AdminDocumentView": {
+        "properties": {
+          "byte_size": {
+            "title": "Byte Size",
+            "type": "integer"
+          },
+          "document_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Number"
+          },
+          "document_type": {
+            "title": "Document Type",
+            "type": "string"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "holder_name": {
+            "title": "Holder Name",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "internal_notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Internal Notes"
+          },
+          "issued_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issued At"
+          },
+          "issuer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuer"
+          },
+          "jurisdiction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jurisdiction"
+          },
+          "mime_type": {
+            "title": "Mime Type",
+            "type": "string"
+          },
+          "provider_display_name": {
+            "title": "Provider Display Name",
+            "type": "string"
+          },
+          "provider_id": {
+            "format": "uuid",
+            "title": "Provider Id",
+            "type": "string"
+          },
+          "rejection_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejection Reason"
+          },
+          "reviewed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed At"
+          },
+          "reviewed_by": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed By"
+          },
+          "reviews": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentReviewView"
+            },
+            "title": "Reviews",
+            "type": "array"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DocumentStatus"
+          },
+          "submitted_at": {
+            "format": "date-time",
+            "title": "Submitted At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "document_type",
+          "document_number",
+          "holder_name",
+          "issuer",
+          "jurisdiction",
+          "issued_at",
+          "expires_at",
+          "status",
+          "submitted_at",
+          "reviewed_at",
+          "rejection_reason",
+          "filename",
+          "mime_type",
+          "byte_size",
+          "reviews",
+          "provider_id",
+          "provider_display_name",
+          "reviewed_by",
+          "internal_notes"
+        ],
+        "title": "AdminDocumentView",
+        "type": "object"
+      },
       "AvailabilityExceptionCreate": {
         "properties": {
           "ends_at": {
@@ -587,6 +767,87 @@
           "rules"
         ],
         "title": "AvailabilityRulesReplace",
+        "type": "object"
+      },
+      "Body_upload_provider_document_v1_provider_documents_post": {
+        "properties": {
+          "document_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Number"
+          },
+          "document_type": {
+            "title": "Document Type",
+            "type": "string"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "type": "string"
+          },
+          "holder_name": {
+            "title": "Holder Name",
+            "type": "string"
+          },
+          "issued_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issued At"
+          },
+          "issuer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuer"
+          },
+          "jurisdiction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jurisdiction"
+          }
+        },
+        "required": [
+          "document_type",
+          "holder_name",
+          "file"
+        ],
+        "title": "Body_upload_provider_document_v1_provider_documents_post",
         "type": "object"
       },
       "CategoryCreate": {
@@ -797,6 +1058,133 @@
         "title": "CategoryView",
         "type": "object"
       },
+      "DocumentDecision": {
+        "properties": {
+          "internal_notes": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Internal Notes"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "title": "DocumentDecision",
+        "type": "object"
+      },
+      "DocumentDownloadView": {
+        "properties": {
+          "expires_in_seconds": {
+            "title": "Expires In Seconds",
+            "type": "integer"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "expires_in_seconds"
+        ],
+        "title": "DocumentDownloadView",
+        "type": "object"
+      },
+      "DocumentReviewView": {
+        "properties": {
+          "actor_kind": {
+            "$ref": "#/components/schemas/ReviewActorKind"
+          },
+          "audit_reference": {
+            "format": "uuid",
+            "title": "Audit Reference",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "new_status": {
+            "$ref": "#/components/schemas/DocumentStatus"
+          },
+          "previous_status": {
+            "$ref": "#/components/schemas/DocumentStatus"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "required": [
+          "id",
+          "actor_kind",
+          "previous_status",
+          "new_status",
+          "reason",
+          "audit_reference",
+          "created_at"
+        ],
+        "title": "DocumentReviewView",
+        "type": "object"
+      },
+      "DocumentStatus": {
+        "enum": [
+          "DRAFT",
+          "UPLOADED",
+          "SCANNING",
+          "PENDING",
+          "IN_REVIEW",
+          "OBSERVED",
+          "APPROVED",
+          "REJECTED",
+          "EXPIRED",
+          "SUSPENDED"
+        ],
+        "title": "DocumentStatus",
+        "type": "string"
+      },
+      "ExpirationSummary": {
+        "properties": {
+          "expired_documents": {
+            "title": "Expired Documents",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expired_documents"
+        ],
+        "title": "ExpirationSummary",
+        "type": "object"
+      },
       "GoogleIdentitySync": {
         "properties": {
           "avatar_url": {
@@ -919,6 +1307,150 @@
         ],
         "title": "PricingType",
         "type": "string"
+      },
+      "ProviderDocumentView": {
+        "properties": {
+          "byte_size": {
+            "title": "Byte Size",
+            "type": "integer"
+          },
+          "document_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Number"
+          },
+          "document_type": {
+            "title": "Document Type",
+            "type": "string"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "holder_name": {
+            "title": "Holder Name",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "issued_at": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issued At"
+          },
+          "issuer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuer"
+          },
+          "jurisdiction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jurisdiction"
+          },
+          "mime_type": {
+            "title": "Mime Type",
+            "type": "string"
+          },
+          "rejection_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejection Reason"
+          },
+          "reviewed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed At"
+          },
+          "reviews": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentReviewView"
+            },
+            "title": "Reviews",
+            "type": "array"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DocumentStatus"
+          },
+          "submitted_at": {
+            "format": "date-time",
+            "title": "Submitted At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "document_type",
+          "document_number",
+          "holder_name",
+          "issuer",
+          "jurisdiction",
+          "issued_at",
+          "expires_at",
+          "status",
+          "submitted_at",
+          "reviewed_at",
+          "rejection_reason",
+          "filename",
+          "mime_type",
+          "byte_size",
+          "reviews"
+        ],
+        "title": "ProviderDocumentView",
+        "type": "object"
       },
       "ProviderModality": {
         "enum": [
@@ -1222,6 +1754,106 @@
           "portfolio"
         ],
         "title": "ProviderProfileView",
+        "type": "object"
+      },
+      "ProviderRequirementView": {
+        "properties": {
+          "document_type": {
+            "maxLength": 80,
+            "minLength": 3,
+            "pattern": "^[A-Z][A-Z0-9_]{2,79}$",
+            "title": "Document Type",
+            "type": "string"
+          },
+          "expired": {
+            "title": "Expired",
+            "type": "boolean"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "instructions": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instructions"
+          },
+          "is_required": {
+            "default": true,
+            "title": "Is Required",
+            "type": "boolean"
+          },
+          "jurisdiction_type": {
+            "default": "NONE",
+            "maxLength": 40,
+            "minLength": 2,
+            "pattern": "^[A-Z][A-Z0-9_]{1,39}$",
+            "title": "Jurisdiction Type",
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 120,
+            "minLength": 3,
+            "title": "Label",
+            "type": "string"
+          },
+          "latest_document": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProviderDocumentView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "provider_service_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Provider Service Ids",
+            "type": "array"
+          },
+          "requires_expiration": {
+            "default": false,
+            "title": "Requires Expiration",
+            "type": "boolean"
+          },
+          "satisfied": {
+            "title": "Satisfied",
+            "type": "boolean"
+          },
+          "service_id": {
+            "format": "uuid",
+            "title": "Service Id",
+            "type": "string"
+          },
+          "service_name": {
+            "title": "Service Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "service_id",
+          "document_type",
+          "label",
+          "id",
+          "service_name",
+          "provider_service_ids",
+          "satisfied",
+          "expired",
+          "latest_document"
+        ],
+        "title": "ProviderRequirementView",
         "type": "object"
       },
       "ProviderServiceCreate": {
@@ -1603,6 +2235,143 @@
         ],
         "title": "ProviderServiceView",
         "type": "object"
+      },
+      "RequirementUpsert": {
+        "properties": {
+          "document_type": {
+            "maxLength": 80,
+            "minLength": 3,
+            "pattern": "^[A-Z][A-Z0-9_]{2,79}$",
+            "title": "Document Type",
+            "type": "string"
+          },
+          "instructions": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instructions"
+          },
+          "is_required": {
+            "default": true,
+            "title": "Is Required",
+            "type": "boolean"
+          },
+          "jurisdiction_type": {
+            "default": "NONE",
+            "maxLength": 40,
+            "minLength": 2,
+            "pattern": "^[A-Z][A-Z0-9_]{1,39}$",
+            "title": "Jurisdiction Type",
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 120,
+            "minLength": 3,
+            "title": "Label",
+            "type": "string"
+          },
+          "requires_expiration": {
+            "default": false,
+            "title": "Requires Expiration",
+            "type": "boolean"
+          },
+          "service_id": {
+            "format": "uuid",
+            "title": "Service Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "service_id",
+          "document_type",
+          "label"
+        ],
+        "title": "RequirementUpsert",
+        "type": "object"
+      },
+      "RequirementView": {
+        "properties": {
+          "document_type": {
+            "maxLength": 80,
+            "minLength": 3,
+            "pattern": "^[A-Z][A-Z0-9_]{2,79}$",
+            "title": "Document Type",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "instructions": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instructions"
+          },
+          "is_required": {
+            "default": true,
+            "title": "Is Required",
+            "type": "boolean"
+          },
+          "jurisdiction_type": {
+            "default": "NONE",
+            "maxLength": 40,
+            "minLength": 2,
+            "pattern": "^[A-Z][A-Z0-9_]{1,39}$",
+            "title": "Jurisdiction Type",
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 120,
+            "minLength": 3,
+            "title": "Label",
+            "type": "string"
+          },
+          "requires_expiration": {
+            "default": false,
+            "title": "Requires Expiration",
+            "type": "boolean"
+          },
+          "service_id": {
+            "format": "uuid",
+            "title": "Service Id",
+            "type": "string"
+          },
+          "service_name": {
+            "title": "Service Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "service_id",
+          "document_type",
+          "label",
+          "id",
+          "service_name"
+        ],
+        "title": "RequirementView",
+        "type": "object"
+      },
+      "ReviewActorKind": {
+        "enum": [
+          "REVIEWER",
+          "SYSTEM"
+        ],
+        "title": "ReviewActorKind",
+        "type": "string"
       },
       "RoleSelection": {
         "properties": {
@@ -2829,6 +3598,690 @@
         ]
       }
     },
+    "/v1/admin/document-requirements": {
+      "get": {
+        "operationId": "admin_requirements_v1_admin_document_requirements_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RequirementView"
+                  },
+                  "title": "Response Admin Requirements V1 Admin Document Requirements Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Admin Requirements",
+        "tags": [
+          "admin-documents"
+        ]
+      },
+      "post": {
+        "operationId": "upsert_document_requirement_v1_admin_document_requirements_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequirementUpsert"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequirementView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Upsert Document Requirement",
+        "tags": [
+          "admin-documents"
+        ]
+      }
+    },
+    "/v1/admin/documents": {
+      "get": {
+        "operationId": "review_queue_v1_admin_documents_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "statuses",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentStatus"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Statuses"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AdminDocumentView"
+                  },
+                  "title": "Response Review Queue V1 Admin Documents Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Review Queue",
+        "tags": [
+          "admin-documents"
+        ]
+      }
+    },
+    "/v1/admin/documents/expire": {
+      "post": {
+        "operationId": "expire_documents_v1_admin_documents_expire_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpirationSummary"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Expire Documents",
+        "tags": [
+          "admin-documents"
+        ]
+      }
+    },
+    "/v1/admin/documents/{document_id}/approve": {
+      "post": {
+        "operationId": "approve_document_v1_admin_documents__document_id__approve_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentDecision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDocumentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Approve Document",
+        "tags": [
+          "admin-documents"
+        ]
+      }
+    },
+    "/v1/admin/documents/{document_id}/download-url": {
+      "get": {
+        "operationId": "reviewer_document_download_v1_admin_documents__document_id__download_url_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentDownloadView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reviewer Document Download",
+        "tags": [
+          "admin-documents"
+        ]
+      }
+    },
+    "/v1/admin/documents/{document_id}/observe": {
+      "post": {
+        "operationId": "observe_document_v1_admin_documents__document_id__observe_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentDecision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDocumentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Observe Document",
+        "tags": [
+          "admin-documents"
+        ]
+      }
+    },
+    "/v1/admin/documents/{document_id}/reject": {
+      "post": {
+        "operationId": "reject_document_v1_admin_documents__document_id__reject_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentDecision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDocumentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reject Document",
+        "tags": [
+          "admin-documents"
+        ]
+      }
+    },
+    "/v1/admin/documents/{document_id}/rescan": {
+      "post": {
+        "operationId": "rescan_document_v1_admin_documents__document_id__rescan_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDocumentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rescan Document",
+        "tags": [
+          "admin-documents"
+        ]
+      }
+    },
+    "/v1/admin/documents/{document_id}/review": {
+      "post": {
+        "operationId": "begin_document_review_v1_admin_documents__document_id__review_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDocumentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Begin Document Review",
+        "tags": [
+          "admin-documents"
+        ]
+      }
+    },
+    "/v1/admin/documents/{document_id}/suspend": {
+      "post": {
+        "operationId": "suspend_document_v1_admin_documents__document_id__suspend_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentDecision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDocumentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Suspend Document",
+        "tags": [
+          "admin-documents"
+        ]
+      }
+    },
     "/v1/catalog/categories": {
       "get": {
         "operationId": "list_categories_v1_catalog_categories_get",
@@ -3385,6 +4838,228 @@
         "summary": "Delete Provider Exception",
         "tags": [
           "provider"
+        ]
+      }
+    },
+    "/v1/provider/document-requirements": {
+      "get": {
+        "operationId": "provider_requirements_v1_provider_document_requirements_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderRequirementView"
+                  },
+                  "title": "Response Provider Requirements V1 Provider Document Requirements Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Provider Requirements",
+        "tags": [
+          "provider-documents"
+        ]
+      }
+    },
+    "/v1/provider/documents": {
+      "get": {
+        "operationId": "provider_documents_v1_provider_documents_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderDocumentView"
+                  },
+                  "title": "Response Provider Documents V1 Provider Documents Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Provider Documents",
+        "tags": [
+          "provider-documents"
+        ]
+      },
+      "post": {
+        "operationId": "upload_provider_document_v1_provider_documents_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_provider_document_v1_provider_documents_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderDocumentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Upload Provider Document",
+        "tags": [
+          "provider-documents"
+        ]
+      }
+    },
+    "/v1/provider/documents/{document_id}/download-url": {
+      "get": {
+        "operationId": "provider_document_download_v1_provider_documents__document_id__download_url_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentDownloadView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Provider Document Download",
+        "tags": [
+          "provider-documents"
         ]
       }
     },

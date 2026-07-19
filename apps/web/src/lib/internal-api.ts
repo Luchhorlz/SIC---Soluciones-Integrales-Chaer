@@ -10,6 +10,10 @@ export type ProviderProfile = components["schemas"]["ProviderProfileView"];
 export type ProviderOffer = components["schemas"]["ProviderServiceView"];
 export type AvailabilityRule = components["schemas"]["AvailabilityRuleView"];
 export type AvailabilityException = components["schemas"]["AvailabilityExceptionView"];
+export type ProviderRequirement = components["schemas"]["ProviderRequirementView"];
+export type ProviderDocument = components["schemas"]["ProviderDocumentView"];
+export type AdminDocument = components["schemas"]["AdminDocumentView"];
+export type DocumentRequirement = components["schemas"]["RequirementView"];
 
 type CatalogCreatePayloads = {
   categories: components["schemas"]["CategoryCreate"];
@@ -123,6 +127,7 @@ type ProviderRequestInput = {
   path: string;
   method?: "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
   body?: unknown;
+  formData?: FormData;
 };
 
 async function providerRequest(input: ProviderRequestInput) {
@@ -130,9 +135,9 @@ async function providerRequest(input: ProviderRequestInput) {
   return fetch(`${apiUrl}/v1/provider${input.path}`, {
     method: input.method ?? "GET",
     headers: { authorization: `Bearer ${token}`, ...(input.body !== undefined ? { "content-type": "application/json" } : {}) },
-    body: input.body !== undefined ? JSON.stringify(input.body) : undefined,
+    body: input.formData ?? (input.body !== undefined ? JSON.stringify(input.body) : undefined),
     cache: "no-store",
-    signal: AbortSignal.timeout(5000),
+    signal: AbortSignal.timeout(input.formData ? 30000 : 5000),
   });
 }
 
@@ -214,4 +219,71 @@ export async function addProviderAvailabilityException(input: ProviderAuth & { b
 export async function deleteProviderAvailabilityException(input: ProviderAuth & { itemId: string }): Promise<void> {
   const response = await providerRequest({ ...input, path: `/availability/exceptions/${input.itemId}`, method: "DELETE" });
   if (!response.ok) throw new Error(`Provider exception deletion failed with status ${response.status}`);
+}
+
+export async function getProviderDocumentRequirements(input: ProviderAuth): Promise<ProviderRequirement[]> {
+  const response = await providerRequest({ ...input, path: "/document-requirements" });
+  if (!response.ok) throw new Error(`Provider document requirements failed with status ${response.status}`);
+  return response.json() as Promise<ProviderRequirement[]>;
+}
+
+export async function getProviderDocuments(input: ProviderAuth): Promise<ProviderDocument[]> {
+  const response = await providerRequest({ ...input, path: "/documents" });
+  if (!response.ok) throw new Error(`Provider documents failed with status ${response.status}`);
+  return response.json() as Promise<ProviderDocument[]>;
+}
+
+export async function uploadProviderDocument(input: ProviderAuth & { formData: FormData }): Promise<ProviderDocument> {
+  const response = await providerRequest({ ...input, path: "/documents", method: "POST", formData: input.formData });
+  if (!response.ok) throw new Error(`Provider document upload failed with status ${response.status}`);
+  return response.json() as Promise<ProviderDocument>;
+}
+
+export async function getProviderDocumentDownload(input: ProviderAuth & { documentId: string }): Promise<{ url: string; expires_in_seconds: number }> {
+  const response = await providerRequest({ ...input, path: `/documents/${input.documentId}/download-url` });
+  if (!response.ok) throw new Error(`Provider document download failed with status ${response.status}`);
+  return response.json() as Promise<{ url: string; expires_in_seconds: number }>;
+}
+
+type AdminDocumentAuth = ProviderAuth;
+
+async function adminDocumentRequest(input: AdminDocumentAuth & { path: string; method?: "GET" | "POST"; body?: unknown }) {
+  const token = await createUserToken(input.userId, input.roles, input.sessionId);
+  return fetch(`${apiUrl}/v1/admin${input.path}`, {
+    method: input.method ?? "GET",
+    headers: { authorization: `Bearer ${token}`, ...(input.body !== undefined ? { "content-type": "application/json" } : {}) },
+    body: input.body !== undefined ? JSON.stringify(input.body) : undefined,
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000),
+  });
+}
+
+export async function getAdminDocumentRequirements(input: AdminDocumentAuth): Promise<DocumentRequirement[]> {
+  const response = await adminDocumentRequest({ ...input, path: "/document-requirements" });
+  if (!response.ok) throw new Error(`Admin document requirements failed with status ${response.status}`);
+  return response.json() as Promise<DocumentRequirement[]>;
+}
+
+export async function saveAdminDocumentRequirement(input: AdminDocumentAuth & { body: components["schemas"]["RequirementUpsert"] }): Promise<DocumentRequirement> {
+  const response = await adminDocumentRequest({ ...input, path: "/document-requirements", method: "POST", body: input.body });
+  if (!response.ok) throw new Error(`Admin document requirement failed with status ${response.status}`);
+  return response.json() as Promise<DocumentRequirement>;
+}
+
+export async function getAdminDocuments(input: AdminDocumentAuth): Promise<AdminDocument[]> {
+  const response = await adminDocumentRequest({ ...input, path: "/documents" });
+  if (!response.ok) throw new Error(`Admin document queue failed with status ${response.status}`);
+  return response.json() as Promise<AdminDocument[]>;
+}
+
+export async function reviewAdminDocument(input: AdminDocumentAuth & { documentId: string; action: "review" | "approve" | "observe" | "reject" | "suspend" | "rescan"; body?: components["schemas"]["DocumentDecision"] }): Promise<AdminDocument> {
+  const response = await adminDocumentRequest({ ...input, path: `/documents/${input.documentId}/${input.action}`, method: "POST", body: input.action === "review" || input.action === "rescan" ? undefined : (input.body ?? {}) });
+  if (!response.ok) throw new Error(`Admin document action failed with status ${response.status}`);
+  return response.json() as Promise<AdminDocument>;
+}
+
+export async function getAdminDocumentDownload(input: AdminDocumentAuth & { documentId: string }): Promise<{ url: string; expires_in_seconds: number }> {
+  const response = await adminDocumentRequest({ ...input, path: `/documents/${input.documentId}/download-url` });
+  if (!response.ok) throw new Error(`Admin document download failed with status ${response.status}`);
+  return response.json() as Promise<{ url: string; expires_in_seconds: number }>;
 }

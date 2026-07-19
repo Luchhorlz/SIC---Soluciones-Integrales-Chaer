@@ -53,7 +53,7 @@ class ProviderVisibilityService:
             return ProviderVisibilityResult(False, VisibilityCode.PROFILE_NOT_APPROVED)
         if context.subscription_status not in {SubscriptionVisibilityStatus.ACTIVE, SubscriptionVisibilityStatus.AUTHORIZED}:
             return ProviderVisibilityResult(False, VisibilityCode.NO_ACTIVE_SUBSCRIPTION)
-        if context.service_status != ProviderServiceStatus.ACTIVE:
+        if context.service_status not in {ProviderServiceStatus.ACTIVE, ProviderServiceStatus.PENDING_DOCUMENTS}:
             return ProviderVisibilityResult(False, VisibilityCode.SERVICE_PAUSED)
         if not context.modalities:
             return ProviderVisibilityResult(False, VisibilityCode.NO_MODALITY)

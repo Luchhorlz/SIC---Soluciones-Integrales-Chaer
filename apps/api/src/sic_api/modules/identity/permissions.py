@@ -63,6 +63,16 @@ async def get_admin_principal(principal: CurrentPrincipal) -> Principal:
 AdminPrincipal = Annotated[Principal, Depends(get_admin_principal)]
 
 
+async def get_document_reviewer_principal(principal: CurrentPrincipal) -> Principal:
+    allowed = {UserRoleName.ADMIN.value, UserRoleName.DOCUMENT_REVIEWER.value}
+    if not principal.roles.intersection(allowed):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Document reviewer role required")
+    return principal
+
+
+DocumentReviewerPrincipal = Annotated[Principal, Depends(get_document_reviewer_principal)]
+
+
 async def get_provider_principal(principal: CurrentPrincipal) -> Principal:
     if UserRoleName.PROVIDER.value not in principal.roles:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Provider role required")

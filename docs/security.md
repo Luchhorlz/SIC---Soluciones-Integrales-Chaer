@@ -47,6 +47,12 @@ La API exige rol `PROVIDER` y usa exclusivamente el UUID del token para consulta
 
 `ProviderVisibilityService` aplica deny by default. Un perfil incompleto, pausado, pendiente de revisión, sin suscripción, con documentación pendiente, sin modalidad o sin cobertura requerida devuelve un diagnóstico interno y no es publicable. La Fase 5 no contiene rutas públicas de prestadores.
 
+## Documentos profesionales privados
+
+Las cargas atraviesan el BFF autenticado y la API deriva el prestador del UUID del token. Se admiten únicamente PDF, PNG y JPEG cuyo contenido coincide con la firma declarada, con límite configurable de 10 MB y hash SHA-256 único por propietario. El objeto usa una clave UUID bajo `documents/{user_id}/`, permanece en bucket privado y no se registra su contenido ni el domicilio en logs.
+
+ClamAV analiza el contenido mediante `INSTREAM`. Un resultado infectado elimina el objeto y rechaza el documento; si el scanner no está disponible se conserva el estado `SCANNING` sin permitir descarga ni revisión y un revisor puede reintentar. Solo archivos `CLEAN` reciben URLs S3 firmadas de corta duración. Prestadores descargan únicamente sus archivos; `ADMIN` y `DOCUMENT_REVIEWER` acceden a la cola y cada decisión genera auditoría inmutable.
+
 ## Host Windows
 
 La API de control escucha únicamente en loopback, requiere un token local protegido y no expone secretos en la UI ni logs. Online/Offline controla procesos de forma explícita. Las credenciales del Named Tunnel quedan fuera del repositorio y con permisos restrictivos.

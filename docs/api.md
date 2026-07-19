@@ -52,4 +52,22 @@ Todos requieren token interno, rol `PROVIDER` y propiedad derivada del UUID aute
 
 El servicio del prestador referencia una prestación canónica activa y valida sus capacidades de presupuesto, precio directo y urgencia. Las modalidades presenciales que visitan o retiran en el domicilio del cliente exigen un área propia cuyo centro proviene de una dirección Google ya validada y propiedad del usuario.
 
-La respuesta de cada servicio incluye `visible` y `visibility_code`, ambos derivados exclusivamente por `ProviderVisibilityService`. Durante Fase 5 permanecen no visibles porque documentación y suscripción todavía no pueden aprobarse.
+La respuesta de cada servicio incluye `visible` y `visibility_code`, ambos derivados exclusivamente por `ProviderVisibilityService`. Desde Fase 6 la preparación documental se calcula por requisitos aprobados y vigentes; la suscripción y aprobación del perfil continúan bloqueando la publicación.
+
+## Documentación profesional
+
+Prestador, siempre por propiedad derivada del token:
+
+- `GET /v1/provider/document-requirements`
+- `GET|POST /v1/provider/documents`
+- `GET /v1/provider/documents/{id}/download-url`
+
+Revisión privada:
+
+- `GET|POST /v1/admin/document-requirements`; la escritura exige `ADMIN`.
+- `GET /v1/admin/documents`; admite `ADMIN` o `DOCUMENT_REVIEWER`.
+- `POST /v1/admin/documents/{id}/review|approve|observe|reject|suspend|rescan`.
+- `GET /v1/admin/documents/{id}/download-url`.
+- `POST /v1/admin/documents/expire`; mantenimiento manual protegido por `ADMIN` además del worker horario.
+
+El upload usa `multipart/form-data`; solo acepta contenido PDF, PNG o JPEG validado y nunca acepta un `provider_id` del navegador. Las URLs de descarga son firmadas, duran 60 segundos por defecto y solo se generan luego del escaneo limpio.

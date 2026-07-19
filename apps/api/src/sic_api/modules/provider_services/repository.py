@@ -32,10 +32,12 @@ class ProviderServiceConfiguration:
 
 class ProviderServiceRepository(Protocol):
     async def list(self, provider_id: UUID) -> list[ProviderServiceConfiguration]: ...
+    async def list_by_catalog_service(self, service_id: UUID) -> list[ProviderServiceConfiguration]: ...
     async def get(self, provider_id: UUID, item_id: UUID) -> ProviderServiceConfiguration: ...
     async def create(self, provider_id: UUID, payload: ProviderServiceCreate, center: BaseLocation | None) -> ProviderServiceConfiguration: ...
     async def update(self, provider_id: UUID, item_id: UUID, payload: ProviderServiceCreate, center: BaseLocation | None) -> ProviderServiceConfiguration: ...
     async def set_paused(self, provider_id: UUID, item_id: UUID, paused: bool) -> ProviderServiceConfiguration: ...
+    async def set_document_readiness(self, provider_id: UUID, item_id: UUID, ready: bool) -> ProviderServiceConfiguration: ...
     async def list_availability(self, provider_id: UUID, item_id: UUID) -> list[AvailabilityRuleView]: ...
     async def replace_availability(self, provider_id: UUID, item_id: UUID, rules: list[AvailabilityRuleInput]) -> list[AvailabilityRuleView]: ...
     async def list_exceptions(self, provider_id: UUID) -> list[AvailabilityExceptionView]: ...
@@ -95,6 +97,10 @@ class SqlAlchemyProviderServiceRepository:
         items = (await self.session.scalars(select(ProviderService).where(ProviderService.provider_id == provider_id).order_by(ProviderService.created_at))).all()
         return [await self._configuration(item) for item in items]
 
+    async def list_by_catalog_service(self, service_id: UUID) -> list[ProviderServiceConfiguration]:
+        items = (await self.session.scalars(select(ProviderService).where(ProviderService.service_id == service_id).order_by(ProviderService.created_at))).all()
+        return [await self._configuration(item) for item in items]
+
     async def get(self, provider_id: UUID, item_id: UUID) -> ProviderServiceConfiguration:
         return await self._configuration(await self._service(provider_id, item_id))
 
@@ -123,6 +129,13 @@ class SqlAlchemyProviderServiceRepository:
             raise ProviderServiceConflictError("An administratively suspended service cannot be resumed")
         item.status = ProviderServiceStatus.PAUSED if paused else ProviderServiceStatus.PENDING_DOCUMENTS
         await self._commit()
+        return await self._configuration(item)
+
+    async def set_document_readiness(self, provider_id: UUID, item_id: UUID, ready: bool) -> ProviderServiceConfiguration:
+        item = await self._service(provider_id, item_id)
+        if item.status in {ProviderServiceStatus.ACTIVE, ProviderServiceStatus.PENDING_DOCUMENTS, ProviderServiceStatus.PENDING_REVIEW}:
+            item.status = ProviderServiceStatus.ACTIVE if ready else ProviderServiceStatus.PENDING_DOCUMENTS
+            await self._commit()
         return await self._configuration(item)
 
     @staticmethod

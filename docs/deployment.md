@@ -2,7 +2,9 @@
 
 ## Desarrollo
 
-Docker Compose ejecutará web, API, worker, PostGIS, Redis, MinIO y Mailpit. La Fase 1 definirá versiones y comandos reproducibles.
+Docker Compose ejecuta web, API, worker/beat, PostGIS, Redis, MinIO, ClamAV y Mailpit. ClamAV mantiene sus firmas en un volumen y debe estar saludable antes de aceptar uploads; su puerto no se publica al host. MinIO expone API y consola únicamente en loopback durante desarrollo y usa credenciales externas en producción.
+
+ClamAV requiere memoria suficiente para cargar las firmas; el host productivo debe reservar recursos y verificar el healthcheck antes de poner la suite Online. `S3_PRESIGN_ENDPOINT` debe apuntar a una URL alcanzable por el navegador sin convertir el bucket en público.
 
 ## Staging
 

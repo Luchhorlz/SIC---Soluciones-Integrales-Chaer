@@ -14,6 +14,7 @@ const visibilityLabels: Record<string, string> = {
   NO_ACTIVE_SUBSCRIPTION: "Suscripción pendiente",
   SERVICE_PAUSED: "Servicio pausado o pendiente",
   DOCUMENT_PENDING: "Documentación pendiente",
+  DOCUMENT_EXPIRED: "Documentación vencida",
   NO_SERVICE_AREA: "Falta configurar cobertura",
   VISIBLE: "Visible",
 };
@@ -46,7 +47,7 @@ export default async function ProviderDashboardPage({ searchParams }: { searchPa
 
       <section className="provider-dashboard-grid">
         <article className="provider-dashboard-card provider-offers-card"><div className="provider-card-title"><div><span>▤</span><h2>Estado de tus servicios</h2></div><Link href="/prestador/servicios">Administrar</Link></div>{offers.length ? <div className="provider-offer-list">{offers.slice(0, 5).map((offer) => <div key={offer.id}><span><b>{offer.headline}</b><small>{offer.pricing_type === "QUOTE" ? "A presupuestar" : `Precio ${offer.pricing_type.toLowerCase()}`}</small></span><span className={offer.visible ? "readiness-ready" : "readiness-pending"}>{visibilityLabels[offer.visibility_code] ?? offer.visibility_code}</span></div>)}</div> : <div className="provider-dashboard-empty"><span>＋</span><h3>Todavía no configuraste servicios</h3><p>Elegí aptitudes del catálogo y definí cada modalidad por separado.</p><Link className="primary" href={profile ? "/prestador/servicios" : "/onboarding/prestador"}>{profile ? "Agregar servicio" : "Crear perfil"}</Link></div>}</article>
-        <article className="provider-dashboard-card provider-quick-card"><div className="provider-card-title"><div><span>⚡</span><h2>Acciones rápidas</h2></div></div><Link href="/prestador/perfil"><span>♙</span><div><b>Completar perfil y portfolio</b><small>Nombre, experiencia y trabajos</small></div><i>›</i></Link><Link href="/prestador/servicios"><span>▣</span><div><b>Configurar servicios</b><small>Modalidad, precio y cobertura</small></div><i>›</i></Link><Link href="/prestador/servicios#disponibilidad"><span>◫</span><div><b>Gestionar disponibilidad</b><small>Días, horarios y turnos</small></div><i>›</i></Link></article>
+        <article className="provider-dashboard-card provider-quick-card"><div className="provider-card-title"><div><span>⚡</span><h2>Acciones rápidas</h2></div></div><Link href="/prestador/perfil"><span>♙</span><div><b>Completar perfil y portfolio</b><small>Nombre, experiencia y trabajos</small></div><i>›</i></Link><Link href="/prestador/servicios"><span>▣</span><div><b>Configurar servicios</b><small>Modalidad, precio y cobertura</small></div><i>›</i></Link><Link href="/prestador/documentacion"><span>▤</span><div><b>Validar documentación</b><small>Matrículas, certificados y estados</small></div><i>›</i></Link><Link href="/prestador/servicios#disponibilidad"><span>◫</span><div><b>Gestionar disponibilidad</b><small>Días, horarios y turnos</small></div><i>›</i></Link></article>
       </section>
 
       <section className="provider-readiness"><div><span>☆</span><div><b>Visibilidad protegida por requisitos</b><p>En esta fase ningún perfil se publica antes de documentación aprobada y suscripción válida.</p></div></div><div className="provider-readiness-progress"><b>{profile?.profile_completeness ?? 0}%</b><span><i style={{ width: `${profile?.profile_completeness ?? 0}%` }}></i></span><Link href="/prestador/perfil">Completar perfil</Link></div></section>

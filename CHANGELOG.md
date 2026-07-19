@@ -23,3 +23,7 @@
 - Agregada la Fase 5 con onboarding y panel responsive del prestador, perfil, portfolio descriptivo y pausa global.
 - Incorporada la configuración de múltiples servicios canónicos con precios permitidos, modalidades, cobertura PostGIS, agenda semanal y períodos no disponibles.
 - Centralizada la visibilidad en `ProviderVisibilityService`, con diagnósticos internos y publicación denegada hasta documentación y suscripción válidas.
+- Agregada la Fase 6 con requisitos documentales configurables por servicio, carga privada PDF/PNG/JPEG, hash SHA-256 y objetos UUID en MinIO/S3.
+- Integrado ClamAV mediante `INSTREAM`, con estados de escaneo, rechazo de malware y reintento protegido ante indisponibilidad.
+- Incorporadas las vistas `/prestador/documentacion` y `/admin/documentos`, roles de revisión, descargas firmadas, decisiones auditadas y vencimientos automáticos desde Celery beat.
+- Conectada la preparación documental a cada servicio del prestador sin habilitar indiscriminadamente el resto del perfil.

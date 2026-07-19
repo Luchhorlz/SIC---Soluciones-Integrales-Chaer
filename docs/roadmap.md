@@ -24,6 +24,8 @@ Perfil y servicios del prestador; documentos y revisión; suscripción mensual m
 
 Estado de Fase 5: onboarding profesional, perfil privado, portfolio descriptivo, selección múltiple del catálogo, capacidades de precio, modalidades, cobertura PostGIS por servicio, agenda semanal, períodos no disponibles, pausa y diagnóstico centralizado de visibilidad implementados. El prestador sigue fuera de resultados porque Fases 6 y 7 deben aprobar documentación y suscripción. Pendiente local: credenciales Google y PostgreSQL/PostGIS para uso persistente; CI valida el flujo real sobre PostGIS.
 
+Estado de Fase 6: requisitos administrables por servicio, carga multipart privada, detección de contenido, límite y hash SHA-256, almacenamiento MinIO/S3, escaneo ClamAV, estados de revisión, cola `ADMIN`/`DOCUMENT_REVIEWER`, descargas breves firmadas, historial inmutable y vencimiento automático implementados. La aprobación recalcula únicamente los servicios que requieren ese tipo. No se cargaron requisitos legales ficticios. Pendiente local: ejecutar la suite completa con Docker/MinIO/ClamAV; CI valida migración, permisos, reglas y vencimientos sobre PostgreSQL.
+
 ## Fases 8 a 10 — Marketplace
 
 Búsqueda geográfica/remota y perfiles públicos; solicitudes, presupuestos y contrataciones; mensajería, notificaciones, favoritos y opiniones verificadas.

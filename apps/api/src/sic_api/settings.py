@@ -9,6 +9,17 @@ class Settings(BaseSettings):
     api_version: str = "0.1.0"
     database_url: str = "postgresql+asyncpg://sic:sic@127.0.0.1:5432/sic"
     internal_api_jwt_secret: str | None = None
+    s3_endpoint: str = "http://127.0.0.1:9000"
+    s3_presign_endpoint: str | None = None
+    s3_region: str = "us-east-1"
+    s3_access_key: str | None = None
+    s3_secret_key: str | None = None
+    s3_bucket_private: str = "sic-private"
+    document_download_ttl_seconds: int = 60
+    document_max_bytes: int = 10 * 1024 * 1024
+    clamav_host: str = "127.0.0.1"
+    clamav_port: int = 3310
+    clamav_timeout_seconds: float = 15.0
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
